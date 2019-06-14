@@ -9,14 +9,7 @@ if __name__ == "__main__":
             print(x)
 
     wel()
-
-
-    #Also TestServer() aus socketmanager startet jetzt über die main.py so
-    #wie es soll aber des threadgin geht nicht
-    PacketHandler()
-
-
+    
+    PacketHandler().TestSocket()
 
     pass
-
-    
