@@ -1,5 +1,6 @@
 import sys
 from PacketHandler import PacketHandler
+from Database import Database
 
 if __name__ == "__main__":
 
@@ -10,6 +11,11 @@ if __name__ == "__main__":
 
     wel()
     
-    PacketHandler().TestSocket()
+    # PacketHandler().TestSocket()
+
+    if Database().testConnetcion() == True:
+        print("testConnetcion Erfolgreich")
+    else:
+        print("GEHT NICHT")
 
     pass
