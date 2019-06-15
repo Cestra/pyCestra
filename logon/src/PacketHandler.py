@@ -19,15 +19,16 @@ class PacketHandler:
                 print('Bye! We lost :', self.addr[0], ':', self.addr[1])
                 break
     
+            msg = data
+            print(self.addr[1], ': "', msg, '"')
             # reverse the given string from client 
-            data = data[::-1] 
+            data = data[::-1]
     
             # send back reversed string to client 
             c.send(data) 
     
         # connection closed 
         c.close() 
-    
     
     def TestSocket(self): 
 
