@@ -1,6 +1,6 @@
 import sys
 from PacketHandler import PacketHandler
-from Database import Database
+from database.Database import Database
 
 if __name__ == "__main__":
 
@@ -13,9 +13,10 @@ if __name__ == "__main__":
     
     # PacketHandler().TestSocket()
 
-    if Database().testConnetcion() == True:
-        print("testConnetcion Erfolgreich")
+    if Database().testConnection() == True:
+        print("Datenbank Connection Test Erfolgreich")
     else:
-        print("GEHT NICHT")
+        print("Datanbank nicht gefunden!")
+        sys.exit
 
     pass

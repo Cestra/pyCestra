@@ -1,22 +1,17 @@
 import pymysql.cursors
-import configparser
+from src.Config import Config
 
 class Database:
 
-    def getConfig(self):
-        config = configparser.ConfigParser()
-        config.read('logon.conf')
-        print(config.sections())
-        # print(config['DEFAULT']['Logon_Database_Ip'])
-
     def initializeConnection(self):
+        con = Config().getData_LogonServerDatabase()
         try:
-            connection = pymysql.connect(host="127.0.0.1",
-                                        port=3306,
-                                        user="root",
-                                        password="fabio312",
-                                        db="cestra_game",
-                                        cursorclass=pymysql.cursors.DictCursor)
+            connection = pymysql.connect(host = con['ip'],
+                                        port = con['port'],
+                                        user = con['user'],
+                                        password = con['passwo'],
+                                        db = con['name'],
+                                        cursorclass = pymysql.cursors.DictCursor)
             cursor = connection.cursor()
             return cursor
         
@@ -24,7 +19,7 @@ class Database:
             print("Something went wrong: {}".format(Error))
             return("Connection Error")
 
-    def testConnetcion(self):
+    def testConnection(self):
         # global initializeConnection()
         try:
             cursor = Database().initializeConnection()
@@ -40,12 +35,9 @@ class Database:
             print("ERROR IN CONNECTION")
         return False
 
-Database().getConfig()
-
-
 '''
 # ======================================
-if Database().testConnetcion() == True:
+if Database().testConnection() == True:
     print("testConnetcion Erfolgreich")
 else:
     print("GEHT NICHT")
