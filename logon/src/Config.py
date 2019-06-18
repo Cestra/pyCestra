@@ -1,6 +1,6 @@
 import configparser
 
-class Config:
+class Config():
 
     def __init__(self):
         self.config = configparser.ConfigParser()
@@ -20,7 +20,7 @@ class Config:
         except:
             return 0
     
-    def getData_LogonServerDatabase(self):
+    def getDatafromLogonServerDatabase(self):
         try:
             data = {}
             section01 = 'LogonServer Database'
@@ -37,5 +37,6 @@ class Config:
             return "ERROR"
 
 # Config().createDefault()
-# DbConfig = Config().getData_LogonServerDatabase()
+# DbConfig = Config().getDatafromLogonServerDatabase()
 # print(DbConfig)
+# print(type(DbConfig['port']))

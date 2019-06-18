@@ -1,6 +1,7 @@
 import sys
+
+from Database import Database
 from PacketHandler import PacketHandler
-from database.Database import Database
 
 if __name__ == "__main__":
 
@@ -18,5 +19,4 @@ if __name__ == "__main__":
     else:
         print("Datanbank nicht gefunden!")
         sys.exit
-
     pass

@@ -1,7 +1,8 @@
+import socket
 import sys
-import socket 
+import threading
+
 from _thread import start_new_thread
-import threading 
 
 class PacketHandler:
 

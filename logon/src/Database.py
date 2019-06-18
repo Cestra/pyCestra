@@ -1,36 +1,35 @@
 import pymysql.cursors
-from src.Config import Config
+from Config import Config
 
-class Database:
+class Database():
 
-    def initializeConnection(self):
-        con = Config().getData_LogonServerDatabase()
+    def InitializeConnection(self):
+        conf = Config().getDatafromLogonServerDatabase()
         try:
-            connection = pymysql.connect(host = con['ip'],
-                                        port = con['port'],
-                                        user = con['user'],
-                                        password = con['passwo'],
-                                        db = con['name'],
+            connection = pymysql.connect(host = conf['ip'],
+                                        port = conf['port'],
+                                        user = conf['user'],
+                                        password = conf['passwo'],
+                                        db = conf['name'],
                                         cursorclass = pymysql.cursors.DictCursor)
             cursor = connection.cursor()
             return cursor
-        
+
         except pymysql.Error as Error:
             print("Something went wrong: {}".format(Error))
             return("Connection Error")
 
     def testConnection(self):
-        # global initializeConnection()
         try:
-            cursor = Database().initializeConnection()
+            cursor = Database().InitializeConnection()
             cursor.execute("SELECT VERSION()")
-            results = cursor.fetchone()  
+            results = cursor.fetchone()
             if results:
                 return True
             else:
                 return False
             cursor.close()
-        
+
         except pymysql.Error:
             print("ERROR IN CONNECTION")
         return False
