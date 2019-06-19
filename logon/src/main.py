@@ -1,9 +1,13 @@
 import sys
+import os
 
 from Database import Database
 from PacketHandler import PacketHandler
 
 if __name__ == "__main__":
+
+    clear = lambda: os.system('cls')
+    clear()
 
     def wel():
         welmsg = [31*"─","|   pyCestra - Logon Server   |",31*"─"]
@@ -11,7 +15,6 @@ if __name__ == "__main__":
             print(x)
 
     wel()
-    
     # PacketHandler().TestSocket()
 
     if Database().testConnection():
