@@ -35,7 +35,7 @@ class Config():
             # print("Die logon.conf konnte NICHT erfolgreich ausgelesen werden")
             return False
 
-Config().createDefault()
+# Config().createDefault()
 # DbConfig = Config().getDatafromLogonServerDatabase()
 # print(DbConfig)
 # print(type(DbConfig['port']))
