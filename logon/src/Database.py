@@ -10,8 +10,7 @@ class Database():
                                         port = conf['port'],
                                         user = conf['user'],
                                         password = conf['passwo'],
-                                        db = conf['name'],
-                                        cursorclass = pymysql.cursors.DictCursor)
+                                        db = conf['name'],)
             cursor = connection.cursor()
             return cursor
 
