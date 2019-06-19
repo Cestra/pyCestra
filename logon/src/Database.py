@@ -9,6 +9,8 @@ class Database():
             pass
         else:
             print("Die logon.conf konnte NICHT erfolgreich ausgelesen werden")
+            # Das ist ein default für die Config da die CMD nicht die logon.conf findet
+            self.conf = ['127.0.0.1', 3306, 'root', 'fabio312', 'cestra_game']
 
     def InitializeConnection(self, conf):
         try:
