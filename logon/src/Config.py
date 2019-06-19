@@ -16,13 +16,12 @@ class Config():
             }
             with open('./Non/logon.conf', 'w') as configfile:    # save
                 self.config.write(configfile)
-            return 1
+            return True
         except:
-            return 0
+            return False
     
     def getDatafromLogonServerDatabase(self):
         try:
-            data = {}
             section01 = 'LogonServer Database'
             self.config.read('./Non/logon.conf')
             ip = self.config.get(section01, 'logon_database_ip')
@@ -30,11 +29,11 @@ class Config():
             name = self.config.get(section01, 'logon_database_name')
             user = self.config.get(section01, 'logon_database_user')
             passwo = self.config.get(section01, 'logon_database_pass')
-            data.update([('ip',ip), ('port',port),('name',name),('user',user),('passwo',passwo)])
-            return data
+            datalist = [ip, port, user, passwo, name]
+            return datalist
         except:
-            print("Die logon.conf konnte NICHT erfolgreich ausgelesen werden")
-            return "ERROR"
+            # print("Die logon.conf konnte NICHT erfolgreich ausgelesen werden")
+            return False
 
 # Config().createDefault()
 # DbConfig = Config().getDatafromLogonServerDatabase()

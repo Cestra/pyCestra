@@ -3,14 +3,20 @@ from Config import Config
 
 class Database():
 
-    def InitializeConnection(self):
-        conf = Config().getDatafromLogonServerDatabase()
+    def __init__(self):
+        self.conf = Config().getDatafromLogonServerDatabase()
+        if self.conf:
+            pass
+        else:
+            print("Die logon.conf konnte NICHT erfolgreich ausgelesen werden")
+
+    def InitializeConnection(self, conf):
         try:
-            connection = pymysql.connect(host = conf['ip'],
-                                        port = conf['port'],
-                                        user = conf['user'],
-                                        password = conf['passwo'],
-                                        db = conf['name'],)
+            connection = pymysql.connect(host = conf[0],
+                                        port = conf[1],
+                                        user = conf[2],
+                                        password = conf[3],
+                                        db = conf[4],)
             cursor = connection.cursor()
             return cursor
 
@@ -20,7 +26,7 @@ class Database():
 
     def testConnection(self):
         try:
-            cursor = Database().InitializeConnection()
+            cursor = Database().InitializeConnection(self.conf)
             cursor.execute("SELECT VERSION()")
             results = cursor.fetchone()
             if results:

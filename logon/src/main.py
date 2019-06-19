@@ -14,7 +14,7 @@ if __name__ == "__main__":
     
     # PacketHandler().TestSocket()
 
-    if Database().testConnection() == True:
+    if Database().testConnection():
         print("Datenbank Connection Test Erfolgreich")
     else:
         print("Datanbank nicht gefunden!")
