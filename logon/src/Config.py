@@ -23,6 +23,7 @@ class Config():
     def getDatafromLogonServerDatabase(self):
         try:
             section01 = 'LogonServer Database'
+            # TODO Der Pfard wir in der CMD von Windoof nicht gefunden!
             self.config.read('./logon.conf')
             ip = self.config.get(section01, 'logon_database_ip')
             port = self.config.getint(section01, 'logon_database_port')

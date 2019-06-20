@@ -4,15 +4,18 @@ from Config import Config
 class Database():
 
     def __init__(self):
-        self.conf = Config().getDatafromLogonServerDatabase()
-        if self.conf:
+        pass
+
+    def InitializeConnection(self):
+
+        conf = Config().getDatafromLogonServerDatabase()
+        if conf:
             pass
         else:
             print("Die logon.conf konnte NICHT erfolgreich ausgelesen werden")
             # Das ist ein default für die Config da die CMD nicht die logon.conf findet
-            self.conf = ['127.0.0.1', 3306, 'root', 'fabio312', 'cestra_game']
+            # self.conf = ['127.0.0.1', 3306, 'root', 'fabio312', 'cestra_game']
 
-    def InitializeConnection(self, conf):
         try:
             connection = pymysql.connect(host = conf[0],
                                         port = conf[1],
@@ -28,7 +31,7 @@ class Database():
 
     def testConnection(self):
         try:
-            cursor = Database().InitializeConnection(self.conf)
+            cursor = Database().InitializeConnection()
             cursor.execute("SELECT VERSION()")
             results = cursor.fetchone()
             if results:

@@ -3,6 +3,7 @@ import os
 
 from Database import Database
 from PacketHandler import PacketHandler
+from AccountData import AccountData
 
 if __name__ == "__main__":
 
@@ -13,13 +14,17 @@ if __name__ == "__main__":
         welmsg = [31*"─","|   pyCestra - Logon Server   |",31*"─"]
         for x in welmsg:
             print(x)
-
     wel()
-    # PacketHandler().TestSocket()
 
-    if Database().testConnection():
-        print("Datenbank Connection Test Erfolgreich")
-    else:
-        print("Datanbank nicht gefunden!")
-        sys.exit
-    pass
+    def DBcheck():
+        if Database().testConnection():
+            print("Datenbank Connection Test Erfolgreich")
+        else:
+            print("Datanbank nicht gefunden!")
+            sys.exit  
+
+    # PacketHandler().TestSocket()
+    DBcheck()
+    
+    Account = AccountData(1).get()
+    print(Account)
