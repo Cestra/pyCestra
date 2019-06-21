@@ -4,6 +4,7 @@ import os
 from Database import Database
 from PacketHandler import PacketHandler
 from AccountData import AccountData
+from ServerData import ServerData
 
 if __name__ == "__main__":
 
@@ -26,5 +27,9 @@ if __name__ == "__main__":
     # PacketHandler().TestSocket()
     DBcheck()
     
+    print("### DATA TEST ###")
+    test = ServerData(1).get()
+    print(test)
+
     Account = AccountData(1).get()
     print(Account)
