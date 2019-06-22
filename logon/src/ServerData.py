@@ -12,7 +12,7 @@ class ServerData:
             self.__data = self.cursor.fetchone()
         except:
             print("Error @ ServerData.py -  __init__")
-        self.cursor.Database().close()
+            self.cursor.Database().close()
     
     def get(self):
         return self.__data
@@ -22,5 +22,5 @@ class ServerData:
         # Um an die daten zu kommen self.__data
         pass
 
-test = ServerData(1).get()
-print(test)
+# test = ServerData(1).get()
+# print(test)

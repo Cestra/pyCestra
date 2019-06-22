@@ -12,7 +12,7 @@ class AccountData:
             self.__data = self.cursor.fetchone()
         except:
             print("Error @ AccountData.py -  __init__")
-        self.cursor.Database().close()
+            self.cursor.Database().close()
     
     def get(self):
         return self.__data
