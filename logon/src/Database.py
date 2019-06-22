@@ -29,6 +29,13 @@ class Database():
             print("Something went wrong: {}".format(Error))
             return("Connection Error")
 
+    def close(self):
+        try:
+            return
+        except:
+            print("Can't close connection")
+            return
+
     def testConnection(self):
         try:
             cursor = Database().InitializeConnection()
@@ -38,10 +45,10 @@ class Database():
                 return True
             else:
                 return False
-            cursor.close()
+            cursor.Database().close()
 
-        except pymysql.Error:
-            print("ERROR IN CONNECTION")
+        except pymysql.Error as Error:
+            print("Something went wrong: {}".format(Error))
         return False
 
 '''

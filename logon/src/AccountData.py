@@ -10,9 +10,9 @@ class AccountData:
         try:
             self.cursor.execute("SELECT * FROM accounts WHERE guid = " + id)
             self.__data = self.cursor.fetchone()
-        except pymysql.Error as Error:
-            print("Something went wrong: {}".format(Error))
-        self.cursor.close()
+        except:
+            print("Error @ AccountData.py -  __init__")
+        self.cursor.Database().close()
     
     def get(self):
         return self.__data
