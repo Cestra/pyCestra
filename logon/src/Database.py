@@ -1,21 +1,22 @@
 import pymysql.cursors
+
 from Config import Config
 
-class Database():
+
+class Database:
 
     def __init__(self):
         pass
 
     def InitializeConnection(self):
-
-        conf = Config().getDatafromLogonServerDatabase()
+        conf = Config()
+        conf = conf.getDatafromLogonServerDatabase()
         if conf:
             pass
         else:
             print("Die logon.conf konnte NICHT erfolgreich ausgelesen werden")
             # Das ist ein default für die Config da die CMD nicht die logon.conf findet
             # self.conf = ['127.0.0.1', 3306, 'root', 'fabio312', 'cestra_game']
-
         try:
             connection = pymysql.connect(host = conf[0],
                                         port = conf[1],
@@ -58,4 +59,7 @@ if Database().testConnection() == True:
 else:
     print("GEHT NICHT")
 # ======================================
+
+test = Database()
+test.InitializeConnection()
 '''

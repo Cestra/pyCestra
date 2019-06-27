@@ -1,18 +1,16 @@
-# import pymysql.cursors
-
 from Database import Database
 
 class ServerData:
 
     def __init__(self, val):
-        self.cursor = Database().InitializeConnection()
+        cursor = Database().InitializeConnection()
         id = str(val)
         try:
-            self.cursor.execute("SELECT * FROM servers WHERE id = " + id)
-            self.__data = self.cursor.fetchone()
+            cursor.execute("SELECT * FROM servers WHERE id = " + id)
+            self.__data = cursor.fetchone()
         except:
             print("Error @ ServerData.py -  __init__")
-            self.cursor.Database().close()
+            cursor.Database().close()
     
     def get(self):
         return self.__data

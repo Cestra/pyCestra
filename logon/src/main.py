@@ -17,19 +17,20 @@ if __name__ == "__main__":
             print(x)
     wel()
 
-    def DBcheck():
-        if Database().testConnection():
+    def DatabaseTest():
+        mySQLTest = Database()
+        if mySQLTest.testConnection():
             print("Datenbank Connection Test Erfolgreich")
         else:
             print("Datanbank nicht gefunden!")
             sys.exit  
 
     # PacketHandler().TestSocket()
-    DBcheck()
+    DatabaseTest()
     
     print("### DATA TEST ###")
-    test = ServerData(1).get()
-    print(test)
+    Server = ServerData(1).get()
+    print("Server Data Test:", Server)
 
     Account = AccountData(1).get()
-    print(Account)
+    print("Account Data Test:", Account)
