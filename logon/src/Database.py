@@ -8,6 +8,9 @@ class Database:
     def __init__(self):
         pass
 
+    def __del__(self):
+        print("The instance of the class Database has been deleted")
+
     def InitializeConnection(self):
         conf = Config()
         conf = conf.getDatafromLogonServerDatabase()
@@ -32,10 +35,10 @@ class Database:
 
     def close(self):
         try:
-            return
-        except:
-            print("Can't close connection")
-            return
+            return True
+        except pymysql.Error as Error:
+            print("Can't close connection: {}".format(Error))
+            return False
 
     def testConnection(self):
         try:

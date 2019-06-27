@@ -3,8 +3,8 @@ from Database import Database
 class AccountData:
 
     def __init__(self, val):
-        cursor = Database().InitializeConnection()
         id = str(val)
+        cursor = Database().InitializeConnection()
         try:
             cursor.execute("SELECT * FROM accounts WHERE guid = " + id)
             self.__data = cursor.fetchone()

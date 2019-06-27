@@ -3,8 +3,8 @@ from Database import Database
 class ServerData:
 
     def __init__(self, val):
-        cursor = Database().InitializeConnection()
         id = str(val)
+        cursor = Database().InitializeConnection()
         try:
             cursor.execute("SELECT * FROM servers WHERE id = " + id)
             self.__data = cursor.fetchone()
@@ -20,5 +20,6 @@ class ServerData:
         # Um an die daten zu kommen self.__data
         pass
 
-# test = ServerData(1).get()
-# print(test)
+test = ServerData(1).get()
+print(test)
+print(len(test))
