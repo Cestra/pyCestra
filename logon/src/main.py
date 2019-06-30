@@ -1,12 +1,15 @@
 import sys
 import os
 
-from Database import Database
+from Database import Database as db
 from PacketHandler import PacketHandler
 from AccountData import AccountData
 from ServerData import ServerData
 
 if __name__ == "__main__":
+
+    #  ======================================================
+    #  start message
 
     clear = lambda: os.system('cls')
     clear()
@@ -17,16 +20,25 @@ if __name__ == "__main__":
             print(x)
     wel()
 
+    #  ======================================================
+    #  Socket Tests
+
+    # PacketHandler().TestSocket()
+
+    #  ======================================================
+    #  MySQL Tests
+
+    mySQLTest = db()
+
     def DatabaseTest():
-        mySQLTest = Database()
         if mySQLTest.testConnection():
             print("Datenbank Connection Test Erfolgreich")
         else:
             print("Datanbank nicht gefunden!")
             sys.exit  
 
-    # PacketHandler().TestSocket()
     DatabaseTest()
+    
     
     print("### DATA TEST ###")
     Server = ServerData(1).get()
@@ -34,3 +46,5 @@ if __name__ == "__main__":
 
     Account = AccountData(1).get()
     print("Account Data Test:", Account)
+
+    #  ======================================================

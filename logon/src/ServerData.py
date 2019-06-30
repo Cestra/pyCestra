@@ -10,7 +10,7 @@ class ServerData:
             self.__data = cursor.fetchone()
         except:
             print("Error @ ServerData.py -  __init__")
-            cursor.Database().close()
+            # TODO Hier muss noch geschlossen werden!!! 
     
     def get(self):
         return self.__data
@@ -20,6 +20,6 @@ class ServerData:
         # Um an die daten zu kommen self.__data
         pass
 
-test = ServerData(1).get()
-print(test)
-print(len(test))
+# test = ServerData(1).get()
+# print(test)
+# print(len(test))
