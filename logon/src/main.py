@@ -1,10 +1,11 @@
 import sys
 import os
+import database
 
-from Database import Database as db
+# from database.Database import Database
 from PacketHandler import PacketHandler
-from AccountData import AccountData
-from ServerData import ServerData
+# from database.AccountData import AccountData
+# from database.ServerData import ServerData
 
 if __name__ == "__main__":
 
@@ -28,7 +29,7 @@ if __name__ == "__main__":
     #  ======================================================
     #  MySQL Tests
 
-    mySQLTest = db()
+    mySQLTest = database.Database()
 
     def DatabaseTest():
         if mySQLTest.testConnection():
@@ -38,13 +39,13 @@ if __name__ == "__main__":
             sys.exit  
 
     DatabaseTest()
-    
-    
+
+    '''
     print("### DATA TEST ###")
     Server = ServerData(1).get()
     print("Server Data Test:", Server)
 
     Account = AccountData(1).get()
     print("Account Data Test:", Account)
-
+    '''
     #  ======================================================

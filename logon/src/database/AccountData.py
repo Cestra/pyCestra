@@ -4,7 +4,7 @@ class AccountData:
 
     def __init__(self, val):
         id = str(val)
-        cursor = Database().InitializeConnection()
+        cursor = Database().inicon()
         try:
             cursor.execute("SELECT * FROM accounts WHERE guid = " + id)
             self.__data = cursor.fetchone()
