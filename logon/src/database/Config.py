@@ -13,13 +13,13 @@ class Config:
             name = self.config.get(section01, 'logon_database_name')
             user = self.config.get(section01, 'logon_database_user')
             passwo = self.config.get(section01, 'logon_database_pass')
-            self.__datalist = [ip, port, user, passwo, name]
+            # self.__datalist = [ip, port, user, passwo, name]
+            self.__datadict = {"ip":ip, "port":port, "name":name, "user":user, "pass":passwo}
         except:
             print("Die logon.conf konnte NICHT erfolgreich ausgelesen werden")
-            # return False
     
     def get(self):
-        return self.__datalist
+        return self.__datadict
 
     def createDefault(self):
         try:
@@ -37,6 +37,8 @@ class Config:
             return False
 
 # Config().createDefault()
-#DbConfig = Config()
-#print(type(DbConfig.get()))
-#print(DbConfig.get())
+# DbConfig = Config()
+# print(type(DbConfig.get()))
+# print(DbConfig.get())
+# data = DbConfig.get()
+# print(data['ip'])

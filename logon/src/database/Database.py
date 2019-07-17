@@ -20,14 +20,14 @@ class Database:
     # Initialize Connection
     def inicon(self):
         conf = database.Config()
-        conf.get()
+        conf = conf.get()
         print(type(conf))
         try:
-            self.connection = pymysql.connect(host = conf[0],
-                                            port = conf[1],
-                                            user = conf[2],
-                                            password = conf[3],
-                                            db = conf[4],)
+            self.connection = pymysql.connect(host = conf['ip'],
+                                            port = conf['pass'],
+                                            user = conf['user'],
+                                            password = conf['pass'],
+                                            db = conf['name'],)
             self.cursor = self.connection.cursor()
             return self.cursor
 

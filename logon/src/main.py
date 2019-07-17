@@ -39,10 +39,10 @@ if __name__ == "__main__":
 
     '''
     print("### DATA TEST ###")
-    Server = ServerData(1).get()
+    Server = database.ServerData(1).get()
     print("Server Data Test:", Server)
 
-    Account = AccountData(1).get()
+    Account = database.AccountData(1).get()
     print("Account Data Test:", Account)
     '''
     #  ======================================================
