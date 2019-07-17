@@ -1,10 +1,11 @@
-from Database import Database
+import database
+
 
 class ServerData:
 
     def __init__(self, val):
         id = str(val)
-        cursor = Database().InitializeConnection()
+        cursor = database.Database().inicon()
         try:
             cursor.execute("SELECT * FROM servers WHERE id = " + id)
             self.__data = cursor.fetchone()

@@ -1,5 +1,7 @@
 import pymysql.cursors
+
 import database
+
 
 class Database:
     '''

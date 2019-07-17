@@ -1,11 +1,8 @@
-import sys
 import os
-import database
+import sys
 
-# from database.Database import Database
+import database
 from PacketHandler import PacketHandler
-# from database.AccountData import AccountData
-# from database.ServerData import ServerData
 
 if __name__ == "__main__":
 

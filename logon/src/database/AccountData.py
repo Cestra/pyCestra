@@ -1,10 +1,11 @@
-from Database import Database
+import database
+
 
 class AccountData:
 
     def __init__(self, val):
         id = str(val)
-        cursor = Database().inicon()
+        cursor = database.Database().inicon()
         try:
             cursor.execute("SELECT * FROM accounts WHERE guid = " + id)
             self.__data = cursor.fetchone()
