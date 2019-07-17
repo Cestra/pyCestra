@@ -1,7 +1,5 @@
 import pymysql.cursors
-
-from Config import Config
-
+import database
 
 class Database:
     '''
@@ -17,9 +15,11 @@ class Database:
         # self.connection.close()
         pass
 
-    # InitializeConnection
+    # Initialize Connection
     def inicon(self):
-        conf = Config().getLogonConf()
+        conf = database.Config()
+        conf.get()
+        print(type(conf))
         try:
             self.connection = pymysql.connect(host = conf[0],
                                             port = conf[1],
@@ -48,17 +48,16 @@ class Database:
             print("Something went wrong: {}".format(Error))
         return False
 
-'''
-# ======================================
-mySQLTest = Database()
 
-def DatabaseTest():
-    if mySQLTest.testConnection():
-        print("Datenbank Connection Test Erfolgreich")
-    else:
-        print("Datanbank nicht gefunden!") 
-
-DatabaseTest()
-del mySQLTest
 # ======================================
-'''
+# mySQLTest = Database()
+
+# def DatabaseTest():
+#     if mySQLTest.testConnection():
+#         print("Datenbank Connection Test Erfolgreich")
+#     else:
+#         print("Datanbank nicht gefunden!") 
+
+# DatabaseTest()
+# del mySQLTest
+# ======================================
