@@ -21,7 +21,6 @@ class Database:
     def inicon(self):
         conf = database.Config()
         conf = conf.get()
-        print(conf['ip'],conf['pass'],conf['user'],conf['pass'],conf['name'],)
         try:
             self.connection = pymysql.connect(host = conf['ip'],
                                             port = conf['pass'],
@@ -32,7 +31,9 @@ class Database:
             return self.cursor
 
         except pymysql.Error as Error:
-            print("Database - inicon - Something went wrong: {}".format(Error))
+            print("\n[ERROR] Database - inicon\n" +
+                "Config: ",conf['ip'],conf['pass'],conf['user'],conf['pass'],conf['name'] +
+                "\nDatabase - inicon - Something went wrong: {}".format(Error))
             return False
 
     def testConnection(self):
