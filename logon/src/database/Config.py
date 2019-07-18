@@ -4,26 +4,31 @@ class Config:
 
     def __init__(self):
         self.config = configparser.ConfigParser()
+        self.default_config = {'ip':'127.0.0.1',
+                            'port':3306,
+                            'name':'cestra_game',
+                            'user':'root',
+                            'pass':'fabio312'}
         try:
             section01 = 'LogonServer Database'
-            # TODO Der Pfard wir in der CMD von Windoof nicht gefunden!
+            # TODO The path is not found in the CMD of Windows!
             self.config.read('./logon.conf')
             ip = self.config.get(section01, 'logon_database_ip')
             port = self.config.getint(section01, 'logon_database_port')
             name = self.config.get(section01, 'logon_database_name')
             user = self.config.get(section01, 'logon_database_user')
             passwo = self.config.get(section01, 'logon_database_pass')
-            # self.__datalist = [ip, port, user, passwo, name]
-            self.__datadict = {"ip":ip, "port":port, "name":name, "user":user, "pass":passwo}
+            self.__datadict = {'ip':ip, 'port':port, 'name':name, 'user':user, 'pass':passwo}
         except:
-            print("Die logon.conf konnte NICHT erfolgreich ausgelesen werden")
+            print('[WARNING] The logon.conf CAN´T be successfully read\nThe default config is used')
+            self.__datadict = self.default_config
     
     def get(self):
         return self.__datadict
 
     def createDefault(self):
         try:
-            self.config["LogonServer Database"] = {
+            self.config['LogonServer Database'] = {
             'logon_database_ip': '127.0.0.1',
             'logon_database_port': '3306',
             'logon_database_name': 'cestra_game',
