@@ -38,12 +38,14 @@ if __name__ == "__main__":
 
     DatabaseTest()
 
-    '''
     print("### DATA TEST ###")
     Server = database.ServerData(1).get()
     print("Server Data Test:", Server)
 
     Account = database.AccountData(1).get()
     print("Account Data Test:", Account)
-    '''
+
+    Player = database.PlayerData(1).get()
+    print("PlayerData Test:", Player)
+
     #  ======================================================

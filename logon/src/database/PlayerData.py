@@ -1,7 +1,7 @@
 import database
 
 
-class ServerData:
+class PlayerData:
 
     def __init__(self, val):
         id = str(val)
