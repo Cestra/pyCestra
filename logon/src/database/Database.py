@@ -23,7 +23,7 @@ class Database:
         conf = conf.get()
         try:
             self.connection = pymysql.connect(host = conf['ip'],
-                                            port = conf['pass'],
+                                            port = conf['port'],
                                             user = conf['user'],
                                             password = conf['pass'],
                                             db = conf['name'],)
@@ -31,16 +31,16 @@ class Database:
             return self.cursor
 
         except pymysql.Error as Error:
-            print("\n[ERROR] Database - inicon\n" +
-                "Config: ",conf['ip'],conf['pass'],conf['user'],conf['pass'],conf['name'] +
-                "\nDatabase - inicon - Something went wrong: {}".format(Error))
+            print('[ERROR] Database - inicon\n' +
+                'Config: ',conf['ip'],conf['pass'],conf['user'],conf['pass'],conf['name'] +
+                '\nDatabase - inicon - Something went wrong: {}'.format(Error))
             return False
 
     def testConnection(self):
         try:
             cursor = Database().inicon()
             if cursor:
-                cursor.execute("SELECT VERSION()")
+                cursor.execute('SELECT VERSION()')
                 results = cursor.fetchone()
                 if results:
                     return True
@@ -50,7 +50,7 @@ class Database:
                 return False
 
         except pymysql.Error as Error:
-            print("Database - testConnection - Something went wrong: {}".format(Error))
+            print('Database - testConnection - Something went wrong: {}'.format(Error))
         return False
 
 

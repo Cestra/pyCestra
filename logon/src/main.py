@@ -29,10 +29,11 @@ if __name__ == "__main__":
     mySQLTest = database.Database()
 
     def DatabaseTest():
+        print('Datenbank Connection Test:')
         if mySQLTest.testConnection():
-            print("Datenbank Connection Test Erfolgreich")
+            print('Datenbank Connection Test Erfolgreich')
         else:
-            print("Datanbank nicht gefunden!")
+            print('Datanbank nicht gefunden!')
             sys.exit  
 
     DatabaseTest()
