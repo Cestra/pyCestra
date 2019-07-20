@@ -14,10 +14,7 @@ class Account():
     
     def setName(self):
         pass
-    
-    def getName(self):
-        pass
-    
+
     def setNickName(self):
         pass
     
