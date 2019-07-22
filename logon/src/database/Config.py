@@ -3,30 +3,10 @@ import configparser
 class Config:
 
     def __init__(self):
-        self.config = configparser.ConfigParser()
-        self.default_config = {'ip':'127.0.0.1',
-                            'port':3306,
-                            'name':'cestra_game',
-                            'user':'root',
-                            'pass':'fabio312'}
-        try:
-            section01 = 'LogonServer Database'
-            # TODO The path is not found in the CMD of Windows!
-            self.config.read('./logon.conf')
-            ip = self.config.get(section01, 'logon_database_ip')
-            port = self.config.getint(section01, 'logon_database_port')
-            name = self.config.get(section01, 'logon_database_name')
-            user = self.config.get(section01, 'logon_database_user')
-            passwo = self.config.get(section01, 'logon_database_pass')
-            self.__datadict = {'ip':ip, 'port':port, 'name':name, 'user':user, 'pass':passwo}
-        except:
-            print('[WARNING] The logon.conf CAN´T be successfully read\nThe default config is used')
-            self.__datadict = self.default_config
-    
-    def get(self):
-        return self.__datadict
+        print('[DEBUG] Config instance has been created')
 
     def createDefault(self):
+        self.config = configparser.ConfigParser()
         try:
             self.config['LogonServer Basic Settings'] = {
             'Logon_Server_Ip': '127.0.0.1',
@@ -50,39 +30,70 @@ class Config:
         except:
             return False
 
-# ======================================================================
-
-    # self.config = configparser.ConfigParser()
-
     def initialize(self):
+        self.config = configparser.ConfigParser()
         try:
-            section01 = 'LogonServer Database'
-            section02 = 'Network RealmList'
-            section03 = 'Logon Server'
-            config.read('./logon.conf')
+            section01 = 'LogonServer Basic Settings'
+            section02 = 'LogonServer Database'
+            section03 = 'RealmList Configuration'
+            self.config.read('./logon.conf')
 
-            self.ip = self.config.get(section01, 'logon_database_ip')
-            self.port = self.config.getint(section01, 'logon_database_port')
-            self.name = self.config.get(section01, 'logon_database_name')
-            self.user = self.config.get(section01, 'logon_database_user')
-            self.passwo = self.config.get(section01, 'logon_database_pass')
+            self.loginIp = self.config.get(section01, 'Logon_Server_Ip')
+            self.loginPort = self.config.getint(section01, 'Logon_Server_Port')
+            self.version = self.config.get(section01, 'Logon_Server_Version')
 
-            self.exchangeIp = self.config.get(section02, 'Network_RealmList_Ip')
-            self.exchangePort = self.config.get(section02, 'Network_RealmList_Port')
+            self.host = self.config.get(section02, 'logon_database_ip')
+            self.port = self.config.getint(section02, 'logon_database_port')
+            self.name = self.config.get(section02, 'logon_database_name')
+            self.user = self.config.get(section02, 'logon_database_user')
+            self.passwo = self.config.get(section02, 'logon_database_pass')
 
-            self.loginIp = (section03, 'Logon_Server_Ip')
-            self.loginPort = (section03, 'Logon_Server_Port')
-            self.version = (section03, 'Logon_Server_Version')
+            self.exchangeIp = self.config.get(section03, 'Network_RealmList_Ip')
+            self.exchangePort = self.config.getint(section03, 'Network_RealmList_Port')
         except:
             print('[ERROR] Config.initialize: Unreadable config or missing fields')
-    
 
+    def getLoginIp(self):
+        return self.loginIp
 
+    def getLoginPort(self):
+        return self.loginPort
 
+    def getVersion(self):
+        return self.version
 
-Config().createDefault()
+    def getHost(self):
+        return self.host
+
+    def getPort(self):
+        return self.port
+
+    def getDatabaseName(self):
+        return self.name
+
+    def getUser(self):
+        return self.user
+
+    def getPass(self):
+        return self.passwo
+
+    def getExchangeIp(self):
+        return self.exchangeIp
+
+    def getExchangePort(self):
+        return self.exchangePort
+
+# Config().createDefault()
 # DbConfig = Config()
 # print(type(DbConfig.get()))
 # print(DbConfig.get())
 # data = DbConfig.get()
 # print(data['ip'])
+'''
+Testo = Config()
+Testo.initialize()
+print(Testo.loginPort,
+    Testo.getExchangePort(),
+    Testo.getPort(),
+    Testo.getDatabaseName())
+'''
