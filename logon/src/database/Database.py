@@ -32,7 +32,7 @@ class Database:
 
         except pymysql.Error as Error:
             print('[ERROR] Database - inicon\n' +
-                'Config: ',conf['ip'],conf['pass'],conf['user'],conf['pass'],conf['name'] +
+                'Config: ',config.getHost(),config.getPort(),config.getUser(),config.getPass(),config.getDatabaseName() +
                 '\nDatabase - inicon - Something went wrong: {}'.format(Error))
             return False
 
