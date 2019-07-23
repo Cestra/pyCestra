@@ -1,28 +1,39 @@
 import configparser
 
+
 class Config:
 
     def __init__(self):
         print('[DEBUG] Config instance has been created')
+        self.loginIp = '127.0.0.1'
+        self.loginPort = 478
+        self.version = '1.29.1'
+        self.host = '127.0.0.1'
+        self.port = 3306
+        self.name = 'cestra_logon'
+        self.user = 'root'
+        self.passwo = 'root'
+        self.exchangeIp = '127.0.0.1'
+        self.exchangePort = 451
 
-    def createDefault(self):
+    def createDefaultLogonConfig(self):
         self.config = configparser.ConfigParser()
         try:
             self.config['LogonServer Basic Settings'] = {
-            'Logon_Server_Ip': '127.0.0.1',
-            'Logon_Server_Port': '478',
-            'Logon_Server_Version': '1.29.1'
+                'Logon_Server_Ip': '127.0.0.1',
+                'Logon_Server_Port': '478',
+                'Logon_Server_Version': '1.29.1'
             }
             self.config['LogonServer Database'] = {
-            'logon_database_ip': '127.0.0.1',
-            'logon_database_port': '3306',
-            'logon_database_name': 'cestra_game',
-            'logon_database_user': 'root',
-            'logon_database_pass': 'fabio312'
+                'logon_database_ip': '127.0.0.1',
+                'logon_database_port': '3306',
+                'logon_database_name': 'cestra_game',
+                'logon_database_user': 'root',
+                'logon_database_pass': 'fabio312'
             }
             self.config['RealmList Configuration'] = {
-            'Network_RealmList_Ip': '127.0.0.1',
-            'Network_RealmList_Port': '451'
+                'Network_RealmList_Ip': '127.0.0.1',
+                'Network_RealmList_Port': '451'
             }
             with open('./logon.conf', 'w') as configfile:    # save
                 self.config.write(configfile)
@@ -48,8 +59,10 @@ class Config:
             self.user = self.config.get(section02, 'logon_database_user')
             self.passwo = self.config.get(section02, 'logon_database_pass')
 
-            self.exchangeIp = self.config.get(section03, 'Network_RealmList_Ip')
-            self.exchangePort = self.config.getint(section03, 'Network_RealmList_Port')
+            self.exchangeIp = self.config.get(
+                section03, 'Network_RealmList_Ip')
+            self.exchangePort = self.config.getint(
+                section03, 'Network_RealmList_Port')
         except:
             print('[ERROR] Config.initialize: Unreadable config or missing fields')
 
@@ -83,12 +96,8 @@ class Config:
     def getExchangePort(self):
         return self.exchangePort
 
+
 # Config().createDefault()
-# DbConfig = Config()
-# print(type(DbConfig.get()))
-# print(DbConfig.get())
-# data = DbConfig.get()
-# print(data['ip'])
 '''
 Testo = Config()
 Testo.initialize()

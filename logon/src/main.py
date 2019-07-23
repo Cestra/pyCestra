@@ -9,11 +9,11 @@ if __name__ == "__main__":
     #  ======================================================
     #  start message
 
-    clear = lambda: os.system('cls')
+    def clear(): return os.system('cls')
     clear()
 
     def wel():
-        welmsg = [31*"─","|   pyCestra - Logon Server   |",31*"─"]
+        welmsg = [31*"─", "|   pyCestra - Logon Server   |", 31*"─"]
         for x in welmsg:
             print(x)
     wel()
@@ -34,7 +34,7 @@ if __name__ == "__main__":
             print('Datenbank Connection Test Erfolgreich')
         else:
             print('Datanbank nicht gefunden!')
-            sys.exit  
+            sys.exit
 
     DatabaseTest()
 

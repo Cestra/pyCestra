@@ -5,17 +5,8 @@ import database
 
 class Database:
     '''
-    ALWAYS close the Instans to close the Connection
+    INFO: ALWAYS close the Instans to close the Connection
     '''
-
-    def __init__(self):
-        # print("1. __init__")
-        pass
-
-    def __del__(self):
-        # print("2. __del__")
-        # self.connection.close()
-        pass
 
     # Initialize Connection
     def inicon(self):
