@@ -1,4 +1,6 @@
-import pymysql.cursors
+import sys
+
+import pymysql.connections
 
 import database
 
@@ -8,23 +10,26 @@ class Database:
     INFO: ALWAYS close the Instans to close the Connection
     '''
 
-    # Initialize Connection
-    def inicon(self):
+    def initializeData(self):
+        pass
+
+    def initializeConnection(self):
         config = database.Config()
         config.initialize()
         try:
-            self.connection = pymysql.connect(host = config.getHost(),
-                                            port = config.getPort(),
-                                            user = config.getUser(),
-                                            password = config.getPass(),
-                                            db = config.getDatabaseName())
+            self.connection = pymysql.connect(host=config.getHost(),
+                                              port=config.getPort(),
+                                              user=config.getUser(),
+                                              password=config.getPass(),
+                                              db=config.getDatabaseName())
             self.cursor = self.connection.cursor()
-            return self.cursor
+            return True
 
         except pymysql.Error as Error:
             print('[ERROR] Database - inicon\n' +
-                'Config: ',config.getHost(),config.getPort(),config.getUser(),config.getPass(),config.getDatabaseName() +
-                '\nDatabase - inicon - Something went wrong: {}'.format(Error))
+                  'Config: ', config.getHost(), config.getPort(), config.getUser(), config.getPass(), config.getDatabaseName() +
+                  '\nDatabase - inicon - Something went wrong: {}'.format(Error))
+            sys.exit
             return False
 
     def testConnection(self):
@@ -34,6 +39,7 @@ class Database:
                 cursor.execute('SELECT VERSION()')
                 results = cursor.fetchone()
                 if results:
+                    cursor.close()
                     return True
                 else:
                     return False
@@ -52,7 +58,7 @@ class Database:
 #     if mySQLTest.testConnection():
 #         print("Datenbank Connection Test Erfolgreich")
 #     else:
-#         print("Datanbank nicht gefunden!") 
+#         print("Datanbank nicht gefunden!")
 
 # DatabaseTest()
 # del mySQLTest
