@@ -5,6 +5,7 @@ class Config:
 
     def __init__(self):
         print('[DEBUG] Config instance has been created')
+        self.config = configparser.ConfigParser()
         self.loginIp = '127.0.0.1'
         self.loginPort = 478
         self.version = '1.29.1'
@@ -16,8 +17,7 @@ class Config:
         self.exchangeIp = '127.0.0.1'
         self.exchangePort = 451
 
-    def createDefaultLogonConfig(self):
-        self.config = configparser.ConfigParser()
+    def create_default_logon_config(self):
         try:
             self.config['LogonServer Basic Settings'] = {
                 'Logon_Server_Ip': '127.0.0.1',
@@ -42,7 +42,6 @@ class Config:
             return False
 
     def initialize(self):
-        self.config = configparser.ConfigParser()
         try:
             section01 = 'LogonServer Basic Settings'
             section02 = 'LogonServer Database'
@@ -66,34 +65,34 @@ class Config:
         except:
             print('[ERROR] Config.initialize: Unreadable config or missing fields')
 
-    def getLoginIp(self):
+    def get_login_ip(self):
         return self.loginIp
 
-    def getLoginPort(self):
+    def get_login_port(self):
         return self.loginPort
 
-    def getVersion(self):
+    def get_version(self):
         return self.version
 
-    def getHost(self):
+    def get_host(self):
         return self.host
 
-    def getPort(self):
+    def get_port(self):
         return self.port
 
-    def getDatabaseName(self):
+    def get_database_name(self):
         return self.name
 
-    def getUser(self):
+    def get_user(self):
         return self.user
 
-    def getPass(self):
+    def get_pass(self):
         return self.passwo
 
-    def getExchangeIp(self):
+    def get_exchange_ip(self):
         return self.exchangeIp
 
-    def getExchangePort(self):
+    def get_exchange_port(self):
         return self.exchangePort
 
 
