@@ -1,73 +1,73 @@
 class Account():
 
-    def Account(self):
+    def account(self):
         pass
 
-    def getID(self):
+    def get_id(self):
         pass
     
-    def setID(self):
+    def set_id(self):
         pass
     
-    def getName(self):
+    def get_name(self):
         pass
     
-    def setName(self):
+    def set_name(self):
         pass
 
-    def setNickName(self):
+    def set_nickname(self):
         pass
     
-    def getNickName(self):
+    def get_nickname(self):
         pass
 
-    def setQuestion(self):
+    def set_question(self):
         pass
     
-    def getQuestion(self):
+    def get_question(self):
         pass
     
-    def isStaff(self):
+    def is_staff(self):
         pass
 
-    def getClient(self):
+    def get_client(self):
         pass
     
-    def getState(self):
+    def get_state(self):
         pass
 
-    def setState(self):
+    def set_state(self):
         pass
 
-    def getServer(self):
+    def get_server(self):
         pass
 
-    def setServer(self):
+    def set_server(self):
         pass
 
-    def getgetSubscribeRemaining(self):
+    def get_subscribe_remaining(self):
         pass
 
-    def getSubscribe(self):
+    def get_subscribe(self):
         pass
 
-    def setSubscribe(self):
+    def set_subscribe(self):
         pass
 
-    def isSubscribes(self):
+    def is_subscribes(self):
         pass
 
-    def setBanned(self):
+    def set_banned(self):
         pass
 
-    def isBanned(self):
+    def is_banned(self):
         pass
 
-    def addPlayer(self):
+    def add_player(self):
         pass
 
-    def delPlayer(self):
+    def del_player(self):
         pass
 
-    def getPlayers(self):
+    def get_players(self):
         pass

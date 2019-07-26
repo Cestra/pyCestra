@@ -21,22 +21,22 @@ if __name__ == "__main__":
     #  ======================================================
     #  Socket Tests
 
-    # PacketHandler().TestSocket()
+    # PacketHandler().test_socket()
 
     #  ======================================================
     #  MySQL Tests
 
     mySQLTest = database.Database()
 
-    def DatabaseTest():
+    def database_test():
         print('Datenbank Connection Test:')
-        if mySQLTest.testConnection():
+        if mySQLTest.test_connection():
             print('Datenbank Connection Test Erfolgreich')
         else:
             print('Datanbank nicht gefunden!')
             sys.exit
 
-    DatabaseTest()
+    database_test()
 
     print("### DATA TEST ###")
     Server = database.ServerData(1).get()

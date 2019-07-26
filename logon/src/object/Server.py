@@ -1,54 +1,54 @@
 class Server():
 
-    def Server(self):
+    def server(self):
         pass
 
-    def getId(self):
+    def get_id(self):
         pass
 
-    def setId(self):
+    def set_id(self):
         pass
 
-    def isSubscribe(self):
+    def is_subscribe(self):
         pass
 
-    def getPort(self):
+    def get_port(self):
         pass
 
-    def setPort(self):
+    def set_port(self):
         pass
 
-    def getIp(self):
+    def get_ip(self):
         pass
 
-    def setIp(self):
+    def set_ip(self):
         pass
 
-    def getState(self):
+    def get_state(self):
         pass
 
-    def setState(self):
+    def set_state(self):
         pass
 
-    def getKey(self):
+    def get_key(self):
         pass
 
-    def setKey(self):
+    def set_key(self):
         pass
 
-    def getSub(self):
+    def get_sub(self):
         pass
 
-    def getClient(self):
+    def get_client(self):
         pass
 
-    def setClient(self):
+    def set_client(self):
         pass
 
-    def getFreePlaces(self):
+    def get_free_places(self):
         pass
 
-    def setFreePlaces(self):
+    def set_free_places(self):
         pass
 
 # public static Server get / logon/src/org/cestra/object/Server.java / line 112
@@ -56,8 +56,8 @@ class Server():
     def send(self):
         pass
 
-    def sendHostListToAll(self):
+    def send_host_list_to_all(self):
         pass
 
-    def getHostList(self):
+    def get_host_list(self):
         pass

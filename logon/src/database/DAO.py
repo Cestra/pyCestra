@@ -3,7 +3,7 @@ import pymysql.cursors
 
 class DAO:
 
-    def getData(self, query):
+    def get_data(self, query):
         try:
                 if not query.endswith(';'):
                     query += ";"
@@ -13,4 +13,4 @@ class DAO:
 
 
 s = DAO()
-s.getData("Ich bin ein String")
+s.get_data("Ich bin ein String")

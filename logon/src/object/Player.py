@@ -1,19 +1,19 @@
 class Player():
 
-    def Player(self):
+    def player(self):
         pass
 
-    def getGroupe(self):
+    def get_groupe(self):
         pass
 
-    def getId(self):
+    def get_id(self):
         pass
 
-    def setId(self):
+    def set_id(self):
         pass
 
-    def getServer(self):
+    def get_server(self):
         pass
 
-    def setServer(self):
+    def set_server(self):
         pass

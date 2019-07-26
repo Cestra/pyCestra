@@ -31,7 +31,7 @@ class PacketHandler:
         # connection closed 
         c.close() 
     
-    def TestSocket(self): 
+    def test_socket(self): 
 
         host = "127.0.0.1"
         port = 478
