@@ -1,9 +1,7 @@
 import sys
 
+import ..core
 import pymysql.connections
-
-import database
-
 
 class Database:
     '''
@@ -14,7 +12,7 @@ class Database:
         pass
 
     def initialize_connection(self):
-        config = database.Config()
+        config = core.Config()
         config.initialize()
         try:
             self.connection = pymysql.connect(host=config.get_host(),
