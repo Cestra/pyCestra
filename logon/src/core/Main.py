@@ -2,7 +2,7 @@ import os
 import sys
 
 #import src.database
-import database
+import database.Database
 # from PacketHandler import PacketHandler
 
 if __name__ == "__main__":
@@ -39,6 +39,7 @@ if __name__ == "__main__":
 
     database_test()
 
+    '''
     print("### DATA TEST ###")
     Server = database.ServerData(1).get()
     print("Server Data Test:", Server)
@@ -48,5 +49,6 @@ if __name__ == "__main__":
 
     Player = database.PlayerData(1).get()
     print("PlayerData Test:", Player)
+    '''
 
     #  ======================================================

@@ -1,6 +1,6 @@
 import sys
 
-import ..core
+import core.Config
 import pymysql.connections
 
 class Database:
@@ -32,7 +32,7 @@ class Database:
 
     def test_connection(self):
         try:
-            cursor = Database().inicon()
+            cursor = database.Database().inicon()
             if cursor:
                 cursor.execute('SELECT VERSION()')
                 results = cursor.fetchone()
