@@ -1,7 +1,9 @@
 import sys
 
-import core.Config
 import pymysql.connections
+
+from core.config import Config
+
 
 class Database:
     '''
@@ -12,7 +14,7 @@ class Database:
         pass
 
     def initialize_connection(self):
-        config = core.Config()
+        config = Config()
         config.initialize()
         try:
             self.connection = pymysql.connect(host=config.get_host(),
@@ -30,9 +32,10 @@ class Database:
             sys.exit
             return False
 
+'''
     def test_connection(self):
         try:
-            cursor = database.Database().inicon()
+            cursor = Database().initialize_connection()
             if cursor:
                 cursor.execute('SELECT VERSION()')
                 results = cursor.fetchone()
@@ -43,21 +46,7 @@ class Database:
                     return False
             else:
                 return False
-
         except pymysql.Error as Error:
             print('Database - testConnection - Something went wrong: {}'.format(Error))
         return False
-
-
-# ======================================
-# mySQLTest = Database()
-
-# def DatabaseTest():
-#     if mySQLTest.testConnection():
-#         print("Datenbank Connection Test Erfolgreich")
-#     else:
-#         print("Datanbank nicht gefunden!")
-
-# DatabaseTest()
-# del mySQLTest
-# ======================================
+'''

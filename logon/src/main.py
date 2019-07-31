@@ -1,8 +1,7 @@
 import os
 import sys
 
-#import src.database
-import database.Database
+from database.database import Database
 # from PacketHandler import PacketHandler
 
 if __name__ == "__main__":
@@ -22,12 +21,15 @@ if __name__ == "__main__":
     #  ======================================================
     #  Socket Tests
 
-    # PacketHandler().test_socket()
+    '''
+    PacketHandler().test_socket()
+    '''
 
     #  ======================================================
     #  MySQL Tests
 
-    mySQLTest = database.Database()
+    '''
+    mySQLTest = Database()
 
     def database_test():
         print('Datenbank Connection Test:')
@@ -39,7 +41,7 @@ if __name__ == "__main__":
 
     database_test()
 
-    '''
+
     print("### DATA TEST ###")
     Server = database.ServerData(1).get()
     print("Server Data Test:", Server)
