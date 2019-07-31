@@ -11,6 +11,5 @@ class DAO:
         except:
             pass
 
-
-s = DAO()
-s.get_data("Ich bin ein String")
+# s = DAO()
+# s.get_data("Ich bin ein String")

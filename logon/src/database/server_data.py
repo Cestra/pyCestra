@@ -1,11 +1,11 @@
-import database
+from DAO import DAO
 
-
-class ServerData:
+# TODO vererbung test / auch wenn FROM oben angezeigt wird, geht es
+class ServerData(DAO):
 
     def __init__(self, val):
         id = str(val)
-        cursor = database.Database().inicon()
+        cursor = 0
         try:
             cursor.execute("SELECT * FROM servers WHERE id = " + id)
             self.__data = cursor.fetchone()
