@@ -9,6 +9,8 @@ class Database:
     '''
     INFO: ALWAYS close the Instans to close the Connection
     '''
+    def __init__(self):
+        print('[DEBUG] Database instance has been created')
 
     def initialize_data(self):
         pass
@@ -22,15 +24,12 @@ class Database:
                                               user=config.get_user(),
                                               password=config.get_pass(),
                                               db=config.get_database_name())
-            self.cursor = self.connection.cursor()
-            return True
 
         except pymysql.Error as Error:
             print('[ERROR] Database - inicon\n' +
                   'Config: ', config.get_host(), config.get_port(), config.get_user(), config.get_pass(), config.get_database_name() +
                   '\nDatabase - inicon - Something went wrong: {}'.format(Error))
             sys.exit
-            return False
 
 '''
     def test_connection(self):

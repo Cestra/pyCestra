@@ -1,26 +1,20 @@
-from DAO import DAO
+import pymysql.cursors
+# from DAO import DAO
+
 
 # TODO vererbung test / auch wenn FROM oben angezeigt wird, geht es
-class ServerData(DAO):
+class ServerData():
 
-    def __init__(self, val):
+    def single_load(self, val):
         id = str(val)
-        cursor = 0
-        try:
-            cursor.execute("SELECT * FROM servers WHERE id = " + id)
-            self.__data = cursor.fetchone()
+        #try:
+        cursor.execute("SELECT * FROM servers WHERE id = " + id)
+        self.__data = cursor.fetchone()
+        print(self.__data)
+        '''
         except:
-            print("Error @ ServerData.py -  __init__")
-            # TODO Hier muss noch geschlossen werden!!! 
-    
-    def get(self):
-        return self.__data
-    
-    def set(self, ip):
-        # Account Daten zu ändern ist mir noch zu schwer
-        # Um an die daten zu kommen self.__data
-        pass
+            print("[Error] @ ServerData.py - Can't load table servers")
+            # TODO Hier muss noch geschlossen werden!!!
+        '''
 
-# test = ServerData(1).get()
-# print(test)
-# print(len(test))
+# TODO Oben wo cursor.execute("SEL... muss ein get_data von DAO hin
