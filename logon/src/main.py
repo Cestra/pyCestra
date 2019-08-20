@@ -3,8 +3,8 @@ import sys
 
 from database.database import Database
 
-from database.DAO import DAO
-from database.server_data import ServerData
+from database.DAO import DAO,ServerData
+# from database.server_data import ServerData
 
 from core.config import Config
 # from PacketHandler import PacketHandler
@@ -60,15 +60,19 @@ if __name__ == "__main__":
 
     #  ======================================================
 
+    # 
     config = Config()
     config.initialize()
 
     database = Database()
-    database.initialize_connection()
+    if database.getConnection():
+        print('Connection Successfully')
+    else:
+        print('Connection ERROR')
 
     # database.database.getServerData().load()
 
     #  ======================================================
 
     test = ServerData()
-    test.single_load(1)
+    print(test.single_load(1324))

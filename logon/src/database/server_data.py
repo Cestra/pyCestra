@@ -1,11 +1,14 @@
 import pymysql.cursors
-# from DAO import DAO
+
+from DAO import DAO
+from database import Database
 
 
 # TODO vererbung test / auch wenn FROM oben angezeigt wird, geht es
-class ServerData():
+class ServerData(DAO):
 
     def single_load(self, val):
+        cursor = database.getConnection()
         id = str(val)
         #try:
         cursor.execute("SELECT * FROM servers WHERE id = " + id)
@@ -18,3 +21,4 @@ class ServerData():
         '''
 
 # TODO Oben wo cursor.execute("SEL... muss ein get_data von DAO hin
+# https://wiki.python.org/jython/DatabaseExamples

@@ -5,7 +5,7 @@ import pymysql.connections
 from core.config import Config
 
 
-class Database:
+class Database():
     '''
     INFO: ALWAYS close the Instans to close the Connection
     '''
@@ -14,24 +14,29 @@ class Database:
 
     def initialize_data(self):
         pass
-
-    def initialize_connection(self):
-        config = Config()
-        config.initialize()
+        
+    #initialize_connection
+    def getConnection(self):
         try:
-            self.connection = pymysql.connect(host=config.get_host(),
+            config = Config()
+            config.initialize()
+        except:
+            print('[ERROR] Database - config.initialize()\n')
+        try:
+            self.__connection = pymysql.connect(host=config.get_host(),
                                               port=config.get_port(),
                                               user=config.get_user(),
                                               password=config.get_pass(),
                                               db=config.get_database_name())
+            return self.__connection
 
         except pymysql.Error as Error:
-            print('[ERROR] Database - inicon\n' +
+            print('[ERROR] Database - initialize_connection\n' +
                   'Config: ', config.get_host(), config.get_port(), config.get_user(), config.get_pass(), config.get_database_name() +
                   '\nDatabase - inicon - Something went wrong: {}'.format(Error))
-            sys.exit
+            return False
 
-'''
+    '''
     def test_connection(self):
         try:
             cursor = Database().initialize_connection()
@@ -48,4 +53,5 @@ class Database:
         except pymysql.Error as Error:
             print('Database - testConnection - Something went wrong: {}'.format(Error))
         return False
-'''
+    '''
+
