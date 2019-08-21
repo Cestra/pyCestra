@@ -60,9 +60,8 @@ if __name__ == "__main__":
 
     #  ======================================================
 
-    # 
-    config = Config()
-    config.initialize()
+    # config = Config()
+    # config.initialize()
 
     database = Database()
     if database.getConnection():
@@ -70,9 +69,7 @@ if __name__ == "__main__":
     else:
         print('Connection ERROR')
 
-    # database.database.getServerData().load()
+    serverData = ServerData()
+    serverData = serverData.load()
 
     #  ======================================================
-
-    test = ServerData()
-    print(test.single_load(1324))
