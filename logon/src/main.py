@@ -1,8 +1,13 @@
 import os
 import sys
 
-import database
-from PacketHandler import PacketHandler
+from database.database import Database
+
+from database.DAO import DAO,ServerData
+# from database.server_data import ServerData
+
+from core.config import Config
+# from PacketHandler import PacketHandler
 
 if __name__ == "__main__":
 
@@ -21,31 +26,23 @@ if __name__ == "__main__":
     #  ======================================================
     #  Socket Tests
 
-    # PacketHandler().TestSocket()
+    '''
+    PacketHandler().test_socket()
+    '''
 
     #  ======================================================
-    #  MySQL Tests
 
-    mySQLTest = database.Database()
+    # only use if you need the config in main again
+    # config = Config()
+    # config.initialize()
 
-    def DatabaseTest():
-        print('Datenbank Connection Test:')
-        if mySQLTest.testConnection():
-            print('Datenbank Connection Test Erfolgreich')
-        else:
-            print('Datanbank nicht gefunden!')
-            sys.exit
+    database = Database()
+    if database.getConnection():
+        print('Connection Successfully')
+    else:
+        print('Connection ERROR')
 
-    DatabaseTest()
-
-    print("### DATA TEST ###")
-    Server = database.ServerData(1).get()
-    print("Server Data Test:", Server)
-
-    Account = database.AccountData(1).get()
-    print("Account Data Test:", Account)
-
-    Player = database.PlayerData(1).get()
-    print("PlayerData Test:", Player)
+    serverData = ServerData()
+    serverData = serverData.load()
 
     #  ======================================================

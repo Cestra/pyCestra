@@ -1,2 +1,5 @@
 logon/src/__pycache__/
 logon/src/database/__pycache__/
+*.xml
+
+\.idea/
