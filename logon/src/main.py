@@ -31,35 +31,8 @@ if __name__ == "__main__":
     '''
 
     #  ======================================================
-    #  MySQL Tests
 
-    '''
-    mySQLTest = Database()
-
-    def database_test():
-        print('Datenbank Connection Test:')
-        if mySQLTest.test_connection():
-            print('Datenbank Connection Test Erfolgreich')
-        else:
-            print('Datanbank nicht gefunden!')
-            sys.exit
-
-    database_test()
-
-
-    print("### DATA TEST ###")
-    Server = database.ServerData(1).get()
-    print("Server Data Test:", Server)
-
-    Account = database.AccountData(1).get()
-    print("Account Data Test:", Account)
-
-    Player = database.PlayerData(1).get()
-    print("PlayerData Test:", Player)
-    '''
-
-    #  ======================================================
-
+    # only use if you need the config in main again
     # config = Config()
     # config.initialize()
 
