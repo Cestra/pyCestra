@@ -1,25 +1,41 @@
+import pymysql.cursors
+
 import dataSource
+from dataSource.DAO import DAO
 
 
-class AccountData:
+class AccountData(DAO):
 
-    def __init__(self, val):
-        id = str(val)
-        cursor = dataSource.Database().getConnection()
-        try:
-            cursor.execute("SELECT * FROM accounts WHERE guid = " + id)
-            self.__data = cursor.fetchone()
-        except:
-            print("Except @ AccountData.py -  __init__")
-            # TODO Hier muss noch geschlossen werden!!!
+    def load(self):
+            '''
+            DataFrame:
+            
+            '''
+            self.Datasource = []
+            connection = dataSource.Database().getConnection()
+            cursor = connection.cursor()
+            try:
+                cursor.execute("SELECT * FROM accounts;")
+                data = cursor.fetchall()
+                for row in data:
+                    Rows = [row]
+                    self.Datasource.append(Rows)
+            except:
+                print("[Error] @ account_data.py - Can't load table accounts")
+                cursor.close()
+                connection.close()
+            finally:
+                cursor.close()
+                connection.close()
+                print('[DEBUG] cursor.close, connection.close')
 
-    def get(self):
-        return self.__data
+    # Use databank account ID to find the right account
+    def get_from_id(self, idwis):
+        if not idwis == 0:
+            account = idwis - 1
+            return self.Datasource[account]
+        else:
+            print("[Error] @ account_data.py - Can't load account id 0 ")
     
-    def set(self, ip, val, row):
-        # Account Daten zu ändern ist mir noch zu schwer
-        # Um an die daten zu kommen self.__data
+    def set(self, ip):
         pass
-
-# test = AccountData(1).get()
-# print(test)

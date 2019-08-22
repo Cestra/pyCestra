@@ -21,7 +21,7 @@ class PlayerData(DAO):
                     Rows = [row]
                     self.Datasource.append(Rows)
             except:
-                print("[Error] @ server_data.py - Can't load table players")
+                print("[Error] @ player_data.py - Can't load table players")
                 cursor.close()
                 connection.close()
             finally:
@@ -35,7 +35,7 @@ class PlayerData(DAO):
             player = idwis - 1
             return self.Datasource[player]
         else:
-            print("[Error] @ server_data.py - Can't load Player id 0 ")
+            print("[Error] @ player_data.py - Can't load player id 0 ")
     
     def set(self, ip):
         pass

@@ -21,14 +21,7 @@ if __name__ == "__main__":
     wel()
 
     # ======================================================
-    # Socket Tests
-
-    '''
-    PacketHandler().test_socket()
-    '''
-
-    # ======================================================
-    # SQL Tests
+    # data tests
 
     # only use if you need the config in main again
     # config = Config()
@@ -40,12 +33,25 @@ if __name__ == "__main__":
     else:
         print('Connection ERROR')
 
-    # serverData = dataSource.ServerData()
-    # serverData = serverData.load()
+    serverData = dataSource.ServerData()
+    serverData.load()
+    print('[INFOS] ServerData were loaded')
 
     playerData = dataSource.PlayerData()
     playerData.load()
-    print(playerData.get_from_id(0))
-    # print(playerData.get())
+    print('[INFO] PlayerData were loaded')
+    # print(playerData.get_from_id(1))
+
+    accountData = dataSource.AccountData()
+    accountData.load()
+    print('[INFO] AccountData were loaded')
+    # print(accountData.get_from_id(1))
+
+    # ======================================================
+    # socket tests
+
+    '''
+    PacketHandler().test_socket()
+    '''
 
     # ======================================================
