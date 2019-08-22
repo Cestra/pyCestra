@@ -35,7 +35,8 @@ if __name__ == "__main__":
 
     serverData = dataSource.ServerData()
     serverData.load()
-    print('[INFOS] ServerData were loaded')
+    print('[INFO] ServerData were loaded')
+    # print(serverData.get_from_id(1))
 
     playerData = dataSource.PlayerData()
     playerData.load()

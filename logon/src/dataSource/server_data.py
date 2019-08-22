@@ -6,29 +6,12 @@ from dataSource.DAO import DAO
 
 class ServerData(DAO):
 
-    def single_load(self, val):
-        id = str(val)
-        connection = dataSource.Database().getConnection()
-        cursor = connection.cursor()
-        try:
-            cursor.execute("SELECT * FROM servers WHERE id = " + id)
-            self.data = cursor.fetchone()
-            # None Check:
-            if self.data:
-                return self.data
-            else:
-                return False
-        except:
-            print("[Error] @ server_data.py - Can't load table servers")
-            cursor.close()
-            connection.close()
-
     def load(self):
         '''
         DataFrame:
         [['Demo', 'demo', 0, 0, 1494344975925], ['Jiva', 'jiv', 0, 0, 1494344975925]]
         '''
-        Datasource = []
+        self.Datasource = []
         connection = dataSource.Database().getConnection()
         cursor = connection.cursor()
         try:
@@ -36,7 +19,7 @@ class ServerData(DAO):
             data = cursor.fetchall()
             for row in data:
                 Rows = [row]
-                Datasource.append(Rows)
+                self.Datasource.append(Rows)
         except:
             print("[Error] @ server_data.py - Can't load table servers")
             cursor.close()
@@ -45,4 +28,11 @@ class ServerData(DAO):
             cursor.close()
             connection.close()
             print('[DEBUG] cursor.close, connection.close')
-            return Datasource
+    
+    # Use databank server ID to find the right server
+    def get_from_id(self, idwis):
+        if not idwis == 0:
+            player = idwis - 1
+            return self.Datasource[player]
+        else:
+            print("[Error] @ player_data.py - Can't load server id 0 ")
