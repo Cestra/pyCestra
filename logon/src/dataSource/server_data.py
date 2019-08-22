@@ -1,24 +1,14 @@
 import pymysql.cursors
 
-from database.database import Database
+import dataSource
+from dataSource.DAO import DAO
 
-global ServerData
-
-class DAO:
-
-    def get_data(self, query):
-        try:
-                if not query.endswith(';'):
-                    query += ";"
-                print(query)
-        except:
-            pass
 
 class ServerData(DAO):
 
     def single_load(self, val):
         id = str(val)
-        connection = Database().getConnection()
+        connection = dataSource.Database().getConnection()
         cursor = connection.cursor()
         try:
             cursor.execute("SELECT * FROM servers WHERE id = " + id)
@@ -39,7 +29,7 @@ class ServerData(DAO):
         [['Demo', 'demo', 0, 0, 1494344975925], ['Jiva', 'jiv', 0, 0, 1494344975925]]
         '''
         Datasource = []
-        connection = Database().getConnection()
+        connection = dataSource.Database().getConnection()
         cursor = connection.cursor()
         try:
             cursor.execute("SELECT * FROM servers;")

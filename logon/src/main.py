@@ -1,9 +1,9 @@
 import os
 import sys
+import dataSource
 
-from database.database import Database
-
-from database.DAO import DAO,ServerData
+# from database.database import Database
+# from database.DAO import DAO,ServerData
 # from database.server_data import ServerData
 
 from core.config import Config
@@ -23,26 +23,27 @@ if __name__ == "__main__":
             print(x)
     wel()
 
-    #  ======================================================
-    #  Socket Tests
+    # ======================================================
+    # Socket Tests
 
     '''
     PacketHandler().test_socket()
     '''
 
-    #  ======================================================
+    # ======================================================
+    # SQL Tests
 
     # only use if you need the config in main again
     # config = Config()
     # config.initialize()
 
-    database = Database()
+    database = dataSource.Database()
     if database.getConnection():
         print('Connection Successfully')
     else:
         print('Connection ERROR')
 
-    serverData = ServerData()
+    serverData = dataSource.ServerData()
     serverData = serverData.load()
 
-    #  ======================================================
+    # ======================================================

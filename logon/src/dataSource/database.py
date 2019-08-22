@@ -54,4 +54,3 @@ class Database():
             print('Database - testConnection - Something went wrong: {}'.format(Error))
         return False
     '''
-

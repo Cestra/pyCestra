@@ -1,11 +1,11 @@
-import database
+import dataSource
 
 
 class AccountData:
 
     def __init__(self, val):
         id = str(val)
-        cursor = database.Database().inicon()
+        cursor = dataSource.Database().getConnection()
         try:
             cursor.execute("SELECT * FROM accounts WHERE guid = " + id)
             self.__data = cursor.fetchone()
