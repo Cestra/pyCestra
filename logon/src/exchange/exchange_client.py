@@ -31,7 +31,6 @@ s.parse().switch(1)
 print(s)
 '''
 
-
 '''
 F           free Places ?
 S
