@@ -19,7 +19,7 @@ class ServerData(DAO):
             else:
                 return False
         except:
-            print("[Error] @ DAO - ServerData - Can't load table servers")
+            print("[Error] @ server_data.py - Can't load table servers")
             cursor.close()
             connection.close()
 
@@ -35,10 +35,10 @@ class ServerData(DAO):
             cursor.execute("SELECT * FROM servers;")
             data = cursor.fetchall()
             for row in data:
-                Rows = [row[1], row[2], row[3], row[4], row[5]]
+                Rows = [row]
                 Datasource.append(Rows)
         except:
-            print("[Error] @ DAO - ServerData - Can't load table servers")
+            print("[Error] @ server_data.py - Can't load table servers")
             cursor.close()
             connection.close()
         finally:

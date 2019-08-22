@@ -58,10 +58,8 @@ class Config:
             self.user = self.config.get(section02, 'logon_database_user')
             self.passwo = self.config.get(section02, 'logon_database_pass')
 
-            self.exchangeIp = self.config.get(
-                section03, 'Network_RealmList_Ip')
-            self.exchangePort = self.config.getint(
-                section03, 'Network_RealmList_Port')
+            self.exchangeIp = self.config.get(section03, 'Network_RealmList_Ip')
+            self.exchangePort = self.config.getint(section03, 'Network_RealmList_Port')
         except:
             print('[ERROR] Config.initialize: Unreadable config or missing fields')
 
@@ -94,14 +92,3 @@ class Config:
 
     def get_exchange_port(self):
         return self.exchangePort
-
-
-# Config().createDefault()
-'''
-Testo = Config()
-Testo.initialize()
-print(Testo.loginPort,
-    Testo.getExchangePort(),
-    Testo.getPort(),
-    Testo.getDatabaseName())
-'''

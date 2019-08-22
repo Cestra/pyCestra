@@ -43,7 +43,12 @@ if __name__ == "__main__":
     else:
         print('Connection ERROR')
 
-    serverData = dataSource.ServerData()
-    serverData = serverData.load()
+    # serverData = dataSource.ServerData()
+    # serverData = serverData.load()
+
+    playerData = dataSource.PlayerData()
+    playerData.load()
+    print(playerData.get_from_id(0))
+    # print(playerData.get())
 
     # ======================================================
