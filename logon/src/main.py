@@ -1,12 +1,9 @@
 import os
 import sys
+
 import dataSource
-
-# from database.database import Database
-# from database.DAO import DAO,ServerData
-# from database.server_data import ServerData
-
 from core.config import Config
+
 # from PacketHandler import PacketHandler
 
 if __name__ == "__main__":
