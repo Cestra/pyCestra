@@ -8,7 +8,7 @@ class bcolors:
     cend = '\033[0m'
 
 class log:
-    
+
     def __init__(self, messageIn):
         self.message = messageIn
         logging.basicConfig(format="%(levelname)s %(message)s",filename="master.log",level=logging.DEBUG)
