@@ -28,7 +28,7 @@ if __name__ == "__main__":
     # config.initialize()
 
     database = dataSource.Database()
-    if database.getConnection():
+    if database.get_connection():
         print('Connection Successfully')
     else:
         print('Connection ERROR')

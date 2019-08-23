@@ -12,7 +12,7 @@ class PlayerData(DAO):
             
             '''
             self.Datasource = []
-            connection = dataSource.Database().getConnection()
+            connection = dataSource.Database().get_connection()
             cursor = connection.cursor()
             try:
                 cursor.execute("SELECT * FROM players;")

@@ -12,7 +12,7 @@ class ServerData(DAO):
         [['Demo', 'demo', 0, 0, 1494344975925], ['Jiva', 'jiv', 0, 0, 1494344975925]]
         '''
         self.Datasource = []
-        connection = dataSource.Database().getConnection()
+        connection = dataSource.Database().get_connection()
         cursor = connection.cursor()
         try:
             cursor.execute("SELECT * FROM servers;")

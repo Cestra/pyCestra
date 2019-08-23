@@ -16,7 +16,7 @@ class Database():
         pass
         
     #initialize_connection
-    def getConnection(self):
+    def get_connection(self):
         try:
             config = Config()
             config.initialize()
