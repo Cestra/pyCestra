@@ -1,10 +1,14 @@
 import pymysql.cursors
 
 import dataSource
+from core.logging_handler import Log
 from dataSource.DAO import DAO
 
 
 class ServerData(DAO):
+
+    def __init__(self):
+        self.log = Log()
 
     def load(self):
         '''
@@ -15,19 +19,19 @@ class ServerData(DAO):
         connection = dataSource.Database().get_connection()
         cursor = connection.cursor()
         try:
-            cursor.execute("SELECT * FROM servers;")
+            cursor.execute('SELECT * FROM servers;')
             data = cursor.fetchall()
             for row in data:
                 Rows = [row]
                 self.Datasource.append(Rows)
         except:
-            print("[Error] @ server_data.py - Can't load table servers")
+            self.log.warning('server_data.py - Can\'t load table servers')
             cursor.close()
             connection.close()
         finally:
             cursor.close()
             connection.close()
-            print('[DEBUG] cursor.close, connection.close')
+            self.log.debug('cursor.close, connection.close')
     
     # Use databank server ID to find the right server
     def get_from_id(self, idwis):
@@ -35,4 +39,4 @@ class ServerData(DAO):
             player = idwis - 1
             return self.Datasource[player]
         else:
-            print("[Error] @ player_data.py - Can't load server id 0 ")
+            self.log.warning('player_data.py - Can\'t load server id 0')

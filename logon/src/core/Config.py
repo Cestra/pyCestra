@@ -1,10 +1,13 @@
 import configparser
 
+from core.logging_handler import Log
+
 
 class Config:
 
     def __init__(self):
-        print('[DEBUG] Config instance has been created')
+        self.log = Log()
+        self.log.debug('[DEBUG] Config instance has been created')
         self.config = configparser.ConfigParser()
         self.loginIp = '127.0.0.1'
         self.loginPort = 478
@@ -61,7 +64,7 @@ class Config:
             self.exchangeIp = self.config.get(section03, 'Network_RealmList_Ip')
             self.exchangePort = self.config.getint(section03, 'Network_RealmList_Port')
         except:
-            print('[ERROR] Config.initialize: Unreadable config or missing fields')
+            self.log.warning('Config.initialize: Unreadable config or missing fields')
 
     def get_login_ip(self):
         return self.loginIp

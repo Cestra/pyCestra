@@ -3,6 +3,7 @@ import sys
 import pymysql.connections
 
 from core.config import Config
+from core.logging_handler import Log
 
 
 class Database():
@@ -10,18 +11,16 @@ class Database():
     INFO: ALWAYS close the Instans to close the Connection
     '''
     def __init__(self):
-        print('[DEBUG] Database instance has been created')
+        self.log = Log()
+        self.log.debug('Database instance has been created')
 
     def initialize_data(self):
         pass
         
     #initialize_connection
     def get_connection(self):
-        try:
-            config = Config()
-            config.initialize()
-        except:
-            print('[ERROR] Database - config.initialize()\n')
+        config = Config()
+        config.initialize()
         try:
             self.__connection = pymysql.connect(host=config.get_host(),
                                               port=config.get_port(),
@@ -31,26 +30,7 @@ class Database():
             return self.__connection
 
         except pymysql.Error as Error:
-            print('[ERROR] Database - initialize_connection\n' +
-                  'Config: ', config.get_host(), config.get_port(), config.get_user(), config.get_pass(), config.get_database_name() +
+            self.log.warning('Database - initialize_connection\n' +
+                  'Config: '+config.get_host()+config.get_port()+config.get_user()+config.get_pass()+config.get_database_name() +
                   '\nDatabase - inicon - Something went wrong: {}'.format(Error))
             return False
-
-    '''
-    def test_connection(self):
-        try:
-            cursor = Database().initialize_connection()
-            if cursor:
-                cursor.execute('SELECT VERSION()')
-                results = cursor.fetchone()
-                if results:
-                    cursor.close()
-                    return True
-                else:
-                    return False
-            else:
-                return False
-        except pymysql.Error as Error:
-            print('Database - testConnection - Something went wrong: {}'.format(Error))
-        return False
-    '''

@@ -7,7 +7,6 @@ class ChooseNickName:
     '''
 
     def verify(self, client, nickname):
-
         #                  Admin                    Modo                 GM           Game Master
         forbidden_words = [r'[Aa][Dd][Mm][Ii][Nn]', r'[Mm][Oo][Dd][Oo]', r'[Gg][Mm]', r'[Gg][Aa][Mm][Ee]-?[Mm][Aa][Ss][Tt][Ee][Rr]',]
 
@@ -52,4 +51,4 @@ class ChooseNickName:
         if flag ==-1: 
             return False
 
-# print(ChooseNickName().verify(0, '-Fabio93-'))
+print(ChooseNickName().verify(0, '--8XxNicknamexX8--'))

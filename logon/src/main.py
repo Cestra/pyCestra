@@ -4,18 +4,19 @@ import sys
 import dataSource
 from core.config import Config
 from core.console import Console
+from core.logging_handler import Log
 
-# from PacketHandler import PacketHandler
+from packet_handler import PacketHandler
 
 if __name__ == "__main__":
 
     #  ======================================================
     #  start message
-
+    log = Log()
     console = Console()
 
-    def clear(): return os.system('cls')
-    clear()
+    # def clear(): return os.system('cls')
+    # clear()
 
     def wel():
         welmsg = [31*"─", "|   pyCestra - Logon Server   |", 31*"─"]
@@ -30,26 +31,27 @@ if __name__ == "__main__":
     # config = Config()
     # config.initialize()
 
-    print('Connection Test...')
+    log.info('Connection Test...')
     database = dataSource.Database()
     if database.get_connection():
-        print('Connection Successfully')
+        log.info('Connection Successfully')
     else:
-        print('Connection ERROR')
+        log.info('Connection ERROR')
+        sys.exit
 
     serverData = dataSource.ServerData()
     serverData.load()
-    print('[INFO] ServerData were loaded')
+    log.info('ServerData were loaded')
     # print(serverData.get_from_id(1))
 
     playerData = dataSource.PlayerData()
     playerData.load()
-    print('[INFO] PlayerData were loaded')
+    log.info('PlayerData were loaded')
     # print(playerData.get_from_id(1))
 
     accountData = dataSource.AccountData()
     accountData.load()
-    print('[INFO] AccountData were loaded')
+    log.info('AccountData were loaded')
     # print(accountData.get_from_id(1))
 
     # ======================================================
