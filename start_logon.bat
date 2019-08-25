@@ -1,3 +1,3 @@
 @echo off
-python c:/Users/korep/OneDrive/Dokumente/pyCestra/logon/src/core/Main.py
+python c:/Users/korep/OneDrive/Dokumente/pyCestra/logon/src/main.py
 pause

@@ -3,6 +3,7 @@ import sys
 
 import dataSource
 from core.config import Config
+from core.console import Console
 
 # from PacketHandler import PacketHandler
 
@@ -10,6 +11,8 @@ if __name__ == "__main__":
 
     #  ======================================================
     #  start message
+
+    console = Console()
 
     def clear(): return os.system('cls')
     clear()
@@ -27,6 +30,7 @@ if __name__ == "__main__":
     # config = Config()
     # config.initialize()
 
+    print('Connection Test...')
     database = dataSource.Database()
     if database.get_connection():
         print('Connection Successfully')
@@ -51,8 +55,8 @@ if __name__ == "__main__":
     # ======================================================
     # socket tests
 
-    '''
-    PacketHandler().test_socket()
-    '''
+
+    # PacketHandler().test_socket()
+
 
     # ======================================================
