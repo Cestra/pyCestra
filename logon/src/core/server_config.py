@@ -13,7 +13,7 @@ class Config:
         self.loginIp = '127.0.0.1'
         self.loginPort = 478
         self.version = '1.29.1'
-        self.logLevel = 'INFO'
+        self.logLevel = 'DEBUG'
         self.host = '127.0.0.1'
         self.port = 3306
         self.name = 'cestra_logon'
