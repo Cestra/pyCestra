@@ -1,14 +1,14 @@
 import pymysql.cursors
 
 import dataSource
-from core.logging_handler import Log
+from core.logging_handler import Logging
 from dataSource.DAO import DAO
 
 
 class PlayerData(DAO):
 
     def __init__(self):
-        self.log = Log()
+        self.log = Logging()
 
     def load(self):
             '''

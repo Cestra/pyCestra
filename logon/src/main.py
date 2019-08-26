@@ -2,9 +2,9 @@ import os
 import sys
 
 import dataSource
-from core.config import Config
+from core.server_config import Config
 from core.console import Console
-from core.logging_handler import Log
+from core.logging_handler import Logging
 
 from packet_handler import PacketHandler
 
@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     #  ======================================================
     #  start message
-    log = Log()
+    log = Logging()
     console = Console()
 
     # def clear(): return os.system('cls')
@@ -57,8 +57,6 @@ if __name__ == "__main__":
     # ======================================================
     # socket tests
 
-
     # PacketHandler().test_socket()
-
 
     # ======================================================
