@@ -1,6 +1,6 @@
 class Account():
 
-    def account(self):
+    def __init__(self, acID, name, acpass, pseudo, question, state, subscribe, banned):
         pass
 
     def get_id(self):

@@ -40,6 +40,9 @@ class AccountData(DAO):
             return self.Datasource[account]
         else:
             self.log.warning('account_data.py - Can\'t load account id 0')
+
+    def load_from_result_set(self):
+        pass
     
     def set(self, ip):
         pass

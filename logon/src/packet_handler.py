@@ -11,8 +11,9 @@ class PacketHandler:
 
     def threaded(self, c): 
         while True: 
-            # data received from client 
+            # data received from client
             data = c.recv(1024) 
+            
             if not data: 
                 print('Bye! We lost :', self.addr[0], ':', self.addr[1])
                 break
@@ -20,10 +21,10 @@ class PacketHandler:
             print(self.addr[1], ': "', msg, '"')
             # reverse the given string from client 
             data = data[::-1]
-            # send back reversed string to client 
+            # send back reversed string to client
             c.send(data) 
         # connection closed 
-        c.close() 
+        c.close()
     
     def test_socket(self): 
         host = "127.0.0.1"
@@ -35,10 +36,10 @@ class PacketHandler:
         except socket.error:
             print("Binding faild")
             sys.exit
-        s.listen(5) 
+        s.listen(5)
         print("socket is listening") 
         while True: 
-            self.c, self.addr = s.accept() 
+            self.c, self.addr = s.accept()
             print('Connected to :', self.addr[0], ':', self.addr[1]) 
             # Start a new thread and return its identifier 
             start_new_thread(self.threaded, (self.c,)) 
