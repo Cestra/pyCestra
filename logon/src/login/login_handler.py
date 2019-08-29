@@ -31,9 +31,8 @@ class LoginHandler:
                                 name=threadName,
                                 args=(soecket, key, addr,))
             t.start()
+        except:
             self.log.debug('Created Session '+ str(addr[0])+':'+ str(addr[1]))
-        except _thread.error as Error:
-            self.log.warning('LoginHandler - session_created: {}'.format(Error))
 
     def session_idle(self):
         pass
