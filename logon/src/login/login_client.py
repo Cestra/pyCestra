@@ -15,8 +15,6 @@ class LoginClient:
         LoginClient.set_key(key)
 
         message = 'HC'+key
-        c.send(message.encode('utf-8'))
-
         while True:
             c.send(message.encode('utf-8'))
             data = c.recv(1024)
@@ -24,8 +22,8 @@ class LoginClient:
                 print('0 DATA')
                 self.log.info('Disconnected '+ str(addr[0])+ ':'+ str(addr[1]))
                 break
-            # msg = data.decode()
-            # print(self.addr[1], ': "', msg, '"')
+            msg = data.decode()
+            self.log.debug(str(addr[1])+ ': "'+ msg+ '"')
         c.close()
 
     def send(self):

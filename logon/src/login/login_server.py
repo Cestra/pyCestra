@@ -2,7 +2,6 @@ import socket
 import sys
 import threading
 
-from _thread import start_new_thread
 from core.logging_handler import Logging
 from core.server_config import Config
 from login.login_handler import LoginHandler

@@ -1,7 +1,7 @@
 import random
 import string
 
-from _thread import start_new_thread
+import threading
 from core.logging_handler import Logging
 from login.login_client import LoginClient
 
@@ -24,8 +24,16 @@ class LoginHandler:
         pass
 
     def session_created(self, soecket, addr):
-        start_new_thread(LoginClient, (soecket, LoginHandler.generate_key(0), addr))
-        self.log.debug('Created Session '+ str(addr[0])+':'+ str(addr[1]))
+        key = LoginHandler.generate_key(0)
+        threadName = 'Client-Session '+str(addr[0])+':'+ str(addr[1])
+        try:
+            t = threading.Thread(target=LoginClient,
+                                name=threadName,
+                                args=(soecket, key, addr,))
+            t.start()
+            self.log.debug('Created Session '+ str(addr[0])+':'+ str(addr[1]))
+        except _thread.error as Error:
+            self.log.warning('LoginHandler - session_created: {}'.format(Error))
 
     def session_idle(self):
         pass
