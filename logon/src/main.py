@@ -38,7 +38,7 @@ if __name__ == "__main__":
         log.info('Connection Successfully')
     else:
         log.info('Connection ERROR')
-        sys.exit
+        sys.exit()
 
     serverData = dataSource.ServerData()
     serverData.load()

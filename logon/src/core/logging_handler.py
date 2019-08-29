@@ -19,7 +19,7 @@ class Logging:
                                         level=logging.DEBUG)
         self.logger = logging.getLogger("Logon")
         conflevel = Config()
-        conflevel.initialize
+        conflevel.initialize()
         self.logger.setLevel(conflevel.get_loggin_level())
 
     def debug(self, message):

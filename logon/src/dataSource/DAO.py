@@ -2,7 +2,7 @@ import pymysql.cursors
 
 import dataSource
 
-global ServerData
+# global ServerData
 
 class DAO:
 

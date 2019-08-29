@@ -24,7 +24,7 @@ class LoginHandler:
         pass
 
     def session_created(self, soecket, addr):
-        start_new_thread(LoginClient, (soecket,))
+        start_new_thread(LoginClient, (soecket, LoginHandler.generate_key(0), addr))
         self.log.debug('Created Session '+ str(addr[0])+':'+ str(addr[1]))
 
     def session_idle(self):
