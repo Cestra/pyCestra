@@ -11,6 +11,7 @@ class LoginClient:
         self.log = Logging()
         self.log.debug('LoginClient erstellt - '+ str(addr[0])+ ':'+ str(addr[1])+ ' - '+key)
 
+        self.setstatus = LoginClient.Status['WAIT_VERSION']
         self.setId = addr[0]
         self.setIoSession = c
         self.setKey = key
@@ -55,7 +56,7 @@ class LoginClient:
         pass
 
     def get_status(self):
-        pass
+        return self.setstatus
 
     def set_status(self, status):
         self.status = status

@@ -49,7 +49,7 @@ class LoginHandler:
         while len(key) < 32:
             char = random.choice(alphabet)
             key += char
-        key = key[:-1]
+        # key = key[:-1]
         return key
 
     def input_closed(self):
