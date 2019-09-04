@@ -10,6 +10,13 @@
             "request": "launch",
             "program": "C:\\Users\\korep\\OneDrive\\Dokumente\\pyCestra\\logon\\src\\main.py",
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: current file",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
         }
     ]
 }
