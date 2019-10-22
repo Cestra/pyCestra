@@ -31,7 +31,7 @@ class ServerData(DAO):
         finally:
             cursor.close()
             connection.close()
-            self.log.debug('cursor.close, connection.close')
+            # self.log.debug('cursor.close, connection.close')
     
     # Use databank server ID to find the right server
     def get_from_id(self, idwis):

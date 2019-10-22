@@ -38,7 +38,7 @@ class PacketHandler:
             #Account account =  Main.database.getAccountData().load(name.toLowerCase(), client)
             if account == 0:
                 return False
-            ckient.set_account(account)
+            client.set_account(account)
             client.getAccount().setClient(client)
         except:
             return False

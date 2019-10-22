@@ -10,7 +10,7 @@ class ChooseNickName:
         #                  Admin                    Modo                 GM           Game Master
         forbidden_words = [r'[Aa][Dd][Mm][Ii][Nn]', r'[Mm][Oo][Dd][Oo]', r'[Gg][Mm]', r'[Gg][Aa][Mm][Ee]-?[Mm][Aa][Ss][Tt][Ee][Rr]',]
 
-        def forbidden_check(val):
+        def forbidden_words_check(val):
             for x in forbidden_words:
                 if re.search(x, nickname):
                     return False
@@ -42,7 +42,7 @@ class ChooseNickName:
                 flag = -1
                 break
             # The nickname can not be a forbidden word
-            elif not forbidden_check(nickname):
+            elif not forbidden_words_check(nickname):
                 flag = -1
                 break
             else: 
@@ -51,4 +51,4 @@ class ChooseNickName:
         if flag ==-1: 
             return False
 
-print(ChooseNickName().verify(0, '--8XxNicknamexX8--'))
+# print(ChooseNickName().verify(0, '--8XxNicknamexX8--'))

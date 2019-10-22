@@ -31,7 +31,7 @@ class PlayerData(DAO):
             finally:
                 cursor.close()
                 connection.close()
-                self.log.debug('cursor.close, connection.close')
+                # self.log.debug('cursor.close, connection.close')
 
     # Use databank player ID to find the right player
     def get_from_id(self, idwis):
