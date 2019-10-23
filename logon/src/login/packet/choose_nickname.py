@@ -45,7 +45,7 @@ class ChooseNickName:
             elif not forbidden_words_check(nickname):
                 flag = -1
                 break
-            else: 
+            else:
                 flag = 0
                 return True
         if flag ==-1: 
