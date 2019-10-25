@@ -12,27 +12,29 @@ class LoginClient:
         self.log.debug('LoginClient created - '+ str(addr[0])+ ':'+ str(addr[1])+ ' - '+key)
         # TODO Set status !
         # We send the first package (HC + KEY + empty byte)
-        message = bytes('HC'+key+'\x00', 'utf-8')
+        key2 = 'uayydwzqmjavudonswesqtrfeeffvrgu'
+        message = bytes('HC'+key2+'\x00', 'utf-8')
         self.log.debug("[SEND]: "+ str(message))
         c.send(message)
         data = c.recv(2048)
-        # Test loop 
+        # Test loop
         packe_counter = 0
         while True:
             data = c.recv(2048)
             packe_counter += 1
             if not data:
-                print('0 DATA')
+                self.log.info('[' + str(addr[1]) + '][Status]'+' ZERO DATA')
                 self.log.info('Disconnected '+ str(addr[0])+ ':'+ str(addr[1])+ ' - Total Packet: ' + str(packe_counter))
                 break
             msg = data.decode()
+            msg = msg.replace('\n', '')
             # Test Packet 'AlEf'
             # Text Box: "Access denied. Invalid login or password"
-            if packe_counter == 3:
+            if packe_counter == 5:
                 f = bytes('AlEf'+'\x00', 'utf-8')
                 c.send(f)
                 self.log.debug('[SEND]> AlEf')
-            self.log.debug('[' + str(addr[1]) + '][Status]: "'+ msg+ '"')
+            self.log.debug('[' + str(addr[1]) + '][Status]: "'+ msg + '"')
         c.close()
 
     def send(self):

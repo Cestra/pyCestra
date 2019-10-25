@@ -53,10 +53,22 @@ class PacketHandler:
         client.set_status(LoginClient.Status.WAIT_PASSWORD)
         return True
 
-    # this function is not finished
-    #has no function in the specification
-    def decrypt_password(self, apass, key):
-        chain = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
+    def decrypt_password(self, passs, key):
+        Chaine = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
         decrypted = ""
-        for i in range(0, len(apass), 2):
-            pass
+        for i in range(len(passs)//2):
+            PKey = ord(key[i])
+            ANB = Chaine.index(passs[i*2])
+            ANB2 = Chaine.index(passs[i*2+1])
+            somme1 = ANB + len(Chaine)
+            somme2 = ANB2 + len(Chaine)
+            APass = somme1 - PKey
+            if APass < 0:
+                APass += 64
+            APass *= 16
+            AKey = somme2 - PKey
+            if AKey < 0:
+                AKey += 64
+            PPass = chr(APass + AKey)
+            decrypted = decrypted + PPass
+        return decrypted
