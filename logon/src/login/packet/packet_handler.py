@@ -1,13 +1,20 @@
 from src import main
-from src.login.login_client import LoginClient
+from src.login.login_client import LoginClient,Status
 from src.object.account import Account
 
 
 class PacketHandler:
 
+    def __init__(self, client):
+        while True:
+            data = c.recv(2048)
+            if not data:
+                 self.log.debug('')
+            print(data)
+
     def parser(self, client, packet):
-        if client.getStatus() == LoginClient.Status.WAIT_VERSION:
-            # client.setStatus WAIT_ACCOUNT
+        if client.get_status().name == 'WAIT_VERSION':
+            client.set_status(Status('WAIT_ACCOUNT'))
             pass
         elif  client.getStatus() == LoginClient.Status.WAIT_ACCOUNT:
             # verifyAccountName and verifyPassword

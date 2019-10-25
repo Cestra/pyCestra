@@ -1,41 +1,55 @@
 import socket
-import threading
 from enum import Enum
 
 from core.logging_handler import Logging
+from src.login.packet.packet_handler import PacketHandler
 
+
+class HelloConnection:
+    
+    def __init__(self, c, key, addr):
+        self.log = Logging()
+        self.log.debug('LoginClient created - '+ 
+                        str(addr[0])+ ':'+ str(addr[1])+ ' - '+key)
+
+        # Create the client instance
+        Client = LoginClient()
+        Client.set_key(key)
+        Client.set_status(Status(0))
+        Client.set_io_session(c)
+
+        # We send the first package (HC + KEY + empty byte)
+        token = bytes('HC'+key+'\x00', 'utf-8')
+        self.log.debug("[SEND]: "+ str(token))
+        c.send(token)
+
+        # We are waiting for the client version
+        data = c.recv(2048)
+        msg = data.decode()
+        if not msg == '1.29.1\n\x00':
+            self.log.debug('Disconnected '+ str(addr[0])+ ':'+ str(addr[1]) +
+                            'The client has the wrong version')
+            f = bytes('AlEf'+'\x00', 'utf-8')
+            c.send(f)
+            c.close()
+        self.log.debug('[' + str(addr[1]) + '][' + 
+                        str(Client.get_status().name) + '] Version accepted')
+
+        PacketHandler(Client)
+        
+        '''
+        while True:
+            data = c.recv(2048)
+            if not data:
+                break
+            #msg = data.decode()
+            print(data)
+        '''
 
 class LoginClient:
 
-    def __init__(self, c, key, addr):
-        self.log = Logging()
-        self.log.debug('LoginClient created - '+ str(addr[0])+ ':'+ str(addr[1])+ ' - '+key)
-        # TODO Set status !
-        # We send the first package (HC + KEY + empty byte)
-        key2 = 'uayydwzqmjavudonswesqtrfeeffvrgu'
-        message = bytes('HC'+key2+'\x00', 'utf-8')
-        self.log.debug("[SEND]: "+ str(message))
-        c.send(message)
-        data = c.recv(2048)
-        # Test loop
-        packe_counter = 0
-        while True:
-            data = c.recv(2048)
-            packe_counter += 1
-            if not data:
-                self.log.info('[' + str(addr[1]) + '][Status]'+' ZERO DATA')
-                self.log.info('Disconnected '+ str(addr[0])+ ':'+ str(addr[1])+ ' - Total Packet: ' + str(packe_counter))
-                break
-            msg = data.decode()
-            msg = msg.replace('\n', '')
-            # Test Packet 'AlEf'
-            # Text Box: "Access denied. Invalid login or password"
-            if packe_counter == 5:
-                f = bytes('AlEf'+'\x00', 'utf-8')
-                c.send(f)
-                self.log.debug('[SEND]> AlEf')
-            self.log.debug('[' + str(addr[1]) + '][Status]: "'+ msg + '"')
-        c.close()
+    def __init__(self):
+        pass
 
     def send(self):
         pass
@@ -44,6 +58,7 @@ class LoginClient:
         pass
 
     def kick(self):
+        print('KICK CLIENT')
         pass
 
     def get_id(self):
@@ -55,8 +70,8 @@ class LoginClient:
     def get_io_session(self):
         return self.setIoSession
 
-    def set_io_session(self):
-        pass
+    def set_io_session(self, session):
+        self.set_io_session = session
 
     def get_key(self):
         return self.setKey
@@ -75,10 +90,10 @@ class LoginClient:
 
     def set_account(self):
         pass
-
-    class Status(Enum):
-        WAIT_VERSION = 0
-        WAIT_PASSWORD = 1
-        WAIT_ACCOUNT = 2
-        WAIT_NICKNAME = 3
-        SERVER = 4
+    
+class Status(Enum):
+    WAIT_VERSION = 0
+    WAIT_PASSWORD = 1
+    WAIT_ACCOUNT = 2
+    WAIT_NICKNAME = 3
+    SERVER = 4

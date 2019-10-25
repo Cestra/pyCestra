@@ -3,7 +3,7 @@ import string
 
 import threading
 from core.logging_handler import Logging
-from login.login_client import LoginClient
+from login.login_client import HelloConnection
 
 
 class LoginHandler:
@@ -27,7 +27,7 @@ class LoginHandler:
         key = LoginHandler.generate_key(0)
         threadName = 'Client-Session '+str(addr[0])+':'+ str(addr[1])
         try:
-            t = threading.Thread(target=LoginClient,
+            t = threading.Thread(target=HelloConnection,
                                 name=threadName,
                                 args=(soecket, key, addr,))
             t.start()
