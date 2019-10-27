@@ -1,6 +1,3 @@
-import socket
-import threading
-import time
 from enum import Enum
 
 from core.logging_handler import Logging
@@ -14,7 +11,7 @@ class PacketHandler:
     def loop(self, client):
         while True:
             # if the session close, values are deleted
-            if client.get_io_session() == False:
+            if client.get_io_session() is False:
                 del client
             # wait for packages
             else:
@@ -63,6 +60,7 @@ class PacketHandler:
 
             client.kick()
         client.kick()
+
     '''
     def verifyAccountName(self, client, name):
         try:
