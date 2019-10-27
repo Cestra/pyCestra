@@ -2,7 +2,7 @@ import socket
 from enum import Enum
 
 from core.logging_handler import Logging
-from src.login.packet.packet_handler import PacketHandler
+from .packet.packet_handler import PacketHandler
 
 
 class HelloConnection:
@@ -13,14 +13,15 @@ class HelloConnection:
                         str(addr[0])+ ':'+ str(addr[1])+ ' - '+key)
 
         # Create the client instance
-        Client = LoginClient()
-        Client.set_key(key)
-        Client.set_status(Status(0))
-        Client.set_io_session(c)
+        client = LoginClient()
+        client.set_key(key)
+        client.set_address(addr)
+        client.set_status(Status(0))
+        client.set_io_session(c)
 
         # We send the first package (HC + KEY + empty byte)
         token = bytes('HC'+key+'\x00', 'utf-8')
-        self.log.debug("[SEND]: "+ str(token))
+        # self.log.debug("[SEND]: "+ str(token))
         c.send(token)
 
         # We are waiting for the client version
@@ -33,51 +34,51 @@ class HelloConnection:
             c.send(f)
             c.close()
         self.log.debug('[' + str(addr[1]) + '][' + 
-                        str(Client.get_status().name) + '] Version accepted')
+                        str(client.get_status().name) + '] Version accepted')
 
-        PacketHandler(Client)
-        
-        '''
-        while True:
-            data = c.recv(2048)
-            if not data:
-                break
-            #msg = data.decode()
-            print(data)
-        '''
+        PacketHandler().loop(client)
 
 class LoginClient:
 
     def __init__(self):
-        pass
+        self.log = Logging()
 
-    def send(self):
-        pass
+    def write(self, o):
+        msg = bytes(o+'\x00', 'utf-8')
+        self.IoSession.send(msg)
 
     def parser(self):
         pass
 
     def kick(self):
-        print('KICK CLIENT')
-        pass
+        self.log.debug('[' + str(self.address[1]) + ']'
+                        '[' + str(self.status.name) + '] Client kick')
+        self.IoSession.close()
+        self.IoSession = False
+
+    def get_address(self):
+        return self.address
+
+    def set_address(self, a):
+        self.address = a
 
     def get_id(self):
-        pass
+        return self.id
 
     def set_id(self, Client_id):
         self.id = Client_id
 
     def get_io_session(self):
-        return self.setIoSession
+        return self.IoSession
 
-    def set_io_session(self, session):
-        self.set_io_session = session
+    def set_io_session(self, s):
+        self.IoSession = s
 
     def get_key(self):
-        return self.setKey
+        return self.key
 
-    def set_key(self, key):
-        self.setKey = key
+    def set_key(self, k):
+        self.key = k
 
     def get_status(self):
         return self.status

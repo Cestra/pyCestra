@@ -1,30 +1,53 @@
-from src import main
-from src.login.login_client import LoginClient,Status
-from src.object.account import Account
+import socket
+import threading
+import time
+from enum import Enum
+
+from core.logging_handler import Logging
 
 
 class PacketHandler:
 
-    def __init__(self, client):
+    def __init__(self):
+        self.log = Logging()
+    
+    def loop(self, client):
         while True:
-            data = c.recv(2048)
+            # if the session close, values are deleted
+            if client.get_io_session() == False:
+                del client
+            # wait for packages
+            else:
+                data = client.get_io_session().recv(2048)
+            packet = data.decode()
+            packetLog = packet.replace('\n', '[]')
+            self.log.debug('[' + str(client.get_address()[1]) + ']'
+                            '[' + str(client.get_status().name) + '] '
+                            + packetLog)
             if not data:
-                 self.log.debug('')
-            print(data)
+                self.log.debug('PacketLoop no data')
+                break
+            PacketHandler().parser(client, packet)
 
     def parser(self, client, packet):
-        if client.get_status().name == 'WAIT_VERSION':
-            client.set_status(Status('WAIT_ACCOUNT'))
-            pass
-        elif  client.getStatus() == LoginClient.Status.WAIT_ACCOUNT:
-            # verifyAccountName and verifyPassword
-            # client.send("AlEf")
-            pass
-        elif  client.getStatus() == LoginClient.Status.WAIT_NICKNAME:
+        # client arrived here, the version has been checked
+        if client.get_status().name == Status.WAIT_VERSION.name:
+            client.set_status(Status(2))
+            self.log.debug('[' + str(client.get_address()[1]) + ']'
+                            '[' + str(client.get_status().name) + '] Status change')
+
+        if  client.get_status().name == Status.WAIT_ACCOUNT.name:
+            #if not (verify_account_name) and (verify_password):
+            if not PacketHandler().verify_password(client, packet.split('\n')[1]):
+                client.write('AlEf')
+            return
+
+        if  client.get_status().name == Status.WAIT_NICKNAME.name:
             # ChooseNickName.verify(client, packet)
             #
             pass
-        elif  client.getStatus() == LoginClient.Status.SERVER:
+
+        if  client.get_status().name == Status.SERVER.name:
             if packet[0:2] == 'AF':
                 # FriendServerList.get(client, packet)
                 pass
@@ -37,9 +60,10 @@ class PacketHandler:
             elif packet[0:2] == 'Ax':
                 # ServerList.get(client)
                 pass
+
             client.kick()
         client.kick()
-
+    '''
     def verifyAccountName(self, client, name):
         try:
             #Account account =  Main.database.getAccountData().load(name.toLowerCase(), client)
@@ -53,8 +77,11 @@ class PacketHandler:
             return False
         client.set_status(LoginClient.Status.WAIT_PASSWORD)
         return True
+    '''
 
     def verify_password(self, client, apass):
+        print()
+        # hier bin ich !
         if not decrypt_password(apass, client.getKey()).equals(client.getAccount().getPass()):
             return False
         client.set_status(LoginClient.Status.WAIT_PASSWORD)
@@ -79,3 +106,10 @@ class PacketHandler:
             PPass = chr(APass + AKey)
             decrypted = decrypted + PPass
         return decrypted
+
+class Status(Enum):
+    WAIT_VERSION = 0
+    WAIT_PASSWORD = 1
+    WAIT_ACCOUNT = 2
+    WAIT_NICKNAME = 3
+    SERVER = 4
