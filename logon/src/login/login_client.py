@@ -1,4 +1,5 @@
 import socket
+import sys
 from enum import Enum
 
 from core.logging_handler import Logging
@@ -51,10 +52,9 @@ class LoginClient:
         pass
 
     def kick(self):
-        self.log.debug('[' + str(self.address[1]) + ']'
-                        '[' + str(self.status.name) + '] Client kick')
-        self.IoSession.close()
-        self.IoSession = False
+        self.log.info('[' + str(self.address[1]) + ']'
+                    '[' + str(self.status.name) + '] Client kick')
+        sys.exit()
 
     def get_address(self):
         return self.address

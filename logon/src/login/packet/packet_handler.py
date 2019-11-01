@@ -7,15 +7,10 @@ class PacketHandler:
 
     def __init__(self):
         self.log = Logging()
-    
+
     def loop(self, client):
         while True:
-            # if the session close, values are deleted
-            if client.get_io_session() is False:
-                del client
-            # wait for packages
-            else:
-                data = client.get_io_session().recv(2048)
+            data = client.get_io_session().recv(2048)
             packet = data.decode()
             packetLog = packet.replace('\n', '[]')
             self.log.debug('[' + str(client.get_address()[1]) + ']'
@@ -29,60 +24,72 @@ class PacketHandler:
     def parser(self, client, packet):
         # client arrived here, the version has been checked
         if client.get_status().name == Status.WAIT_VERSION.name:
+            # set client status to WAIT_ACCOUNT
             client.set_status(Status(2))
             self.log.debug('[' + str(client.get_address()[1]) + ']'
                             '[' + str(client.get_status().name) + '] Status change')
 
         if  client.get_status().name == Status.WAIT_ACCOUNT.name:
-            #if not (verify_account_name) and (verify_password):
-            if not PacketHandler().verify_password(client, packet.split('\n')[1]):
+            verifyAccountName = PacketHandler().verify_account_name(client, packet.split('\n')[0])
+            verifyPassword = PacketHandler().verify_password(client, packet.split('\n')[1])
+            print(str(verifyAccountName), str(verifyPassword))
+            if not(verifyAccountName and verifyPassword):
+                self.log.debug('[' + str(client.get_address()[1]) + ']'
+                        '[' + str(client.get_status().name) + '] Login credentials incorrect')
                 client.write('AlEf')
-            return
 
         if  client.get_status().name == Status.WAIT_NICKNAME.name:
-            # ChooseNickName.verify(client, packet)
-            #
-            pass
+            # ChooseNickName.verify(client, packet);
+            print('WAIT_NICKNAME')
 
         if  client.get_status().name == Status.SERVER.name:
-            if packet[0:2] == 'AF':
+            if (packet[0:2] == 'AF') or (packet.split('\n')[2][1:] == 'AF'):
                 # FriendServerList.get(client, packet)
-                pass
-            elif packet[0:2] == 'AX':
+                print('packet[0:2] == AF:')
+            elif (packet[0:2] == 'AX') or (packet.split('\n')[2][1:] == 'AX'):
                 # ServerSelected.get(
-                pass
-            elif packet[0:2] == 'Af':
+                print('packet[0:2] == AX:')
+            elif (packet[0:2] == 'Af') or (packet.split('\n')[2][1:] == 'Af'):
                 # AccountQueue.verify(client);
-                pass
-            elif packet[0:2] == 'Ax':
+                print('packet[0:2] == Af:')
+                client.write("AlEb")
+            elif (packet[0:2] == 'Ax') or (packet.split('\n')[2][1:] == 'Ax'):
                 # ServerList.get(client)
-                pass
-
+                print('packet[0:2] == Ax:')
+                # ServerList.get(client)
             client.kick()
         client.kick()
 
-    '''
-    def verifyAccountName(self, client, name):
+    def verify_account_name(self, client, name):
         try:
-            #Account account =  Main.database.getAccountData().load(name.toLowerCase(), client)
-            if account == 0:
-                return False
-            client.set_account(account)
-            client.getAccount().setClient(client)
+            # account =  Main.database.getAccountData().load(name.toLowerCase(), client)
+            # if account == 0:
+            #     return False
+            # client.set_account(account)
+            # client.getAccount().setClient(client)
+            name == 'Admin'
         except:
             return False
-        if client.getAccount() == 0:
-            return False
-        client.set_status(LoginClient.Status.WAIT_PASSWORD)
-        return True
-    '''
+        # if client.getAccount() == 0:
+        #     return False
 
-    def verify_password(self, client, apass):
-        print()
-        # hier bin ich !
-        if not decrypt_password(apass, client.getKey()).equals(client.getAccount().getPass()):
+        # set client status to WAIT_PASSWORD
+        client.set_status(Status(1))
+        self.log.debug('[' + str(client.get_address()[1]) + ']'
+                        '[' + str(client.get_status().name) + '] Status change')
+        return True
+
+
+    def verify_password(self, client, password):
+        if not PacketHandler().decrypt_password(password[2:], client.get_key()) == 'Admin':
             return False
-        client.set_status(LoginClient.Status.WAIT_PASSWORD)
+        # if not PacketHandler().decrypt_password(password[2:], client.get_key()) is client.getAccount().getPass()):
+        #     return False
+
+        # set client status to SERVER
+        client.set_status(Status(4))
+        self.log.debug('[' + str(client.get_address()[1]) + ']'
+                        '[' + str(client.get_status().name) + '] Status change')
         return True
 
     def decrypt_password(self, passs, key):
