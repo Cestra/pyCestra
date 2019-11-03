@@ -26,7 +26,8 @@ class Database():
                                               port=config.get_port(),
                                               user=config.get_user(),
                                               password=config.get_pass(),
-                                              db=config.get_database_name())
+                                              db=config.get_database_name(),
+                                              cursorclass=pymysql.cursors.DictCursor)
             return connection
 
         except pymysql.Error as Error:

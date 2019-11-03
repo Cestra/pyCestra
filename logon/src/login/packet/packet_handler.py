@@ -1,6 +1,7 @@
 from enum import Enum
 
 from core.logging_handler import Logging
+from dataSource.account_data import AccountData
 
 
 class PacketHandler:
@@ -32,8 +33,7 @@ class PacketHandler:
         if  client.get_status().name == Status.WAIT_ACCOUNT.name:
             verifyAccountName = PacketHandler().verify_account_name(client, packet.split('\n')[0])
             verifyPassword = PacketHandler().verify_password(client, packet.split('\n')[1])
-            print(str(verifyAccountName), str(verifyPassword))
-            if not(verifyAccountName and verifyPassword):
+            if not (verifyAccountName and verifyPassword):
                 self.log.debug('[' + str(client.get_address()[1]) + ']'
                         '[' + str(client.get_status().name) + '] Login credentials incorrect')
                 client.write('AlEf')
@@ -52,7 +52,6 @@ class PacketHandler:
             elif (packet[0:2] == 'Af') or (packet.split('\n')[2][1:] == 'Af'):
                 # AccountQueue.verify(client);
                 print('packet[0:2] == Af:')
-                client.write("AlEb")
             elif (packet[0:2] == 'Ax') or (packet.split('\n')[2][1:] == 'Ax'):
                 # ServerList.get(client)
                 print('packet[0:2] == Ax:')
@@ -62,17 +61,15 @@ class PacketHandler:
 
     def verify_account_name(self, client, name):
         try:
-            # account =  Main.database.getAccountData().load(name.toLowerCase(), client)
-            # if account == 0:
-            #     return False
-            # client.set_account(account)
+            account = AccountData().get_from_name(name)
+            # check if the tuple is empty
+            if not account:
+                return False
+            client.set_account(account)
             # client.getAccount().setClient(client)
-            name == 'Admin'
-        except:
+        except AttributeError as err:
+            print(err)
             return False
-        # if client.getAccount() == 0:
-        #     return False
-
         # set client status to WAIT_PASSWORD
         client.set_status(Status(1))
         self.log.debug('[' + str(client.get_address()[1]) + ']'
@@ -81,11 +78,9 @@ class PacketHandler:
 
 
     def verify_password(self, client, password):
-        if not PacketHandler().decrypt_password(password[2:], client.get_key()) == 'Admin':
+        c = client.get_account()[0]
+        if not PacketHandler().decrypt_password(password[2:], client.get_key()) == c['pass']:
             return False
-        # if not PacketHandler().decrypt_password(password[2:], client.get_key()) is client.getAccount().getPass()):
-        #     return False
-
         # set client status to SERVER
         client.set_status(Status(4))
         self.log.debug('[' + str(client.get_address()[1]) + ']'

@@ -87,11 +87,11 @@ class LoginClient:
         self.status = status
 
     def get_account(self):
-        pass
+        return self.account
 
-    def set_account(self):
-        pass
-    
+    def set_account(self, accountTupel):
+        self.account = accountTupel
+
 class Status(Enum):
     WAIT_VERSION = 0
     WAIT_PASSWORD = 1

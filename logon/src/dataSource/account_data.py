@@ -31,18 +31,18 @@ class AccountData(DAO):
             finally:
                 cursor.close()
                 connection.close()
-                # self.log.debug('cursor.close, connection.close')
 
     # Use databank account ID to find the right account
     def get_from_id(self, idwis):
+        '''
+        preloading necessary!
+        '''
         if not idwis == 0:
             account = idwis - 1
             return self.Datasource[account]
         else:
             self.log.warning('account_data.py - Can\'t load account id 0')
 
-    def load_from_result_set(self):
-        pass
-    
-    def set(self, ip):
-        pass
+    def get_from_name(self, name):
+        data = super().get_data("SELECT * FROM accounts WHERE account = '" + str(name) + "';")
+        return data

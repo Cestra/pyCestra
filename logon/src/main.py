@@ -40,25 +40,26 @@ if __name__ == "__main__":
         log.info('Connection ERROR')
         sys.exit()
 
-    serverData = dataSource.ServerData()
-    serverData.load()
-    log.info('ServerData were loaded')
-    # print(serverData.get_from_id(1))
+    # serverData = dataSource.ServerData()
+    # serverData.load()
+    # log.info('ServerData were loaded')
+    # # print(serverData.get_from_id(1))
 
-    playerData = dataSource.PlayerData()
-    playerData.load()
-    log.info('PlayerData were loaded')
-    # print(playerData.get_from_id(1))
+    # playerData = dataSource.PlayerData()
+    # playerData.load()
+    # log.info('PlayerData were loaded')
+    # # print(playerData.get_from_id(1))
 
-    accountData = dataSource.AccountData()
-    accountData.load()
-    log.info('AccountData were loaded')
-    # print(accountData.get_from_id(1))
+    # accountData = dataSource.AccountData()
+    # accountData.load()
+    # log.info('AccountData were loaded')
+    # # print(accountData.get_from_id(1))
+
+    daotest = dataSource.DAO()
 
     # ======================================================
     # socket tests
 
-    # PacketHandler().test_socket()
     LoginServer().start(config.get_login_ip(), config.get_login_port())
 
     # ======================================================
