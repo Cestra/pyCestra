@@ -1,4 +1,5 @@
 import pymysql.cursors
+import typing
 
 import dataSource
 from core.logging_handler import Logging
@@ -13,7 +14,7 @@ class AccountData(DAO):
     def load(self):
             '''
             DataFrame:
-            
+
             '''
             self.Datasource = []
             connection = dataSource.Database().get_connection()
@@ -45,4 +46,10 @@ class AccountData(DAO):
 
     def get_from_name(self, name):
         data = super().get_data("SELECT * FROM accounts WHERE account = '" + str(name) + "';")
-        return data
+        if (isinstance(data, typing.List)):
+            if (isinstance(data[0], typing.Dict)):
+                return data[0]
+            else:
+                return 0
+        else:
+            return 0

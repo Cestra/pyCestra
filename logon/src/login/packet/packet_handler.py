@@ -60,16 +60,12 @@ class PacketHandler:
         client.kick()
 
     def verify_account_name(self, client, name):
-        try:
-            account = AccountData().get_from_name(name)
-            # check if the tuple is empty
-            if not account:
-                return False
-            client.set_account(account)
-            # client.getAccount().setClient(client)
-        except AttributeError as err:
-            print(err)
+        account = AccountData().get_from_name(name)
+        client.set_account(account)
+        # check if the query is empty
+        if account == 0:
             return False
+        # client.getAccount().setClient(client)
         # set client status to WAIT_PASSWORD
         client.set_status(Status(1))
         self.log.debug('[' + str(client.get_address()[1]) + ']'
@@ -78,7 +74,9 @@ class PacketHandler:
 
 
     def verify_password(self, client, password):
-        c = client.get_account()[0]
+        c = client.get_account()
+        if c == 0:
+            return False
         if not PacketHandler().decrypt_password(password[2:], client.get_key()) == c['pass']:
             return False
         # set client status to SERVER
