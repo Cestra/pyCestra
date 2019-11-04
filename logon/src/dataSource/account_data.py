@@ -49,7 +49,5 @@ class AccountData(DAO):
         if (isinstance(data, typing.List)):
             if (isinstance(data[0], typing.Dict)):
                 return data[0]
-            else:
-                return 0
-        else:
             return 0
+        return 0
