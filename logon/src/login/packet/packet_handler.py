@@ -2,6 +2,7 @@ from enum import Enum
 
 from core.logging_handler import Logging
 from dataSource.account_data import AccountData
+from login.packet.account_queue import AccountQueue
 
 
 class PacketHandler:
@@ -47,20 +48,18 @@ class PacketHandler:
                 # FriendServerList.get(client, packet)
                 print('packet[0:2] == AF:')
             elif (packet[0:2] == 'AX') or (packet.split('\n')[2][1:] == 'AX'):
-                # ServerSelected.get(
+                # ServerSelected.get()
                 print('packet[0:2] == AX:')
             elif (packet[0:2] == 'Af') or (packet.split('\n')[2][1:] == 'Af'):
-                # AccountQueue.verify(client);
-                print('packet[0:2] == Af:')
+                AccountQueue().verify(client)
             elif (packet[0:2] == 'Ax') or (packet.split('\n')[2][1:] == 'Ax'):
                 # ServerList.get(client)
                 print('packet[0:2] == Ax:')
-                # ServerList.get(client)
             client.kick()
         client.kick()
 
     def verify_account_name(self, client, name):
-        account = AccountData().get_from_name(name)
+        account = AccountData().load_from_name(name)
         client.set_account(account)
         # check if the query is empty
         if account == 0:
@@ -74,10 +73,10 @@ class PacketHandler:
 
 
     def verify_password(self, client, password):
-        c = client.get_account()
-        if c == 0:
+        account = client.get_account()
+        if account == 0:
             return False
-        if not PacketHandler().decrypt_password(password[2:], client.get_key()) == c['pass']:
+        if not PacketHandler().decrypt_password(password[2:], client.get_key()) == account.get_pass():
             return False
         # set client status to SERVER
         client.set_status(Status(4))

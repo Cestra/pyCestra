@@ -4,6 +4,7 @@ import typing
 import dataSource
 from core.logging_handler import Logging
 from dataSource.DAO import DAO
+from object.account import Account
 
 
 class AccountData(DAO):
@@ -44,10 +45,23 @@ class AccountData(DAO):
         else:
             self.log.warning('account_data.py - Can\'t load account id 0')
 
-    def get_from_name(self, name):
+    def load_from_name(self, name):
         data = super().get_data("SELECT * FROM accounts WHERE account = '" + str(name) + "';")
         if (isinstance(data, typing.List)):
             if (isinstance(data[0], typing.Dict)):
-                return data[0]
+                account = AccountData().load_from_result_set(data[0])
+                return account
             return 0
         return 0
+
+    def load_from_result_set(self, resultSet):
+        account = Account()
+        account.set_id(resultSet['guid'])
+        account.set_name(resultSet['account'])
+        account.set_pass(resultSet['pass'])
+        account.set_nickname(resultSet['pseudo'])
+        account.set_question(resultSet['question'])
+        account.set_state(resultSet['logged'])
+        account.set_subscribe(resultSet['subscribe'])
+        account.set_banned(resultSet['banned'])
+        return account

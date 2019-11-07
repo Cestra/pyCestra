@@ -1,15 +1,25 @@
+from core.logging_handler import Logging
+
+
 class AccountQueue:
 
+    def __init__(self):
+        self.log = Logging()
+
     def verify(self, client):
-        '''
-        if isBanned
-            client.send('AlEb')
+        account = client.get_account()
+        if account.is_banned() == 1:
+            self.log.debug('[' + str(client.get_address()[1]) + ']'
+                            '[' + str(client.get_status().name) + '] '
+                            + 'The account is banned')
+            client.write('AlEb')
             client.kick
-        sendInformation(client,account);
-        '''
-        pass
+            return
+        print('send_information!')
+        #AccountQueue().send_information(client,account)
 
     def send_information(self, client, account):
+        print('send_information')
         '''
         if account == null
             log.DEBUG('The account does not exist. The client is kicked.')
