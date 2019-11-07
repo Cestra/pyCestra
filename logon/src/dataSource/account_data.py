@@ -1,4 +1,3 @@
-import pymysql.cursors
 import typing
 
 import dataSource
