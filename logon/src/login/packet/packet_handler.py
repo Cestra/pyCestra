@@ -16,7 +16,7 @@ class PacketHandler:
             packet = data.decode()
             packetLog = packet.replace('\n', '[]')
             self.log.debug('[' + str(client.get_address()[1]) + ']'
-                            '[' + str(client.get_status().name) + '] '
+                            '[' + str(client.get_status().name) + '][<-REC] '
                             + packetLog)
             if not data:
                 self.log.debug('PacketLoop no data')
@@ -44,15 +44,16 @@ class PacketHandler:
             print('WAIT_NICKNAME')
 
         if  client.get_status().name == Status.SERVER.name:
-            if (packet[0:2] == 'AF') or (packet.split('\n')[2][1:] == 'AF'):
+            if (packet[0:2] == 'AF') or (packet[-4:-2] == 'AF'):
                 # FriendServerList.get(client, packet)
                 print('packet[0:2] == AF:')
-            elif (packet[0:2] == 'AX') or (packet.split('\n')[2][1:] == 'AX'):
+            elif (packet[0:2] == 'AX') or (packet[-4:-2] == 'AX'):
                 # ServerSelected.get()
                 print('packet[0:2] == AX:')
-            elif (packet[0:2] == 'Af') or (packet.split('\n')[2][1:] == 'Af'):
+            elif (packet[0:2] == 'Af') or (packet[-4:-2] == 'Af'):
                 AccountQueue().verify(client)
-            elif (packet[0:2] == 'Ax') or (packet.split('\n')[2][1:] == 'Ax'):
+                return
+            elif (packet[0:2] == 'Ax') or (packet[-4:-2] == 'Ax'):
                 # ServerList.get(client)
                 print('packet[0:2] == Ax:')
             client.kick()
