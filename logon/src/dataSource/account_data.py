@@ -44,6 +44,10 @@ class AccountData(DAO):
         else:
             self.log.warning('account_data.py - Can\'t load account id 0')
 
+    def load_nickname(self):
+        data = super().get_data("SELECT pseudo FROM accounts;")
+        return data
+
     def load_from_name(self, name):
         data = super().get_data("SELECT * FROM accounts WHERE account = '" + str(name) + "';")
         if (isinstance(data, typing.List)):

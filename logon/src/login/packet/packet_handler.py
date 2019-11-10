@@ -3,6 +3,7 @@ from enum import Enum
 from core.logging_handler import Logging
 from dataSource.account_data import AccountData
 from login.packet.account_queue import AccountQueue
+from login.packet.choose_nickname import ChooseNickName
 
 
 class PacketHandler:
@@ -40,8 +41,8 @@ class PacketHandler:
                 client.write('AlEf')
 
         if  client.get_status().name == Status.WAIT_NICKNAME.name:
-            # ChooseNickName.verify(client, packet);
-            print('WAIT_NICKNAME')
+            ChooseNickName().verify(client, packet[:-2])
+            return
 
         if  client.get_status().name == Status.SERVER.name:
             if (packet[0:2] == 'AF') or (packet[-4:-2] == 'AF'):

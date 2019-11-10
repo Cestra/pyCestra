@@ -1,12 +1,23 @@
 import re
+from enum import Enum
+
+from core.logging_handler import Logging
+from dataSource.account_data import AccountData
+from login.packet.account_queue import AccountQueue
+
 
 class ChooseNickName:
     '''
+    information material:
     https://www.dofus.com/en/mmorpg/community/nicknames#\n
     https://www.python-kurs.eu/re.php
     '''
 
-    def verify(self, client, nickname):
+    def __init__(self):
+        self.log = Logging()
+
+
+    def inspect(self, nickname):
         #                  Admin                    Modo                 GM           Game Master
         forbidden_words = [r'[Aa][Dd][Mm][Ii][Nn]', r'[Mm][Oo][Dd][Oo]', r'[Gg][Mm]', r'[Gg][Aa][Mm][Ee]-?[Mm][Aa][Ss][Tt][Ee][Rr]',]
 
@@ -50,5 +61,45 @@ class ChooseNickName:
                 return True
         if flag ==-1: 
             return False
+
+    def verify(self, client, nickname):
+
+        # test if the nickname of the account is empty
+        account = client.get_account()
+        if not account.get_nickname() == '':
+            client.kick()
+            return
+
+        # nickname must be different from your username
+        if nickname.lower() == account.get_name().lower():
+            client.send("AlEr")
+            return
+
+        # the examination of the nickname string
+        if not ChooseNickName().inspect(nickname):
+            # 'AlEs'= this nickname is not available.
+            client.write("AlEs")
+            return
+
+        # is the nickname already taken?
+        dbnicks = AccountData().load_nickname()
+        for i in dbnicks:
+            if i['pseudo'] == nickname:
+                print('ist schon da')
+                client.write("AlEs")
+                return
+
+        account.set_nickname(nickname)
+        account.set_state(0)
+        # set client status to SERVER
+        client.set_status(Status(4))
+        AccountQueue().verify(client)
+
+class Status(Enum):
+    WAIT_VERSION = 0
+    WAIT_PASSWORD = 1
+    WAIT_ACCOUNT = 2
+    WAIT_NICKNAME = 3
+    SERVER = 4    
 
 # print(ChooseNickName().verify(0, '--8XxNicknamexX8--'))

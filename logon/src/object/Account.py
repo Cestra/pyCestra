@@ -45,7 +45,7 @@ class Account():
 # ----------------------------------------
 
     def get_state(self):
-        pass
+        return self.state
 
     def set_state(self, s): # "logged" byte
         self.state = s
