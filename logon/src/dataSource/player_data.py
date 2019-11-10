@@ -1,5 +1,3 @@
-import pymysql.cursors
-
 import dataSource
 from core.logging_handler import Logging
 from dataSource.DAO import DAO
@@ -24,8 +22,8 @@ class PlayerData(DAO):
                 for row in data:
                     Rows = [row]
                     self.Datasource.append(Rows)
-            except:
-                self.log.warning('player_data.py - Can\'t load table players')
+            except pymysql.Error as Error:
+                self.log.warning('player_data.py - Can\'t load table players' + Error)
                 cursor.close()
                 connection.close()
             finally:
@@ -40,6 +38,3 @@ class PlayerData(DAO):
             return self.Datasource[player]
         else:
             self.log.warning('player_data.py - Can\'t load player id 0')
-    
-    def set(self, ip):
-        pass

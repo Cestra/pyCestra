@@ -15,7 +15,7 @@ class AccountQueue:
                             '[' + str(client.get_status().name) + '] '
                             + 'The account is banned')
             client.write('AlEb')
-            client.kick
+            client.kick()
             return
         AccountQueue().send_information(client,account)
 

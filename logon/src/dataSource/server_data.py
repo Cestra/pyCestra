@@ -1,5 +1,3 @@
-import pymysql.cursors
-
 import dataSource
 from core.logging_handler import Logging
 from dataSource.DAO import DAO
@@ -24,15 +22,15 @@ class ServerData(DAO):
             for row in data:
                 Rows = [row]
                 self.Datasource.append(Rows)
-        except:
-            self.log.warning('server_data.py - Can\'t load table servers')
+        except pymysql.Error as Error:
+            self.log.warning('server_data.py - Can\'t load table servers - ' + Error)
             cursor.close()
             connection.close()
         finally:
             cursor.close()
             connection.close()
             # self.log.debug('cursor.close, connection.close')
-    
+
     # Use databank server ID to find the right server
     def get_from_id(self, idwis):
         if not idwis == 0:

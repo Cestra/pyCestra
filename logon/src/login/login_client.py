@@ -1,4 +1,3 @@
-import socket
 import sys
 from enum import Enum
 
@@ -7,10 +6,10 @@ from .packet.packet_handler import PacketHandler
 
 
 class HelloConnection:
-    
+
     def __init__(self, c, key, addr):
         self.log = Logging()
-        self.log.debug('LoginClient created - '+ 
+        self.log.debug('LoginClient created - '+
                         str(addr[0])+ ':'+ str(addr[1])+ ' - '+key)
 
         # Create the client instance
@@ -34,7 +33,7 @@ class HelloConnection:
             f = bytes('AlEf'+'\x00', 'utf-8')
             c.send(f)
             c.close()
-        self.log.debug('[' + str(addr[1]) + '][' + 
+        self.log.debug('[' + str(addr[1]) + '][' +
                         str(client.get_status().name) + '] Version accepted')
 
         PacketHandler().loop(client)

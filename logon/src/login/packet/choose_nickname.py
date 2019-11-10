@@ -17,7 +17,7 @@ class ChooseNickName:
         self.log = Logging()
 
 
-    def inspect(self, nickname):
+    def inspect(nickname):
         #                  Admin                    Modo                 GM           Game Master
         forbidden_words = [r'[Aa][Dd][Mm][Ii][Nn]', r'[Mm][Oo][Dd][Oo]', r'[Gg][Mm]', r'[Gg][Aa][Mm][Ee]-?[Mm][Aa][Ss][Tt][Ee][Rr]',]
 
@@ -59,10 +59,10 @@ class ChooseNickName:
             else:
                 flag = 0
                 return True
-        if flag ==-1: 
+        if flag ==-1:
             return False
 
-    def verify(self, client, nickname):
+    def verify(client, nickname):
 
         # test if the nickname of the account is empty
         account = client.get_account()
@@ -76,7 +76,7 @@ class ChooseNickName:
             return
 
         # the examination of the nickname string
-        if not ChooseNickName().inspect(nickname):
+        if not ChooseNickName.inspect(nickname):
             # 'AlEs'= this nickname is not available.
             client.write("AlEs")
             return
@@ -100,6 +100,6 @@ class Status(Enum):
     WAIT_PASSWORD = 1
     WAIT_ACCOUNT = 2
     WAIT_NICKNAME = 3
-    SERVER = 4    
+    SERVER = 4
 
 # print(ChooseNickName().verify(0, '--8XxNicknamexX8--'))
