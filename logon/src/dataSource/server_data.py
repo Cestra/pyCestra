@@ -1,3 +1,5 @@
+import pymysql
+
 import dataSource
 from core.logging_handler import Logging
 from dataSource.DAO import DAO

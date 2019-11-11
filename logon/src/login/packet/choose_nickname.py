@@ -12,10 +12,8 @@ class ChooseNickName:
     https://www.dofus.com/en/mmorpg/community/nicknames#\n
     https://www.python-kurs.eu/re.php
     '''
-
     def __init__(self):
         self.log = Logging()
-
 
     def inspect(nickname):
         #                  Admin                    Modo                 GM           Game Master
@@ -62,7 +60,7 @@ class ChooseNickName:
         if flag ==-1:
             return False
 
-    def verify(client, nickname):
+    def verify(self, client, nickname):
 
         # test if the nickname of the account is empty
         account = client.get_account()
@@ -77,6 +75,8 @@ class ChooseNickName:
 
         # the examination of the nickname string
         if not ChooseNickName.inspect(nickname):
+            self.log.debug('[' + str(client.get_address()[1]) + ']'
+                '[' + str(client.get_status().name) + '] This nickname is not available')
             # 'AlEs'= this nickname is not available.
             client.write("AlEs")
             return
@@ -85,7 +85,9 @@ class ChooseNickName:
         dbnicks = AccountData().load_nickname()
         for i in dbnicks:
             if i['pseudo'] == nickname:
-                print('ist schon da')
+                self.log.debug('[' + str(client.get_address()[1]) + ']'
+                    '[' + str(client.get_status().name) + '] This nickname is already in use')                
+                 # 'AlEs'= this nickname is not available.
                 client.write("AlEs")
                 return
 
@@ -101,5 +103,3 @@ class Status(Enum):
     WAIT_ACCOUNT = 2
     WAIT_NICKNAME = 3
     SERVER = 4
-
-# print(ChooseNickName().verify(0, '--8XxNicknamexX8--'))
