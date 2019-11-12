@@ -9,8 +9,6 @@ class HelloConnection:
 
     def __init__(self, c, key, addr):
         self.log = Logging()
-        self.log.debug('LoginClient created - '+
-                        str(addr[0])+ ':'+ str(addr[1])+ ' - '+key)
 
         # Create the client instance
         client = LoginClient()
@@ -19,21 +17,23 @@ class HelloConnection:
         client.set_status(Status(0))
         client.set_io_session(c)
 
+        self.log.debug('[' + str(addr[0]) + '][' +
+                        str(client.get_status().name) + '] Client created - '+key)
+
         # We send the first package (HC + KEY + empty byte)
-        token = bytes('HC'+key+'\x00', 'utf-8')
-        # self.log.debug("[SEND]: "+ str(token))
-        c.send(token)
+        client.write('HC'+key)
 
         # We are waiting for the client version
         data = c.recv(2048)
         msg = data.decode()
         if not msg == '1.29.1\n\x00':
-            self.log.debug('Disconnected '+ str(addr[0])+ ':'+ str(addr[1]) +
-                            'The client has the wrong version')
-            f = bytes('AlEf'+'\x00', 'utf-8')
-            c.send(f)
-            c.close()
-        self.log.debug('[' + str(addr[1]) + '][' +
+            self.log.debug('[' + str(addr[0]) + ']' +
+                    '[' + str(client.get_status().name) +
+                    '] The client has the wrong version')
+            # TODO wrong text window is displayed "Invalid login or password."
+            client.write('AlEf')
+            sys.exit()
+        self.log.debug('[' + str(addr[0]) + '][' +
                         str(client.get_status().name) + '] Version accepted')
 
         PacketHandler().loop(client)
@@ -45,13 +45,15 @@ class LoginClient:
 
     def write(self, o):
         msg = bytes(o+'\x00', 'utf-8')
+        self.log.debug('[' + str(self.address[0]) + ']'
+                    '[' + str(self.status.name) + '][SEND->] ' + o)
         self.IoSession.send(msg)
 
     def parser(self):
         pass
 
     def kick(self):
-        self.log.info('[' + str(self.address[1]) + ']'
+        self.log.info('[' + str(self.address[0]) + ']'
                     '[' + str(self.status.name) + '] Client kick')
         sys.exit()
 

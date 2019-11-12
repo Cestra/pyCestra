@@ -4,6 +4,7 @@ from core.logging_handler import Logging
 from dataSource.account_data import AccountData
 from login.packet.account_queue import AccountQueue
 from login.packet.choose_nickname import ChooseNickName
+from login.packet.server_list import ServerList
 
 
 class PacketHandler:
@@ -16,11 +17,13 @@ class PacketHandler:
             data = client.get_io_session().recv(2048)
             packet = data.decode()
             packetLog = packet.replace('\n', '[]')
-            self.log.debug('[' + str(client.get_address()[1]) + ']'
-                            '[' + str(client.get_status().name) + '][<-REC] '
+            self.log.debug('[' + str(client.get_address()[0]) + ']'
+                            '[' + str(client.get_status().name) + '][<-RECV] '
                             + packetLog)
             if not data:
-                self.log.debug('PacketLoop no data')
+                self.log.debug('[' + str(client.get_address()[0]) + ']'
+                            '[' + str(client.get_status().name) + '] PacketLoop no data')
+                client.kick()
                 break
             PacketHandler().parser(client, packet)
 
@@ -29,14 +32,14 @@ class PacketHandler:
         if client.get_status().name == Status.WAIT_VERSION.name:
             # set client status to WAIT_ACCOUNT
             client.set_status(Status(2))
-            self.log.debug('[' + str(client.get_address()[1]) + ']'
+            self.log.debug('[' + str(client.get_address()[0]) + ']'
                             '[' + str(client.get_status().name) + '] Status change')
 
         if  client.get_status().name == Status.WAIT_ACCOUNT.name:
             verifyAccountName = PacketHandler().verify_account_name(client, packet.split('\n')[0])
             verifyPassword = PacketHandler().verify_password(client, packet.split('\n')[1])
             if not (verifyAccountName and verifyPassword):
-                self.log.debug('[' + str(client.get_address()[1]) + ']'
+                self.log.debug('[' + str(client.get_address()[0]) + ']'
                         '[' + str(client.get_status().name) + '] Login credentials incorrect')
                 client.write('AlEf')
 
@@ -55,8 +58,8 @@ class PacketHandler:
                 AccountQueue().verify(client)
                 return
             elif (packet[0:2] == 'Ax') or (packet[-4:-2] == 'Ax'):
-                # ServerList.get(client)
-                print('packet[0:2] == Ax:')
+                ServerList().get_list(client)
+                return
             client.kick()
         client.kick()
 
@@ -69,7 +72,7 @@ class PacketHandler:
         # client.getAccount().setClient(client)
         # set client status to WAIT_PASSWORD
         client.set_status(Status(1))
-        self.log.debug('[' + str(client.get_address()[1]) + ']'
+        self.log.debug('[' + str(client.get_address()[0]) + ']'
                         '[' + str(client.get_status().name) + '] Status change')
         return True
 
@@ -82,7 +85,7 @@ class PacketHandler:
             return False
         # set client status to SERVER
         client.set_status(Status(4))
-        self.log.debug('[' + str(client.get_address()[1]) + ']'
+        self.log.debug('[' + str(client.get_address()[0]) + ']'
                         '[' + str(client.get_status().name) + '] Status change')
         return True
 
