@@ -26,7 +26,7 @@ class HelloConnection:
         # We are waiting for the client version
         data = c.recv(2048)
         msg = data.decode()
-        if not msg == '1.29.1\n\x00':
+        if not (msg == '1.30.0\n\x00' or msg == '1.29.1\n\x00'):
             self.log.debug('[' + str(addr[0]) + ']' +
                     '[' + str(client.get_status().name) +
                     '] The client has the wrong version')

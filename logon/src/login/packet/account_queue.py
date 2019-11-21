@@ -20,6 +20,9 @@ class AccountQueue:
         AccountQueue().send_information(client,account)
 
     def send_information(self, client, account):
+        
+        print(main.maina)
+
         if account.get_nickname() == '':
             client.write('AlEr')
             # set client status to WAIT_NICKNAME
