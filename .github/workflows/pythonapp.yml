@@ -19,5 +19,4 @@ jobs:
         pip install PyMySQL
     - name: pyCestra Logon Server
       run: |
-        pip install pytest
         python /logon/src/main.py
