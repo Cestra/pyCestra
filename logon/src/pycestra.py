@@ -40,7 +40,7 @@ class main():
     if database.get_connection():
         log.info('Connection Successfully')
     else:
-        log.info('Connection ERROR')
+        log.warning('Connection ERROR')
         sys.exit(0)
 
     serverData = dataSource.ServerData()
