@@ -53,7 +53,10 @@ class Account():
 # ----------------------------------------
  
     def is_staff(self):
-        pass
+        return self.staff
+
+    def set_staff(self, staff):
+        self.staff = staff
 
 # ----------------------------------------
 

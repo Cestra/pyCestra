@@ -26,13 +26,13 @@ class HelloConnection:
         # We are waiting for the client version
         data = c.recv(2048)
         msg = data.decode()
-        if not (msg == '1.30.0\n\x00' or msg == '1.29.1\n\x00'):
+        if not (msg == '1.30.9\n\x00' or msg == '1.29.1\n\x00'):
             self.log.debug('[' + str(addr[0]) + ']' +
                     '[' + str(client.get_status().name) +
                     '] The client has the wrong version')
             # TODO wrong text window is displayed "Invalid login or password."
             client.write('AlEf')
-            sys.exit()
+            sys.exit(0)
         self.log.debug('[' + str(addr[0]) + '][' +
                         str(client.get_status().name) + '] Version accepted')
 
@@ -55,7 +55,7 @@ class LoginClient:
     def kick(self):
         self.log.info('[' + str(self.address[0]) + ']'
                     '[' + str(self.status.name) + '] Client kick')
-        sys.exit()
+        sys.exit(0)
 
     def get_address(self):
         return self.address

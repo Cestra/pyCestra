@@ -67,4 +67,5 @@ class AccountData(DAO):
         account.set_state(resultSet['logged'])
         account.set_subscribe(resultSet['subscribe'])
         account.set_banned(resultSet['banned'])
+        account.set_staff(resultSet['rank'])
         return account

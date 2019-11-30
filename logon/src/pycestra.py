@@ -10,10 +10,6 @@ from core.logging_handler import Logging,bcolors
 from login.login_server import LoginServer
 
 class main():
-
-    global maina
-    maina = 10000
-    maina + 1
     #  ======================================================
     #  start message
     log = Logging()

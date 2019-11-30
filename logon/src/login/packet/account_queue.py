@@ -20,9 +20,6 @@ class AccountQueue:
         AccountQueue().send_information(client,account)
 
     def send_information(self, client, account):
-        
-        print(main.maina)
-
         if account.get_nickname() == '':
             client.write('AlEr')
             # set client status to WAIT_NICKNAME
@@ -40,9 +37,8 @@ class AccountQueue:
         # DEMO
         # client.write(Server.getHostList())
         client.write('AH127.0.0.1;1;110;1|')
-        # client.write('AlK' + (account.isMj() ? 1 : 0))
-        client.write('Alk0')
         # -----------------------------------------
+        client.write('AlK' + str(account.is_staff()))
         client.write('AQ' + account.get_question())
 
 class Status(Enum):
