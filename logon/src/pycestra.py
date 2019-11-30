@@ -41,7 +41,7 @@ class main():
         log.info('Connection Successfully')
     else:
         log.info('Connection ERROR')
-        sys.exit()
+        sys.exit(0)
 
     serverData = dataSource.ServerData()
     serverData.load()

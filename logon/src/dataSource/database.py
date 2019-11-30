@@ -32,6 +32,10 @@ class Database():
 
         except pymysql.Error as Error:
             self.log.warning('Database - initialize_connection\n' +
-                  'Config: '+config.get_host()+config.get_port()+config.get_user()+config.get_pass()+config.get_database_name() +
+                  'Config: '+ str(config.get_host()) + ' - ' +
+                  str(config.get_port()) + ' - ' +
+                  str(config.get_user()) + ' - ' +
+                  str(config.get_pass()) + ' - ' +
+                  str(config.get_database_name()) +
                   '\nDatabase - inicon - Something went wrong: {}'.format(Error))
             return False
