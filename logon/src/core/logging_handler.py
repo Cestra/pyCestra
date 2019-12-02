@@ -15,7 +15,7 @@ class Logging:
 
     def __init__(self):
         logging.basicConfig(format="[%(levelname)s]%(message)s",
-                                        filename="master.log",
+                                        filename="logon_master.log",
                                         level=logging.DEBUG)
         self.logger = logging.getLogger("Logon")
         conflevel = Config()

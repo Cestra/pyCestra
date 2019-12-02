@@ -1,10 +1,14 @@
-# from core.logging_handler import Logging,bcolors
+import os
+import sys
+
+from core.logging_handler import Logging, bcolors
+
 
 def main():
     #  ======================================================
     #  start message
+    
     log = Logging()
-    console = Console()
 
     def clear(): return os.system('cls')
     clear()

@@ -2,3 +2,4 @@
 *.xml
 \.idea/
 master.log
+*.log
