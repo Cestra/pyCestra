@@ -1,4 +1,4 @@
-
+# from core.logging_handler import Logging,bcolors
 
 def main():
     #  ======================================================
@@ -14,8 +14,6 @@ def main():
         for x in welmsg:
             print(bcolors.blue + x + bcolors.cend)
     wel()
-
-
 
 if __name__ == '__main__':
     main()
