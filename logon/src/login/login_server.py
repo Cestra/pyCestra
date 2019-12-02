@@ -24,11 +24,10 @@ class LoginServer:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             s.bind((logon_ip, login_port))
-            self.log.info('Logon Socket binded to post: ' + str(login_port))
         except socket.error:
             print('Binding faild')
         s.listen()
-        self.log.info('Logon Socket is listening')
+        self.log.info('Logon Socket is listening on Port: ' + str(login_port))
         while True:
             c, self.addr = s.accept()
             self.log.info('Connected '+ str(self.addr[0])+ ':'+ str(self.addr[1]))

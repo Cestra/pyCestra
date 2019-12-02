@@ -19,17 +19,16 @@ class ExchangeServer():
         except:
             self.log.warning('Exchange Server could not be created')
 
-    def server(self, ip, port):
+    def server(self, ex_ip, ex_port):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            s.bind((ip, port))
-            self.log.debug('Exchange Socket binded to post: ' + str(port))
+            s.bind((ex_ip, ex_port))
         except socket.error:
             self.log.warning('Exchange Socket - Binding faild')
         s.listen()
-        self.log.info('Exchange Socket is listening')
+        self.log.info('Exchange Socket is listening on Port: ' + str(ex_port))
         while True:
             c, self.addr = s.accept()
-            # self.log.info('Connected '+ str(self.addr[0])+ ':'+ str(self.addr[1]))
+            self.log.info('World-Server connected '+ str(self.addr[0])+ ':'+ str(self.addr[1]))
             # LoginHandler().session_created(c, self.addr)
         s.close()
