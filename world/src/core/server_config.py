@@ -77,7 +77,7 @@ class Config:
 
     def get_server_name(self):
         return self.server_name
-    
+
     def get_loggin_level(self):
         return self.log_Level
 

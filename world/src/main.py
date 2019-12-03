@@ -1,5 +1,4 @@
 import os
-import sys
 
 from core.logging_handler import Logging, bcolors
 from exchange.exchange_client import ExchangeClient
@@ -7,8 +6,8 @@ from exchange.exchange_client import ExchangeClient
 def main():
     #  ======================================================
     #  start message
-    
-    self.log = Logging()
+
+    log = Logging()
 
     def clear(): return os.system('cls')
     clear()
@@ -22,7 +21,8 @@ def main():
     #  ======================================================
     #  exchange client test
 
-    ExchangeClient()
+    log.debug('Client Start')
+    ExchangeClient().test()
 
 if __name__ == '__main__':
     main()
