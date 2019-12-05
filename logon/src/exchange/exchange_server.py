@@ -2,6 +2,7 @@ import socket
 import threading
 
 from core.logging_handler import Logging
+from exchange.exchange_client import ExchangeClient
 
 
 class ExchangeServer():
@@ -30,5 +31,15 @@ class ExchangeServer():
         while True:
             c, self.addr = s.accept()
             self.log.info('World-Server connected '+ str(self.addr[0])+ ':'+ str(self.addr[1]))
-            # LoginHandler().session_created(c, self.addr)
+            ExchangeServer().session_created(c, self.addr)
         s.close()
+
+    def session_created(self, soecket, addr):
+        threadName = 'Server-Session '+str(addr[0])+':'+ str(addr[1])
+        try:
+            t = threading.Thread(target=ExchangeClient.test,
+                                name=threadName,
+                                args=(soecket, addr,))
+            t.start()
+        except:
+            self.log.debug('Exchange Client could not be created '+ str(addr[0])+':'+ str(addr[1]))
