@@ -15,7 +15,7 @@ class ExchangeServer():
         try:
             t = threading.Thread(target=ExchangeServer.server,
                                 name=threadName,
-                                args=(self, ip, port))
+                                args=(self, ip, port,))
             t.start()
         except:
             self.log.warning('Exchange Server could not be created')
@@ -37,9 +37,9 @@ class ExchangeServer():
     def session_created(self, soecket, addr):
         threadName = 'Server-Session '+str(addr[0])+':'+ str(addr[1])
         try:
-            t = threading.Thread(target=ExchangeClient.test,
+            t = threading.Thread(target=ExchangeClient,
                                 name=threadName,
-                                args=(soecket, addr,))
+                                args=(soecket, addr))
             t.start()
         except:
-            self.log.debug('Exchange Client could not be created '+ str(addr[0])+':'+ str(addr[1]))
+            self.log.warning('Exchange Client could not be created '+ str(addr[0])+':'+ str(addr[1]))

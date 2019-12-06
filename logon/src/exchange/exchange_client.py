@@ -1,45 +1,42 @@
-class ExchangeClient:
+from core.logging_handler import Logging
+
+
+class ExchangeClient():
 
     def __init__(self):
+        self.log = Logging()
+
+    def test(self, socket, addr):
+        print('test test test test test')
+        print(addr)
+
+    def kick(self):
         pass
-    
-    def parse(self):
-        try:
-            def switch(self,i):
-                method_name='number_'+str(i)
-                method=getattr(self,method_name,lambda :'Invalid')
-                return method()
 
-            def number_0(self):
-                return 'zero'
+    def get_id(self):
+        pass
 
-            def number_1(self):
-                return 'one'
+    def set_id(self):
+        pass
 
-            def number_2(self):
-                return 'two'
-        except:
-            # print("Packet undefined\"" + packet + "\"")
-            # TODO Kick Player
+    def parse(self, packet):
+        if packet[0] == 'F': #F
             pass
-
-'''
-# TODO It would have to go but I do not get the switch running
- 
-s = ExchangeClient()
-s.parse().switch(1)
-print(s)
-'''
-
-'''
-F           free Places ?
-S
-    SH      set Ip, set Port, set State ?   (send("SHK"))
-    SK                                      (send("SKR")) and kick
-    SS      get Server, set State ?
-M
-    MP      Map Magic
-    MT                                      (server.send("MF" + account + "|" + getServer.getId + "|" + players))
-    MD                                      (server.send("MD" + split))
-    MO                                      (server.send("MO" + split + "|" + getServer().getId()))
-'''
+        elif packet[0] == 'S':
+            if packet[1] == 'H': #SH
+                pass
+            elif packet[1] == 'K': #SK
+                pass
+            elif packet[1] == 'S': #SS
+                pass
+        elif packet[0] == 'M':
+            if packet[1] == 'P': #MP
+                pass
+            elif packet[1] == 'T': #MT
+                pass
+            elif packet[1] == 'D': #MD
+                pass
+            elif packet[1] == 'O': #MO
+                pass
+        else:
+            self.log.debug('Packet undefined\n(' + packet + ')')

@@ -17,7 +17,7 @@ class ExchangeClient():
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             try:
                 s.connect((HOST, PORT))
-                print('wir sind dir')
+                print('wir sind drin')
                 s.send(b'Hello, world')
                 data = s.recv(1024)
                 print('Received', repr(data))
