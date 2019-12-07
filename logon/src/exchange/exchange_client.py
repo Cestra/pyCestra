@@ -3,12 +3,9 @@ from core.logging_handler import Logging
 
 class ExchangeClient():
 
-    def __init__(self):
+    def __init__(self, socket, addr):
         self.log = Logging()
-
-    def test(self, socket, addr):
-        print('test test test test test')
-        print(addr)
+        print('ExchangeClient', addr)
 
     def kick(self):
         pass

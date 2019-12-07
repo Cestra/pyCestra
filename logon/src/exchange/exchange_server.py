@@ -39,7 +39,7 @@ class ExchangeServer():
         try:
             t = threading.Thread(target=ExchangeClient,
                                 name=threadName,
-                                args=(soecket, addr))
+                                args=(soecket, addr,))
             t.start()
         except:
             self.log.warning('Exchange Client could not be created '+ str(addr[0])+':'+ str(addr[1]))
