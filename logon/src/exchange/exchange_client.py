@@ -1,23 +1,52 @@
+import sys
+
 from core.logging_handler import Logging
 
 
-class ExchangeClient():
+class HelloExchangeClient():
 
     def __init__(self, socket, addr):
+        exClient = ExchangeClient()
+        exClient.set_id(0)
+        exClient.set_io_session(socket)
+        exClient.send('hallo')
+        exClient.kick()
+
+class ExchangeClient():
+
+    def __init__(self):
         self.log = Logging()
-        print('ExchangeClient', addr)
+
+    def send(self, i):
+        msg = bytes(i, 'utf-8')
+        self.log.debug('[SERVER-NAME][EX-SEND->] ' + i)
+        self.IoSession.send(msg)
 
     def kick(self):
-        pass
+        self.log.info('[SERVER-NAME] Exchange Client has disconnected')
+        sys.exit(0)
 
     def get_id(self):
-        pass
+        return self.id
 
-    def set_id(self):
-        pass
+    def set_id(self, i):
+        self.id = i
+
+    def get_io_session(self):
+        return self.IoSession
+
+    def set_io_session(self, s):
+        self.IoSession = s
+
+class ExchangeLoop():
+
+    # def loop(self, client):
+        # while True:
 
     def parse(self, packet):
         if packet[0] == 'F': #F
+            # org.cestra.exchange.ExchangePacketHandler @ parser
+            # F + getPlayerNumber
             pass
         elif packet[0] == 'S':
             if packet[1] == 'H': #SH
@@ -25,15 +54,23 @@ class ExchangeClient():
             elif packet[1] == 'K': #SK
                 pass
             elif packet[1] == 'S': #SS
+                # org.cestra.game.GameServer @ setState
+                # SS0 SS1 SS2
                 pass
         elif packet[0] == 'M':
             if packet[1] == 'P': #MP
+                # org.cestra.game.GameClient @ parseMigration
+                # MP + GameClient.this.compte.getGuid
                 pass
             elif packet[1] == 'T': #MT
+                # org.cestra.exchange.ExchangePacketHandler @ parser
+                # MT" + account + "|" + server
                 pass
             elif packet[1] == 'D': #MD
                 pass
             elif packet[1] == 'O': #MO
+                # org.cestra.game.GameClient @ parseMigration
+                # MO + split[0] + "|" + server2
                 pass
         else:
-            self.log.debug('Packet undefined\n(' + packet + ')')
+            self.log.warning('Packet undefined\n(' + packet + ')')

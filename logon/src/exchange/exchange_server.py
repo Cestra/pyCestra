@@ -2,7 +2,7 @@ import socket
 import threading
 
 from core.logging_handler import Logging
-from exchange.exchange_client import ExchangeClient
+from exchange.exchange_client import HelloExchangeClient
 
 
 class ExchangeServer():
@@ -30,14 +30,14 @@ class ExchangeServer():
         self.log.info('Exchange Socket is listening on Port: ' + str(ex_port))
         while True:
             c, self.addr = s.accept()
-            self.log.info('World-Server connected '+ str(self.addr[0])+ ':'+ str(self.addr[1]))
+            self.log.info('Exchange Client connected '+ str(self.addr[0])+ ':'+ str(self.addr[1]))
             ExchangeServer().session_created(c, self.addr)
         s.close()
 
     def session_created(self, soecket, addr):
-        threadName = 'Server-Session '+str(addr[0])+':'+ str(addr[1])
+        threadName = 'Exchange-Client '+str(addr[0])+':'+ str(addr[1])
         try:
-            t = threading.Thread(target=ExchangeClient,
+            t = threading.Thread(target=HelloExchangeClient,
                                 name=threadName,
                                 args=(soecket, addr,))
             t.start()
