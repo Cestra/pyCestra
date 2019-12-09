@@ -9,8 +9,8 @@ class HelloExchangeClient():
         exClient = ExchangeClient()
         exClient.set_id(0)
         exClient.set_io_session(socket)
-        exClient.send('hallo')
-        exClient.kick()
+        exClient.send('Cesta')
+        ExchangeLoop().loop(exClient)
 
 class ExchangeClient():
 
@@ -40,10 +40,23 @@ class ExchangeClient():
 
 class ExchangeLoop():
 
-    # def loop(self, client):
-        # while True:
+    def __init__(self):
+        self.log = Logging()
 
-    def parse(self, packet):
+    def loop(self, exClient):
+        while True:
+            data = exClient.get_io_session().recv(2048)
+            packet = data.decode()
+            packetLog = packet.replace('\n', '[]')
+            self.log.debug('[SERVER-NAME][<-EX-RECV] '
+                            + packetLog)
+            if not data:
+                self.log.debug('[SERVER-NAME] PacketLoop no data')
+                exClient.kick()
+                break
+            ExchangeLoop().parse(exClient, packet)
+
+    def parse(self, exClient, packet):
         if packet[0] == 'F': #F
             # org.cestra.exchange.ExchangePacketHandler @ parser
             # F + getPlayerNumber
@@ -72,5 +85,5 @@ class ExchangeLoop():
                 # org.cestra.game.GameClient @ parseMigration
                 # MO + split[0] + "|" + server2
                 pass
-        else:
-            self.log.warning('Packet undefined\n(' + packet + ')')
+        self.log.warning('Packet undefined: ' + packet)
+        exClient.kick()
