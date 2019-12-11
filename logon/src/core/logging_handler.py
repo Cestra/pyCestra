@@ -6,7 +6,8 @@ from core.server_config import Config
 
 class bcolors:
     blue = '\033[94m'
-    red = '\033[31m'
+    #red = '\033[31m'
+    red = '\33[41m'
     green = '\033[32m'
     orange = '\033[33m'
     cend = '\033[0m'
@@ -34,5 +35,5 @@ class Logging:
 
     def warning(self, message):
         if self.logger.getEffectiveLevel() <= 30:
-            print(strftime("[%H:%M:%S]")+bcolors.red+'[WARNING]'+bcolors.cend,message)
+            print(strftime(bcolors.red+"[%H:%M:%S]")+'[WARNING]',message+bcolors.cend)
             logging.warning(strftime("[%d.%m][%H:%M:%S]")+message)

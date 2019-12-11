@@ -1,7 +1,9 @@
 import os
 
 from core.logging_handler import Logging, bcolors
+from core.server_config import Config
 from exchange.exchange_client import ExchangeClient
+from game.game_server import GameServer
 
 def main():
     #  ======================================================
@@ -13,7 +15,7 @@ def main():
     clear()
 
     def wel():
-        welmsg = [31*"─", "|   pyCestra - Logon Server   |", 31*"─"]
+        welmsg = [31*"─", "|   pyCestra - World Server   |", 31*"─"]
         for x in welmsg:
             print(bcolors.blue + x + bcolors.cend)
     wel()
@@ -23,6 +25,8 @@ def main():
 
     log.debug('Client Start')
     ExchangeClient().test()
+
+    # GameServer().initialize('127.0.0.1', 5555)
 
 if __name__ == '__main__':
     main()

@@ -7,8 +7,7 @@ from core.logging_handler import Logging
 class ExchangeClient():
 
     def __init__(self):
-        # self.log = Logging()
-        pass
+        self.log = Logging()
 
     def test(self): # Demo Client
         HOST = '127.0.0.1'
@@ -19,12 +18,12 @@ class ExchangeClient():
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             try:
                 s.connect((HOST, PORT))
-                print('Connected to logon server')
+                self.log.debug('Connected to logon server')
                 data = s.recv(1024)
                 msg = data.decode()
                 out = bytes('Hello, ' + msg  , 'utf-8')
                 s.send(out)
-                print('Received: ' + str(msg))
+                self.log.debug('Received: ' + str(msg))
             except:
                 s.close()
-                print('...')
+                self.log.debug('...')

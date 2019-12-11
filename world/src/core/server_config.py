@@ -47,10 +47,10 @@ class Config:
 
     def initialize(self):
         try:
-            section01 = 'LogonServer Basic Settings'
+            section01 = 'WorldServer Basic Settings'
             section02 = 'Database Configuration'
             section03 = 'RealmList Configuration'
-            self.config.read('./logon.conf')
+            self.config.read('./world.conf')
 
             self.world_ip = self.config.get(section01, 'world_server_ip')
             self.world_port = self.config.getint(section01, 'world_server_port')
