@@ -14,9 +14,7 @@ def main():
     #  start message
     log = Logging()
     console = Console()
-
-    def clear(): return os.system('cls')
-    clear()
+    console.clear()
 
     def wel():
         welmsg = [31*"─", "|   pyCestra - Logon Server   |", 31*"─"]
