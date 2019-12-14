@@ -2,6 +2,7 @@ import socket
 import threading
 
 from core.logging_handler import Logging
+from game.game_handler import GameHandler
 
 
 class GameServer:
@@ -13,7 +14,7 @@ class GameServer:
     def initialize(self, ip, port):
         threadName = 'Game-Server - ' + str(port)
         try:
-            t = threading.Thread(target=super.server,
+            t = threading.Thread(target=GameServer.server,
                                 name=threadName,
                                 args=(self, ip, port))
             t.start()
@@ -31,15 +32,5 @@ class GameServer:
         while True:
             c, self.addr = s.accept()
             self.log.info('Connected '+ str(self.addr[0])+ ':'+ str(self.addr[1]))
-            LoginHandler().session_created(c, self.addr)
+            GameHandler().session_created(c, self.addr)
         s.close()
-
-    def session_created(self, soecket, addr):
-        threadName = 'Game-Client '+str(addr[0])+':'+ str(addr[1])
-        try:
-            t = threading.Thread(target=HelloExchangeClient,
-                                name=threadName,
-                                args=(soecket, addr,))
-            t.start()
-        except:
-            self.log.warning('Game Client could not be created '+ str(addr[0])+':'+ str(addr[1]))
