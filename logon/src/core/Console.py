@@ -1,4 +1,4 @@
-from os import system, name 
+from os import system, name
 import time
 
 class Console():
@@ -8,11 +8,11 @@ class Console():
         Version = '0.1'
         system('title '+name+Version)
 
-    def clear(self): 
-        # for windows 
-        if name == 'nt': 
-            _ = system('cls') 
-    
-        # for mac and linux(here, os.name is 'posix') 
-        else: 
-            _ = system('clear') 
+    def clear(self):
+        # for windows
+        if name == 'nt':
+            system('cls')
+
+        # for mac and linux(here, os.name is 'posix')
+        else:
+            system('clear')
