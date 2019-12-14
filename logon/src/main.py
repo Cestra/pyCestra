@@ -55,10 +55,10 @@ def main():
 
     # ======================================================
     # socket tests
-    print('--------------------------')
+    print(58*"-")
 
     LoginServer().start(config.get_login_ip(), config.get_login_port())
-    
+
     ExchangeServer().start(config.get_exchange_ip(), config.get_exchange_port())
 
     # ======================================================

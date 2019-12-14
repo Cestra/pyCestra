@@ -19,7 +19,7 @@ class GameServer:
                                 args=(self, ip, port))
             t.start()
         except threading.ThreadError as e:
-            self.log.warning('Game Server could not be created' + str(e))
+            self.log.warning('Game Server could not be created: ' + str(e))
 
     def server(self, game_ip, game_port):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

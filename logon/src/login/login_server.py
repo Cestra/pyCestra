@@ -17,8 +17,8 @@ class LoginServer:
                                 name=threadName,
                                 args=(self, ip, port))
             t.start()
-        except:
-            self.log.warning('Login Server could not be created')
+        except threading.ThreadError as e:
+            self.log.warning('Login Server could not be created: ' + str(e))
 
     def server(self, logon_ip, login_port):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

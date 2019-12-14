@@ -1,5 +1,4 @@
 import random
-import socket
 import threading
 from enum import Enum
 
@@ -50,9 +49,9 @@ class LoginHandler:
                                 name=threadName,
                                 args=(self, soecket, key, addr,))
             t.start()
-        except:
-            self.log.debug('Created Session '+ str(addr[0])+':'+ str(addr[1]))
-            
+        except threading.ThreadError as e:
+            self.log.debug('Created Session '+ str(addr[0])+':'+ str(addr[1]) + ': ' + str(e))
+
     def session_opened(self):
         pass
 
