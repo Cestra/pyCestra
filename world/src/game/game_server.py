@@ -3,6 +3,7 @@ import threading
 
 from core.logging_handler import Logging
 from game.game_handler import GameHandler
+from game.game_client import GameClient
 
 
 class GameServer:
@@ -18,9 +19,9 @@ class GameServer:
                                 name=threadName,
                                 args=(self, ip, port))
             t.start()
-        except:
-            self.log.warning('Game Server could not be created')
-    
+        except threading.ThreadError as e:
+            self.log.warning('Game Server could not be created' + str(e))
+
     def server(self, game_ip, game_port):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
