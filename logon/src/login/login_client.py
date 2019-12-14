@@ -2,41 +2,7 @@ import sys
 from enum import Enum
 
 from core.logging_handler import Logging
-from .packet.packet_handler import PacketHandler
 
-
-class HelloConnection:
-
-    def __init__(self, c, key, addr):
-        self.log = Logging()
-
-        # Create the client instance
-        client = LoginClient()
-        client.set_key(key)
-        client.set_address(addr)
-        client.set_status(Status(0))
-        client.set_io_session(c)
-
-        self.log.debug('[' + str(addr[0]) + '][' +
-                        str(client.get_status().name) + '] Client created - '+key)
-
-        # We send the first package (HC + KEY + empty byte)
-        client.write('HC'+key)
-
-        # We are waiting for the client version
-        data = c.recv(2048)
-        msg = data.decode()
-        if not (msg == '1.30.9\n\x00' or msg == '1.29.1\n\x00'):
-            self.log.debug('[' + str(addr[0]) + ']' +
-                    '[' + str(client.get_status().name) +
-                    '] The client has the wrong version')
-            # TODO wrong text window is displayed "Invalid login or password."
-            client.write('AlEf')
-            sys.exit(0)
-        self.log.debug('[' + str(addr[0]) + '][' +
-                        str(client.get_status().name) + '] Version accepted')
-
-        PacketHandler().loop(client)
 
 class LoginClient:
 

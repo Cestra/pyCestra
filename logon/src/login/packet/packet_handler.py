@@ -12,21 +12,6 @@ class PacketHandler:
     def __init__(self):
         self.log = Logging()
 
-    def loop(self, client):
-        while True:
-            data = client.get_io_session().recv(2048)
-            packet = data.decode()
-            packetLog = packet.replace('\n', '[]')
-            self.log.debug('[' + str(client.get_address()[0]) + ']'
-                            '[' + str(client.get_status().name) + '][<-RECV] '
-                            + packetLog)
-            if not data:
-                self.log.debug('[' + str(client.get_address()[0]) + ']'
-                            '[' + str(client.get_status().name) + '] PacketLoop no data')
-                client.kick()
-                break
-            PacketHandler().parser(client, packet)
-
     def parser(self, client, packet):
         # client arrived here, the version has been checked
         if client.get_status().name == Status.WAIT_VERSION.name:
