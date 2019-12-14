@@ -3,7 +3,6 @@ import threading
 
 from core.logging_handler import Logging
 from game.game_handler import GameHandler
-from game.game_client import GameClient
 
 
 class GameServer:
