@@ -24,10 +24,11 @@ def main():
     #  ======================================================
     #  exchange client test
 
-    log.debug('Client Start')
+    log.debug('Exchange Client Test Start')
     ExchangeClient().test()
 
-    # GameServer().initialize('127.0.0.1', 5555)
+    log.debug('Game Server')
+    GameServer().initialize(config.get_world_ip(), config.get_world_port())
 
 if __name__ == '__main__':
     main()
