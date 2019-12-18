@@ -1,9 +1,7 @@
-import sys
-
 import pymysql.connections
 
-from core.server_config import Config
 from core.logging_handler import Logging
+from core.server_config import Config
 
 
 class Database():

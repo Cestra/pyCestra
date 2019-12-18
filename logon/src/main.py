@@ -1,17 +1,17 @@
-import os
 import sys
 
 import dataSource
-from core.server_config import Config
 from core.console import Console
-from core.logging_handler import Logging,bcolors
-
-from login.login_server import LoginServer
+from core.logging_handler import Logging, bcolors
+from core.server_config import Config
 from exchange.exchange_server import ExchangeServer
+from login.login_server import LoginServer
+
 
 def main():
     #  ======================================================
     #  start message
+    
     log = Logging()
     console = Console()
     console.clear()

@@ -10,6 +10,7 @@ def main():
     #  start message
 
     log = Logging()
+    config = Config()
 
     def clear(): return os.system('cls')
     clear()

@@ -1,8 +1,5 @@
-import pymysql.cursors
-
 import dataSource
 
-# global ServerData
 
 class DAO:
 
