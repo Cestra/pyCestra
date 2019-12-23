@@ -1,7 +1,7 @@
 from os import system, name
 import subprocess as sp
 
-class Console():
+class Console:
 
     def __init__(self):
         name = 'Cestra - Logon Server - '
