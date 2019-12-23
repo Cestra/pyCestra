@@ -61,7 +61,6 @@ class PacketHandler:
                         '[' + str(client.get_status().name) + '] Status change')
         return True
 
-
     def verify_password(self, client, password):
         account = client.get_account()
         if account == 0:
