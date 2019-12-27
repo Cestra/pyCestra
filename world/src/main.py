@@ -25,9 +25,9 @@ def main():
     #  exchange client test
 
     log.debug('Exchange Client Test Start')
-    ExchangeClient().test()
+    ExchangeClient().initialize(config.get_exchange_ip(), config.get_exchange_port())
 
-    log.debug('Game Server')
+    log.debug('Game Server Start')
     GameServer().initialize(config.get_world_ip(), config.get_world_port())
 
 if __name__ == '__main__':
