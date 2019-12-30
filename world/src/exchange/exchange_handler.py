@@ -1,4 +1,5 @@
 from core.logging_handler import Logging
+from exchange.exchange_packet_handler import ExchangePacketHandler
 
 
 class ExchangeHandler:
@@ -20,4 +21,4 @@ class ExchangeHandler:
                 self.log.debug('[logon ip] PacketLoop no data')
                 # kick
                 break
-            ExchangePacketHandler.parse(packet)
+            ExchangePacketHandler().parser(packet)
