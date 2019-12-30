@@ -1,7 +1,9 @@
 import socket
+import sys
 import threading
 
 from core.logging_handler import Logging
+from exchange.exchange_handler import ExchangeHandler
 
 
 class ExchangeClient():
@@ -9,27 +11,26 @@ class ExchangeClient():
     def __init__(self):
         self.log = Logging()
 
-    def initialize(self, ip, port):
-        threadName = 'Exchange-Client - ' + str(port)
+    def initialize(self, exchange_ip, exchange_port):
         try:
-            t = threading.Thread(target=ExchangeClient.client,
+            exSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            exSocket.connect((exchange_ip, exchange_port))
+            self.log.debug('Exchange-Client connected to logon server')
+            self.ioConnector = exSocket
+        except:
+            exSocket.close()
+            self.log.warning('It could not be connected to the login server')
+            sys.exit(0)
+        try:        
+            exchangeHandler = ExchangeHandler()
+            threadName = 'Exchange-Receiver - Port: '+str(exchange_port)
+            t = threading.Thread(target=exchangeHandler.loop,
                                 name=threadName,
-                                args=(self, ip, port))
+                                args=(self.ioConnector,))
             t.start()
         except threading.ThreadError as e:
-            self.log.warning('Exchange-Client could not be created: ' + str(e))
+            self.log.warning('Exchange-Receiver could not be created ' + str(e))
 
-    def client(self, game_ip, game_port):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        try:
-            s.connect((HOST, PORT))
-            self.log.debug('Connected to logon server')
-            # data = s.recv(1024)
-            # msg = data.decode()
-            # out = bytes('Hello, ' + msg  , 'utf-8')
-            # s.send(out)
-            # self.log.debug('Received: ' + str(msg))
-
-        except:
-            s.close()
-            self.log.info('ExchangeClient - Try to connect..')
+    def send(self, o):
+        msg = bytes(o, 'utf-8')
+        self.ioConnector.send(msg)

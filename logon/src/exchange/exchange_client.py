@@ -9,7 +9,7 @@ class HelloExchangeClient():
         exClient = ExchangeClient()
         exClient.set_id(0)
         exClient.set_io_session(socket)
-        exClient.send('Cesta')
+        # exClient.send('Cesta')
         ExchangeLoop().loop(exClient)
 
 class ExchangeClient():

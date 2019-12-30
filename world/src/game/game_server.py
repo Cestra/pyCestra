@@ -9,7 +9,6 @@ class GameServer:
 
     def __init__(self):
         self.log = Logging()
-        self.log.warning('GameServer instans !')
 
     def initialize(self, ip, port):
         threadName = 'Game-Server - ' + str(port)

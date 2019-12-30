@@ -6,15 +6,18 @@ class ExchangeHandler:
     def __init__(self):
         self.log = Logging()
 
-    def loop(self, gameClient):
+    def loop(self, exSocket):
+        self.log.debug('Exchange-Receiver is started')
+        # out = bytes('Hallo', 'utf-8')
+        # exSocket.send(out)
         while True:
-            data = gameClient.get_io_session().recv(2048)
+            data = exSocket.recv(2048)
             packet = data.decode()
             packetLog = packet.replace('\n', '[]')
-            self.log.debug('[TODO client ip][<-EX-RECV] '
+            self.log.debug('[logon ip][<-EX-RECV] '
                             + packetLog)
             if not data:
-                self.log.debug('[TODO client ip] PacketLoop no data')
+                self.log.debug('[logon ip] PacketLoop no data')
                 # kick
                 break
             ExchangePacketHandler.parse(packet)
