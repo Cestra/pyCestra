@@ -24,16 +24,16 @@ class LoginHandler:
                         str(client.get_status().name) + '] Client created - '+key)
 
         HelloConnection(client)
-        LoginHandler().message_loop(client)
+        LoginHandler().recv_loop(client)
 
-    def message_loop(self, client):
+    def recv_loop(self, client):
         while True:
             data = client.get_io_session().recv(2048)
             packet = data.decode()
-            packetLog = packet.replace('\n', '[]')
+            packetPrint = packet.replace('\n', '[n]')
             self.log.debug('[' + str(client.get_address()[0]) + ']'
                             '[' + str(client.get_status().name) + '][<-RECV] '
-                            + packetLog)
+                            + packetPrint)
             if not data:
                 self.log.debug('[' + str(client.get_address()[0]) + ']'
                             '[' + str(client.get_status().name) + '] PacketLoop no data')

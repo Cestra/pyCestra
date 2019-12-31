@@ -1,4 +1,5 @@
 import os
+import time
 
 from core.logging_handler import Logging, bcolors
 from core.server_config import Config
@@ -24,10 +25,10 @@ def main():
     #  ======================================================
     #  exchange client test
 
-    log.debug('Exchange Client Test Start')
     exClient = ExchangeClient()
     exClient.initialize(config.get_exchange_ip(), config.get_exchange_port())
-    # exClient.send('kjilji')
+    # time.sleep(3)
+    # exClient.send('SS0')
 
     log.debug('Game Server Start')
     GameServer().initialize(config.get_world_ip(), config.get_world_port())

@@ -2,7 +2,7 @@ import socket
 import threading
 
 from core.logging_handler import Logging
-from exchange.exchange_client import HelloExchangeClient
+from exchange.exchange_handler import HelloExchangeClient
 
 
 class ExchangeServer():

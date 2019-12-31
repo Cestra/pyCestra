@@ -15,7 +15,8 @@ class ExchangeClient():
         try:
             exSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             exSocket.connect((exchange_ip, exchange_port))
-            self.log.debug('Exchange-Client connected to logon server')
+            self.log.info('Exchange-Client connected to logon server ' + 
+                            str(exchange_ip) + ':' + str(exchange_port))
             self.ioConnector = exSocket
         except:
             exSocket.close()

@@ -21,6 +21,7 @@ class ExchangePacketHandler:
                 return
             elif packet[1] == 'K':
                 if packet[2] == '?': # SK?
+                    self.log.debug('i = 50000 - Main.gameServer.getPlayerNumber()')
                     # i = 50000 - Main.gameServer.getPlayerNumber()
 					# Main.exchangeClient.send("SK" + Main.serverId + ";" + Main.key + ";" + i)
                     return

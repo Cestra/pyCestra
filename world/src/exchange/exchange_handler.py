@@ -9,8 +9,6 @@ class ExchangeHandler:
 
     def loop(self, exSocket):
         self.log.debug('Exchange-Receiver is started')
-        # out = bytes('Hallo', 'utf-8')
-        # exSocket.send(out)
         while True:
             data = exSocket.recv(2048)
             packet = data.decode()
