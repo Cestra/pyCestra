@@ -23,5 +23,6 @@ class HelloConnection():
             client.write('AlEf')
             sys.exit(0)
         self.log.debug('[' + str(client.get_address()[0]) + ']' '][' +
-                        str(client.get_status().name) + '] Version accepted')
+                        str(client.get_status().name) + '] Version accepted ' +
+                        '(' + str(msg.split('\n')[0]) + ')')
         return
