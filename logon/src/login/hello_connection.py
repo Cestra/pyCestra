@@ -17,7 +17,8 @@ class HelloConnection():
         if not (msg == '1.30.9\n\x00' or msg == '1.29.1\n\x00' or msg == '1.30.0\n\x00'):
             self.log.debug('[' + str(client.get_address()[0]) + ']'
                     '[' + str(client.get_status().name) +
-                    '] The client has the wrong version')
+                    '] The client has the wrong version - ' +
+                    '(' + str(msg.split('\n')[0]) + ')')
             # TODO wrong text window is displayed "Invalid login or password."
             client.write('AlEf')
             sys.exit(0)
