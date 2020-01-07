@@ -1,3 +1,5 @@
+import socket
+
 from core.communication_service import CommunicationService as cs
 from core.logging_handler import Logging
 
@@ -7,7 +9,7 @@ class ExchangePacketHandler:
     def __init__(self):
         self.log = Logging()
 
-    def parser(self, packet):
+    def parser(self, packet, exClient):
         if packet[0] == 'F':
             if packet[1] == '?': # F?
                 # i = 50000 - Main.gameServer.getPlayerNumber()
@@ -22,8 +24,8 @@ class ExchangePacketHandler:
                 return
             elif packet[1] == 'K':
                 if packet[2] == '?': # SK?
-                    self.log.debug('i = 50000 - Main.gameServer.getPlayerNumber()')
-                    cs.ExchangeClient().send('SS0')
+                    self.log.debug('Oh, SK? Nice!')
+                    ExchangePacketHandler().send(exClient,'SS0')
                     # i = 50000 - Main.gameServer.getPlayerNumber()
 					# Main.exchangeClient.send("SK" + Main.serverId + ";" + Main.key + ";" + i)
                     return
@@ -53,3 +55,7 @@ class ExchangePacketHandler:
             if packet[1] == 'D': # MD
                 return
             return
+
+    def send(self, exClient, o):
+        msg = bytes(o, 'utf-8')
+        exClient.send(msg)

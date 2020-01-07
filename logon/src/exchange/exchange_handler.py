@@ -44,30 +44,31 @@ class ExchangeHandler():
         if packet[0] == 'F': #F
             # org.cestra.exchange.ExchangePacketHandler @ parser
             # F + getPlayerNumber
-            pass
+            return
         elif packet[0] == 'S':
             if packet[1] == 'H': #SH
-                pass
+                return
             elif packet[1] == 'K': #SK
-                pass
+                return
             elif packet[1] == 'S': #SS
                 # org.cestra.game.GameServer @ setState
                 # SS0 SS1 SS2
-                pass
+                exClient.send('SKK')
+                return
         elif packet[0] == 'M':
             if packet[1] == 'P': #MP
                 # org.cestra.game.GameClient @ parseMigration
                 # MP + GameClient.this.compte.getGuid
-                pass
+                return
             elif packet[1] == 'T': #MT
                 # org.cestra.exchange.ExchangePacketHandler @ parser
                 # MT" + account + "|" + server
-                pass
+                return
             elif packet[1] == 'D': #MD
-                pass
+                return
             elif packet[1] == 'O': #MO
                 # org.cestra.game.GameClient @ parseMigration
                 # MO + split[0] + "|" + server2
-                pass
+                return
         self.log.warning('Packet undefined: ' + packet)
         exClient.kick()

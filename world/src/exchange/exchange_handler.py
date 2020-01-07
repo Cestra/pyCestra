@@ -19,4 +19,4 @@ class ExchangeHandler:
                 self.log.debug('[logon ip] PacketLoop no data')
                 # kick
                 break
-            ExchangePacketHandler().parser(packet)
+            ExchangePacketHandler().parser(packet, exSocket)
