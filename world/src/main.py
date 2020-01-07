@@ -7,6 +7,7 @@ from core.server_config import Config
 from exchange.exchange_client import ExchangeClient
 from game.game_server import GameServer
 
+
 class Main:
 
     def __init__(self):
@@ -34,11 +35,11 @@ class Main:
 
         CommunicationService().start_exClient(exClient)
 
-        # time.sleep(3)
+        time.sleep(3)
         # exClient.send('SS0')
 
         # self.log.debug('Game Server Start')
-        # GameServer().initialize(self.config.get_world_ip(), self.config.get_world_port())
+        # GameServer().initialize(exClient, self.config.get_world_ip(), self.config.get_world_port())
 
 def main():
   Main().start()

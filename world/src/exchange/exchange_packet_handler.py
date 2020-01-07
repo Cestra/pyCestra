@@ -1,4 +1,4 @@
-from core.communication_service import CommunicationService
+from core.communication_service import CommunicationService as cs
 from core.logging_handler import Logging
 
 
@@ -23,7 +23,7 @@ class ExchangePacketHandler:
             elif packet[1] == 'K':
                 if packet[2] == '?': # SK?
                     self.log.debug('i = 50000 - Main.gameServer.getPlayerNumber()')
-                    CommunicationService.exClient.send('SS0')
+                    cs.ExchangeClient().send('SS0')
                     # i = 50000 - Main.gameServer.getPlayerNumber()
 					# Main.exchangeClient.send("SK" + Main.serverId + ";" + Main.key + ";" + i)
                     return

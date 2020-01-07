@@ -22,7 +22,7 @@ class ExchangeClient():
             exSocket.close()
             self.log.warning('It could not be connected to the login server')
             sys.exit(0)
-        try:        
+        try:
             exchangeHandler = ExchangeHandler()
             threadName = 'Exchange-Receiver - Port: '+str(exchange_port)
             t = threading.Thread(target=exchangeHandler.loop,
@@ -32,6 +32,4 @@ class ExchangeClient():
         except threading.ThreadError as e:
             self.log.warning('Exchange-Receiver could not be created ' + str(e))
 
-    def send(self, o):
-        msg = bytes(o, 'utf-8')
-        self.ioConnector.send(msg)
+        return self.ioConnector
