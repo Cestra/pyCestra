@@ -24,9 +24,8 @@ class ExchangeHandler():
             data = exClient.get_io_session().recv(2048)
             packet = data.decode()
             packetPrint = packet.replace('\n', '[n]')
-            self.log.debug('[' + str(exClient.get_id) + ']' + 
-                            '[<-EX-RECV] ' +
-                            + packetPrint)
+            self.log.debug('[' + str(exClient.get_id()) + ']' + 
+                            '[<-EX-RECV] ' + packetPrint)
             if not data:
                 self.log.debug('[SERVER-NAME] PacketLoop no data')
                 exClient.kick()
