@@ -58,4 +58,6 @@ class ExchangePacketHandler:
 
     def send(self, exClient, o):
         msg = bytes(o, 'utf-8')
+        self.log.debug('[logon ip]' +
+                '[EX-SEND->] ' + o)
         exClient.send(msg)
