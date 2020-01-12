@@ -1,7 +1,6 @@
 import os
 import time
 
-from core.communication_service import CommunicationService
 from core.logging_handler import Logging, bcolors
 from core.server_config import Config
 from exchange.exchange_client import ExchangeClient
@@ -32,8 +31,6 @@ class Main:
 
         exClient = ExchangeClient()
         exClient.initialize(self.config.get_exchange_ip(), self.config.get_exchange_port())
-
-        CommunicationService().start_exClient(exClient)
 
         time.sleep(3)
         # exClient.send('SS0')

@@ -1,6 +1,5 @@
 import socket
 
-from core.communication_service import CommunicationService as cs
 from core.logging_handler import Logging
 
 
