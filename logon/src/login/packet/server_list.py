@@ -5,7 +5,7 @@ class ServerList:
     '''
         AxK +
         subscribe(in millisecond) +
-        server.getId() +  
+        server.getId() +
         number of characters
 
     client.write('AxK2628000000|1,4')

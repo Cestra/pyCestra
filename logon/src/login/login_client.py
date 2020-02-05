@@ -6,21 +6,26 @@ from core.logging_handler import Logging
 
 class LoginClient:
 
-    def __init__(self):
+    def __init__(self, game_client_dic):
+        self.game_client_dic = game_client_dic
         self.log = Logging()
 
     def write(self, o):
         msg = bytes(o+'\x00', 'utf-8')
-        self.log.debug('[' + str(self.address[0]) + ']'
-                    '[' + str(self.status.name) + '][SEND->] ' + o)
+        self.log.debug('[' + str(self.address[0]) + ':' +
+                    str(self.address[1]) + '][' +
+                    str(self.status.name) + '][SEND->] ' + o)
         self.IoSession.send(msg)
 
     def parser(self):
         pass
 
     def kick(self):
-        self.log.info('[' + str(self.address[0]) + ']'
-                    '[' + str(self.status.name) + '] Client kick')
+        dict_str = self.address[0] + ':' + str(self.address[1])
+        self.game_client_dic.pop(dict_str)
+        self.log.info('[' + str(self.address[0]) + ':' +
+                    str(self.address[1]) + '][' +        
+                    str(self.status.name) + '] Client kick')
         sys.exit(0)
 
     def get_address(self):

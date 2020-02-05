@@ -10,17 +10,17 @@ class LoginServer:
     def __init__(self):
         self.log = Logging()
 
-    def start(self, ip, port):
+    def start(self, ip, port, game_client_dic):
         threadName = 'Login-Server - ' + str(port)
         try:
             t = threading.Thread(target=LoginServer.server,
                                 name=threadName,
-                                args=(self, ip, port))
+                                args=(self, ip, port, game_client_dic))
             t.start()
         except threading.ThreadError as e:
             self.log.warning('Login Server could not be created: ' + str(e))
 
-    def server(self, logon_ip, login_port):
+    def server(self, logon_ip, login_port, game_client_dic):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             s.bind((logon_ip, login_port))
@@ -31,5 +31,5 @@ class LoginServer:
         while True:
             c, self.addr = s.accept()
             self.log.info('Connected '+ str(self.addr[0])+ ':'+ str(self.addr[1]))
-            LoginHandler().session_created(c, self.addr)
+            LoginHandler().session_created(c, self.addr, game_client_dic)
         s.close()

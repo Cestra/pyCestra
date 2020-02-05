@@ -1,4 +1,5 @@
 import sys
+import time
 
 import dataSource
 from core.console import Console
@@ -39,25 +40,33 @@ def main():
     serverData = dataSource.ServerData()
     serverData.load()
     log.info('ServerData were loaded')
-    # # print(serverData.get_from_id(1))
+    # print(serverData.get_from_id(1))
 
     playerData = dataSource.PlayerData()
     playerData.load()
     log.info('PlayerData were loaded')
-    # # print(playerData.get_from_id(1))
+    # print(playerData.get_from_id(1))
 
     accountData = dataSource.AccountData()
     accountData.load()
     log.info('AccountData were loaded')
-    # # print(accountData.get_from_id(1))
+    # print(accountData.get_from_id(1))
 
     # ======================================================
     # socket tests
     print(58*"-")
 
-    LoginServer().start(config.get_login_ip(), config.get_login_port())
+    game_client_dic = {}
+    LoginServer().start(config.get_login_ip(), config.get_login_port(), game_client_dic)
 
     ExchangeServer().start(config.get_exchange_ip(), config.get_exchange_port())
+
+    while True:
+        time.sleep(15)
+        for x in game_client_dic:
+            log.warning('--------')
+            log.warning(str(x))
+            log.warning('--------')
 
     # ======================================================
 

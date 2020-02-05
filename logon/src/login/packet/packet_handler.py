@@ -12,20 +12,22 @@ class PacketHandler:
     def __init__(self):
         self.log = Logging()
 
-    def parser(self, client, packet):
+    def parser(self, client, packet, game_client_dic):
         # client arrived here, the version has been checked
         if client.get_status().name == Status.WAIT_VERSION.name:
             # set client status to WAIT_ACCOUNT
             client.set_status(Status(2))
-            self.log.debug('[' + str(client.get_address()[0]) + ']'
+            self.log.debug('[' + str(client.get_address()[0]) + ':' +
+                            str(client.get_address()[1]) + ']' +
                             '[' + str(client.get_status().name) + '] Status change')
 
         if  client.get_status().name == Status.WAIT_ACCOUNT.name:
             verifyAccountName = PacketHandler().verify_account_name(client, packet.split('\n')[0])
             verifyPassword = PacketHandler().verify_password(client, packet.split('\n')[1])
             if not (verifyAccountName and verifyPassword):
-                self.log.debug('[' + str(client.get_address()[0]) + ']'
-                        '[' + str(client.get_status().name) + '] Login credentials incorrect')
+                self.log.debug('[' + str(client.get_address()[0]) + ':' +
+                            str(client.get_address()[1]) + ']' +
+                            '[' + str(client.get_status().name) + '] Login credentials incorrect')
                 client.write('AlEf')
 
         if  client.get_status().name == Status.WAIT_NICKNAME.name:
@@ -40,7 +42,7 @@ class PacketHandler:
                 # ServerSelected.get()
                 print('packet[0:2] == AX:')
             elif (packet[0:2] == 'Af') or (packet[-4:-2] == 'Af'):
-                AccountQueue().verify(client)
+                AccountQueue().verify(client, game_client_dic)
                 return
             elif (packet[0:2] == 'Ax') or (packet[-4:-2] == 'Ax'):
                 ServerList().get_list(client)
@@ -57,7 +59,8 @@ class PacketHandler:
         # client.getAccount().setClient(client)
         # set client status to WAIT_PASSWORD
         client.set_status(Status(1))
-        self.log.debug('[' + str(client.get_address()[0]) + ']'
+        self.log.debug('[' + str(client.get_address()[0]) + ':' +
+                        str(client.get_address()[1]) + ']' +
                         '[' + str(client.get_status().name) + '] Status change')
         return True
 
@@ -69,7 +72,8 @@ class PacketHandler:
             return False
         # set client status to SERVER
         client.set_status(Status(4))
-        self.log.debug('[' + str(client.get_address()[0]) + ']'
+        self.log.debug('[' + str(client.get_address()[0]) + ':' +
+                        str(client.get_address()[1]) + ']' +
                         '[' + str(client.get_status().name) + '] Status change')
         return True
 
