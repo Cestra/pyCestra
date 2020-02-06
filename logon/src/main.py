@@ -63,10 +63,10 @@ def main():
 
     while True:
         time.sleep(15)
+        log.warning('--------')
         for x in game_client_dic:
-            log.warning('--------')
             log.warning(str(x))
-            log.warning('--------')
+        log.warning('--------')
 
     # ======================================================
 
