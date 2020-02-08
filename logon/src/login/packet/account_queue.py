@@ -30,7 +30,6 @@ class AccountQueue:
                                     'this account is already logged in ...' +
                                     'the other session is now closed')
                     game_client.kick()
-                    break
 
         AccountQueue().send_information(client,account)
 
