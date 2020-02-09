@@ -42,11 +42,24 @@ class PacketHandler:
                 # ServerSelected.get()
                 print('packet[0:2] == AX:')
             elif (packet[0:2] == 'Af') or (packet[-4:-2] == 'Af'):
-                AccountQueue().verify(client, game_client_dic)
+                account = client.get_account()
+                for game_client in game_client_dic.values():
+                    if not game_client.get_key() == client.get_key():
+                        dic_account = game_client.get_account()
+                        if dic_account.get_id() == account.get_id():
+                            self.log.debug('[' + str(client.get_address()[0]) + ':' +
+                                            str(client.get_address()[1]) + ']' +
+                                            '[' + str(client.get_status().name) + '] ' +
+                                            'this account is already logged in ...' +
+                                            'the other session is now closed')
+                            game_client.kick()
+                AccountQueue().verify(client)
                 return
+
             elif (packet[0:2] == 'Ax') or (packet[-4:-2] == 'Ax'):
                 ServerList().get_list(client)
                 return
+
             client.kick()
         client.kick()
 

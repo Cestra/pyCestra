@@ -31,21 +31,25 @@ class LoginHandler:
         LoginHandler().recv_loop(client, game_client_dic)
 
     def recv_loop(self, client, game_client_dic):
+        test = client.get_io_session().closed()
         while True:
-            data = client.get_io_session().recv(2048)
-            packet = data.decode()
-            packetPrint = packet.replace('\n', '[n]')
-            self.log.debug('[' + str(client.get_address()[0]) + ':' +
-                            str(client.get_address()[1]) + ']' +
-                            '[' + str(client.get_status().name) + '][<-RECV] ' +
-                            packetPrint)
-            if not data:
+            if client.get_io_session()._closed() == False:
+                data = client.get_io_session().recv(2048)
+                packet = data.decode()
+                packetPrint = packet.replace('\n', '[n]')
                 self.log.debug('[' + str(client.get_address()[0]) + ':' +
-                            str(client.get_address()[1]) + ']' +
-                            '[' + str(client.get_status().name) + '] PacketLoop no data')
+                                str(client.get_address()[1]) + ']' +
+                                '[' + str(client.get_status().name) + '][<-RECV] ' +
+                                packetPrint)
+                if not data:
+                    self.log.debug('[' + str(client.get_address()[0]) + ':' +
+                                str(client.get_address()[1]) + ']' +
+                                '[' + str(client.get_status().name) + '] PacketLoop no data')
+                    client.kick()
+                    break
+                PacketHandler().parser(client, packet, game_client_dic)
+            else:
                 client.kick()
-                break
-            PacketHandler().parser(client, packet, game_client_dic)
 
     def session_created(self, soecket, addr, game_client_dic):
         key = LoginHandler.generate_key(0)

@@ -8,7 +8,7 @@ class AccountQueue:
     def __init__(self):
         self.log = Logging()
 
-    def verify(self, client, game_client_dic):
+    def verify(self, client):
         account = client.get_account()
         if account.is_banned() == 1:
             self.log.debug('[' + str(client.get_address()[0]) + ':' +
@@ -18,19 +18,6 @@ class AccountQueue:
             client.write('AlEb')
             client.kick()
             return
-
-        # the ejection is not yet complete
-        for game_client in game_client_dic.values():
-            if not game_client.get_key() == client.get_key():
-                dic_account = game_client.get_account()
-                if dic_account.get_id() == account.get_id():
-                    self.log.debug('[' + str(client.get_address()[0]) + ':' +
-                                    str(client.get_address()[1]) + ']' +
-                                    '[' + str(client.get_status().name) + '] ' +
-                                    'this account is already logged in ...' +
-                                    'the other session is now closed')
-                    game_client.kick()
-
         AccountQueue().send_information(client,account)
 
     def send_information(self, client, account):

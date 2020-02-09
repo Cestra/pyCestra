@@ -12,7 +12,7 @@ from login.login_server import LoginServer
 def main():
     #  ======================================================
     #  start message
-    
+
     log = Logging()
     console = Console()
     console.clear()
@@ -54,7 +54,8 @@ def main():
 
     # ======================================================
     # socket tests
-    print(58*"-")
+
+    print(58*'-')
 
     game_client_dic = {}
     LoginServer().start(config.get_login_ip(), config.get_login_port(), game_client_dic)
@@ -63,10 +64,12 @@ def main():
 
     while True:
         time.sleep(15)
-        log.warning('--------')
+        log.warning('---- game_client_dic ----')
         for x in game_client_dic:
             log.warning(str(x))
-        log.warning('--------')
+        log.warning('-------------------------')
+    
+    print('Test vorbei')
 
     # ======================================================
 
