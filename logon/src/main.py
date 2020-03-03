@@ -58,14 +58,20 @@ def main():
     print(58*'-')
 
     game_client_dic = {}
+    host_list_dic = {}
+
     LoginServer().start(config.get_login_ip(), config.get_login_port(), game_client_dic)
 
-    ExchangeServer().start(config.get_exchange_ip(), config.get_exchange_port())
+    ExchangeServer().start(config.get_exchange_ip(), config.get_exchange_port(), host_list_dic)
 
     while True:
         time.sleep(15)
         log.warning('---- game_client_dic ----')
         for x in game_client_dic:
+            log.warning(str(x))
+        log.warning('-------------------------')
+        log.warning('---- host_list_dic ------')
+        for x in host_list_dic:
             log.warning(str(x))
         log.warning('-------------------------')
     

@@ -6,11 +6,15 @@ from exchange.exchange_client import ExchangeClient
 
 class HelloExchangeClient():
 
-    def __init__(self, socket, addr):
+    def __init__(self, socket, addr, host_list_dic):
         exClient = ExchangeClient()
-        exClient.set_id(0)
         exClient.set_io_session(socket)
         exClient.set_id(ExchangeHandler().generate_session_id())
+
+        # the object is save in the global Host-List 
+        dict_str = str(addr[0]) + ':' + str(addr[1]) + ':' + str(exClient.get_id())
+        host_list_dic[dict_str] = exClient    
+
         exClient.send('SK?')
         ExchangeHandler().recv_loop(exClient)
 
