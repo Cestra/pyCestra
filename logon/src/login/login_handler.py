@@ -23,7 +23,7 @@ class LoginHandler:
         self.log.debug('[' + str(addr[0]) + ':' + str(addr[1]) + '][' +
                         str(client.get_status().name) + '] Client created - '+key)
 
-        # the object is save in the global dictionary 
+        # the object is save in the global dictionary
         dict_str = addr[0] + ':' + str(addr[1])
         game_client_dic[dict_str] = client
 

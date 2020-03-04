@@ -20,14 +20,14 @@ class ExchangeClient():
         try:
             self.host_list_dic.pop(dict_str)
         except KeyError:
-            self.log.warning('[' + str(self.id[0]) + ']' +       
+            self.log.warning('[' + str(self.id[0]) + ']' +
                             '] The request in "host_list_dic" has been incorrectly removed')
         self.log.info('[' + str(self.id) + '] Exchange Client has disconnected')
         sys.exit(0)
 
     def set_addr(self, addr):
         self.addr = addr
-    
+
     def get_addr(self):
         return self.addr
 

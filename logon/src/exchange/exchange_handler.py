@@ -12,9 +12,9 @@ class HelloExchangeClient():
         exClient.set_addr(addr)
         exClient.set_id(ExchangeHandler().generate_session_id())
 
-        # the object is save in the global Host-List 
+        # the object is save in the global Host-List
         dict_str = str(addr[0]) + ':' + str(addr[1]) + ':' + str(exClient.get_id())
-        host_list_dic[dict_str] = exClient    
+        host_list_dic[dict_str] = exClient
 
         exClient.send('SK?')
         ExchangeHandler().recv_loop(exClient)
@@ -32,7 +32,7 @@ class ExchangeHandler():
                 exClient.kick()
             packet = data.decode()
             packetPrint = packet.replace('\n', '[n]')
-            self.log.debug('[' + str(exClient.get_id()) + ']' + 
+            self.log.debug('[' + str(exClient.get_id()) + ']' +
                             '[<-EX-RECV] ' + packetPrint)
             if not data:
                 self.log.debug('[SERVER-NAME] PacketLoop no data')
