@@ -1,5 +1,3 @@
-import socket
-
 from core.logging_handler import Logging
 
 
@@ -16,7 +14,7 @@ class ExchangePacketHandler:
                 return
             return
         elif packet[0] == 'S':
-            if packet[1] == 'H': 
+            if packet[1] == 'H':
                 if packet[2] == 'K': # SHK
                     self.log.debug('The login server validates the connection successfully.')
                     return

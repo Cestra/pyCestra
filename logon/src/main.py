@@ -74,7 +74,7 @@ def main():
         for x in host_list_dic:
             log.warning(str(x))
         log.warning('-------------------------')
-    
+
     print('Test vorbei')
 
     # ======================================================

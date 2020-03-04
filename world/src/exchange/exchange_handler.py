@@ -3,7 +3,7 @@ from exchange.exchange_packet_handler import ExchangePacketHandler
 
 
 class ExchangeHandler:
-     
+
     def __init__(self):
         self.log = Logging()
 
