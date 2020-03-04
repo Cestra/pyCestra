@@ -7,8 +7,9 @@ from exchange.exchange_client import ExchangeClient
 class HelloExchangeClient():
 
     def __init__(self, socket, addr, host_list_dic):
-        exClient = ExchangeClient()
+        exClient = ExchangeClient(host_list_dic)
         exClient.set_io_session(socket)
+        exClient.set_addr(addr)
         exClient.set_id(ExchangeHandler().generate_session_id())
 
         # the object is save in the global Host-List 
@@ -25,7 +26,10 @@ class ExchangeHandler():
 
     def recv_loop(self, exClient):
         while True:
-            data = exClient.get_io_session().recv(2048)
+            try:
+                data = exClient.get_io_session().recv(2048)
+            except ConnectionResetError:
+                exClient.kick()
             packet = data.decode()
             packetPrint = packet.replace('\n', '[n]')
             self.log.debug('[' + str(exClient.get_id()) + ']' + 
@@ -74,5 +78,5 @@ class ExchangeHandler():
                 # org.cestra.game.GameClient @ parseMigration
                 # MO + split[0] + "|" + server2
                 return
-        self.log.warning('Packet undefined: ' + packet)
+        self.log.warning('[' + str(exClient.get_id()) + '] Packet undefined: ' + packet)
         exClient.kick()
