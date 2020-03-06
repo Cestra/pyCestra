@@ -14,7 +14,7 @@ class HelloConnection():
         # We are waiting for the client version
         data = client.get_io_session().recv(2048)
         msg = data.decode()
-        if not (msg == '1.30.9\n\x00' or msg == '1.29.1\n\x00' or msg == '1.30.0\n\x00'):
+        if not (msg == '1.30.9\n\x00' or msg == '1.29.1\n\x00' or msg == '1.30.0\n\x00' or msg == '1.31.2\n\x00'):
             self.log.debug('[' + str(client.get_address()[0]) +
                             ':' + str(client.get_address()[1]) +
                             '][' + str(client.get_status().name) +
