@@ -16,19 +16,19 @@ class ExchangePacketHandler:
         elif packet[0] == 'S':
             if packet[1] == 'H':
                 if packet[2] == 'K': # SHK
-                    self.log.debug('The login server validates the connection successfully.')
+                    self.log.debug('The Logon-Server validates the connection successfully.')
                     return
                 return
             elif packet[1] == 'K':
                 if packet[2] == '?': # SK?
-                    self.log.debug('Oh, SK? Nice!')
-                    ExchangePacketHandler().send(exClient,'SS0')
-                    # i = 50000 - Main.gameServer.getPlayerNumber()
-					# Main.exchangeClient.send("SK" + Main.serverId + ";" + Main.key + ";" + i)
+                    i = 50000 - 0 # Main.gameServer.getPlayerNumber()
+					# TODO Main.exchangeClient.send("SK" + Main.serverId + ";" + Main.key + ";" + i)
+                    ExchangePacketHandler().send(exClient,'SK1;1;' + str(i))
                     return
                 elif packet[2] == 'K': # SKK
-                    # self.log.debug('The login server has accepted the connection')
-					# Main.exchangeClient.send("SH" + Main.Ip + ";" + Main.gamePort)
+                    self.log.debug('The Logon-Server has accepted the connection')  
+					# TODO Main.exchangeClient.send("SH" + Main.Ip + ";" + Main.gamePort)
+                    ExchangePacketHandler().send(exClient,'SH' + '127.0.0.1' + ';' + '5555')
                     return
                 elif packet[2] == 'R': # SKR
 					# self.log.debug('The login server refused the connection')

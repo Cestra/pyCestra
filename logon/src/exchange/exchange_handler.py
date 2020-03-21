@@ -55,13 +55,27 @@ class ExchangeHandler():
             return
         elif packet[0] == 'S':
             if packet[1] == 'H': #SH
+                s = packet[2:].split(';')
+                ip = str(s[0])
+                port = int(s[1])
+                # TODO set State 1
+                exClient.send('SHK')
                 return
             elif packet[1] == 'K': #SK
+                s = packet[2:].split(';')
+                id = int(s[0])
+                key = str(s[1])
+                freePlaces = int(s[2])
+                self.log.warning('save somehow !')
+                # TODO
+                # if (!server.getKey().equals(key)) {
+                    # send("SKR")
+                    # kick()
+                exClient.send('SKK')
                 return
             elif packet[1] == 'S': #SS
                 # org.cestra.game.GameServer @ setState
                 # SS0 SS1 SS2
-                exClient.send('SKK')
                 return
         elif packet[0] == 'M':
             if packet[1] == 'P': #MP
