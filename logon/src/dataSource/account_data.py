@@ -45,7 +45,7 @@ class AccountData(DAO):
             self.log.warning('account_data.py - Can\'t load account id 0')
 
     def load_nickname(self):
-        data = super().get_data("SELECT pseudo FROM accounts;")
+        data = super().get_data("SELECT nickname FROM accounts;")
         return data
 
     def load_from_name(self, name):
@@ -59,10 +59,10 @@ class AccountData(DAO):
 
     def load_from_result_set(self, resultSet):
         account = Account()
-        account.set_id(resultSet['guid'])
+        account.set_id(resultSet['id'])
         account.set_name(resultSet['account'])
         account.set_pass(resultSet['pass'])
-        account.set_nickname(resultSet['pseudo'])
+        account.set_nickname(resultSet['nickname'])
         account.set_question(resultSet['question'])
         account.set_state(resultSet['logged'])
         account.set_subscribe(resultSet['subscribe'])

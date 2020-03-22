@@ -85,7 +85,7 @@ class ChooseNickName:
         # AlEs = this nickname is not available.
         dbnicks = AccountData().load_nickname()
         for i in dbnicks:
-            if i['pseudo'] == nickname:
+            if i['nickname'] == nickname:
                 self.log.debug('[' + str(client.get_address()[0]) + ']'
                     '[' + str(client.get_status().name) + '] This nickname is already in use')
                 client.write("AlEs")

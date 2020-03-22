@@ -42,11 +42,6 @@ def main():
     log.info('ServerData were loaded')
     # print(serverData.get_from_id(1))
 
-    playerData = dataSource.PlayerData()
-    playerData.load()
-    log.info('PlayerData were loaded')
-    # print(playerData.get_from_id(1))
-
     accountData = dataSource.AccountData()
     accountData.load()
     log.info('AccountData were loaded')
