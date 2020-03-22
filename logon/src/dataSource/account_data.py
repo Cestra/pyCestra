@@ -69,3 +69,7 @@ class AccountData(DAO):
         account.set_banned(resultSet['banned'])
         account.set_staff(resultSet['rank'])
         return account
+
+    def update_lastConnectionDate_lastIP(self, date, ip, accountId):
+        data = 'UPDATE `cestra_logon`.`accounts` SET `lastConnectionDate` = \'' + str(date) + '\', `lastIP` = \'' + str(ip) + '\' WHERE (`id` = \'' + str(accountId) + '\');'
+        super().update_data(data)

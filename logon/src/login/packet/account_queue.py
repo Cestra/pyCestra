@@ -1,6 +1,8 @@
+import datetime
 from enum import Enum
 
 from core.logging_handler import Logging
+from dataSource.account_data import AccountData
 
 
 class AccountQueue:
@@ -43,6 +45,14 @@ class AccountQueue:
         # -----------------------------------------
         client.write('AlK' + str(account.is_staff()))
         client.write('AQ' + account.get_question())
+        # -----------------------------------------
+        # Update lastConnectionDate and lastIP
+        now = datetime.datetime.now()
+        AccountData().update_lastConnectionDate_lastIP(now.strftime("%Y-%m-%d %H:%M:%S"),client.get_address()[0],account.get_id())
+        self.log.debug('[' + str(client.get_address()[0]) + ':' +
+                        str(client.get_address()[1]) + ']' +
+                        '[' + str(client.get_status().name) + '] lastConnectionDate and lastIP update')
+        # -----------------------------------------
 
 class Status(Enum):
     WAIT_VERSION = 0
