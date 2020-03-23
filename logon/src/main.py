@@ -73,8 +73,6 @@ def main():
             log.warning(str(x))
         log.warning('-------------------------')
 
-    print('Test vorbei')
-
     # ======================================================
 
 if __name__ == '__main__':

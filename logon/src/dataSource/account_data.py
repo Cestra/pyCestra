@@ -20,7 +20,7 @@ class AccountData(DAO):
         example:
         update(1,'logged','1')
         '''
-        data = 'UPDATE `accounts` SET `' + str(valueTyp) + '` = \'' + str(value) + '\' WHERE (`id` = \'' + str(acc_id) + '\');'
+        data = 'UPDATE `accounts` SET `{}` = \'{}\' WHERE (`id` = \'{}\');'.format(str(valueTyp),str(value),str(acc_id))
         super().update_data(data)
 
     def load(self):
@@ -61,7 +61,7 @@ class AccountData(DAO):
         return data
 
     def load_from_name(self, name):
-        data = super().get_data("SELECT * FROM accounts WHERE account = '" + str(name) + "';")
+        data = super().get_data('SELECT * FROM accounts WHERE account = \'{}\';'.format(str(name)))
         if (isinstance(data, typing.List)):
             if (isinstance(data[0], typing.Dict)):
                 account = AccountData().load_from_result_set(data[0])
@@ -83,5 +83,5 @@ class AccountData(DAO):
         return account
 
     def update_lastConnectionDate_lastIP(self, acc_id, date, ip):
-        data = 'UPDATE `cestra_logon`.`accounts` SET `lastConnectionDate` = \'' + str(date) + '\', `lastIP` = \'' + str(ip) + '\' WHERE (`id` = \'' + str(acc_id) + '\');'
+        data = 'UPDATE `cestra_logon`.`accounts` SET `lastConnectionDate` = \'{}\', `lastIP` = \'{}\' WHERE (`id` = \'{}\');'.format(str(date),str(ip),str(acc_id))
         super().update_data(data)
