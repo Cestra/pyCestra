@@ -13,14 +13,14 @@ class DAO:
             data = cursor.fetchall()
             return data
         except:
-            self.log.warning('DAO.py - Can\'t load table accounts')
+            self.log.warning('DAO.py - Can\'t load:')
             self.log.warning(query)
             cursor.close()
             connection.close()
         finally:
             cursor.close()
             connection.close()
-    
+
     def update_data(self, query):
         connection = dataSource.Database().get_connection()
         cursor = connection.cursor()

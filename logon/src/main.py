@@ -47,6 +47,9 @@ def main():
     log.info('AccountData were loaded')
     # print(accountData.get_from_id(1))
 
+    ipbans = dataSource.IpBans().load()
+    log.info('IP Bans were loaded')
+
     # ======================================================
     # socket tests
 
@@ -55,7 +58,7 @@ def main():
     game_client_dic = {}
     host_list_dic = {}
 
-    LoginServer().start(config.get_login_ip(), config.get_login_port(), game_client_dic)
+    LoginServer().start(config.get_login_ip(), config.get_login_port(), game_client_dic, ipbans)
 
     ExchangeServer().start(config.get_exchange_ip(), config.get_exchange_port(), host_list_dic)
 

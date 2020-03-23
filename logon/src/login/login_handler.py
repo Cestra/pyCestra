@@ -13,7 +13,7 @@ class LoginHandler:
     def __init__(self):
         self.log = Logging()
 
-    def login(self, soecket ,key ,addr, game_client_dic):
+    def login(self, soecket ,key ,addr, game_client_dic, ipbans):
         client = LoginClient(game_client_dic)
         client.set_key(key)
         client.set_address(addr)
@@ -28,9 +28,9 @@ class LoginHandler:
         game_client_dic[dict_str] = client
 
         HelloConnection(client)
-        LoginHandler().recv_loop(client, game_client_dic)
+        LoginHandler().recv_loop(client, game_client_dic, ipbans)
 
-    def recv_loop(self, client, game_client_dic):
+    def recv_loop(self, client, game_client_dic, ipbans):
         while True:
             data = client.get_io_session().recv(2048)
             packet = data.decode()
@@ -45,15 +45,15 @@ class LoginHandler:
                             '[' + str(client.get_status().name) + '] PacketLoop no data')
                 client.kick()
                 break
-            PacketHandler().parser(client, packet, game_client_dic)
+            PacketHandler().parser(client, packet, game_client_dic, ipbans)
 
-    def session_created(self, soecket, addr, game_client_dic):
+    def session_created(self, soecket, addr, game_client_dic, ipbans):
         key = LoginHandler.generate_key(0)
         threadName = 'Client-Session '+str(addr[0])+':'+ str(addr[1])
         try:
             t = threading.Thread(target=LoginHandler.login,
                                 name=threadName,
-                                args=(self, soecket, key, addr, game_client_dic))
+                                args=(self, soecket, key, addr, game_client_dic, ipbans))
             t.start()
         except threading.ThreadError as e:
             self.log.debug('Created Session '+ str(addr[0])+':'+ str(addr[1]) + ': ' + str(e))
