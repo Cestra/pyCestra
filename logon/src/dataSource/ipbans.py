@@ -10,4 +10,3 @@ class IpBans(DAO):
     def load(self):
         self.data = super().get_data('SELECT * FROM ipbans;')
         return self.data
-

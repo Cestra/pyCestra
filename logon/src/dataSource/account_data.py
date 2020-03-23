@@ -11,6 +11,18 @@ class AccountData(DAO):
     def __init__(self):
         self.log = Logging()
 
+    def single_update(self, acc_id, valueTyp, value):
+        '''
+        acc_id
+        valueTyp = Column name as in the database
+        value
+
+        example:
+        update(1,'logged','1')
+        '''
+        data = 'UPDATE `accounts` SET `' + str(valueTyp) + '` = \'' + str(value) + '\' WHERE (`id` = \'' + str(acc_id) + '\');'
+        super().update_data(data)
+
     def load(self):
             '''
             DataFrame:
@@ -70,6 +82,6 @@ class AccountData(DAO):
         account.set_staff(resultSet['rank'])
         return account
 
-    def update_lastConnectionDate_lastIP(self, date, ip, accountId):
-        data = 'UPDATE `cestra_logon`.`accounts` SET `lastConnectionDate` = \'' + str(date) + '\', `lastIP` = \'' + str(ip) + '\' WHERE (`id` = \'' + str(accountId) + '\');'
+    def update_lastConnectionDate_lastIP(self, acc_id, date, ip):
+        data = 'UPDATE `cestra_logon`.`accounts` SET `lastConnectionDate` = \'' + str(date) + '\', `lastIP` = \'' + str(ip) + '\' WHERE (`id` = \'' + str(acc_id) + '\');'
         super().update_data(data)

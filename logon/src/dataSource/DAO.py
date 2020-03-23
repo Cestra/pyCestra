@@ -25,6 +25,8 @@ class DAO:
         connection = dataSource.Database().get_connection()
         cursor = connection.cursor()
         try:
+            if not query.endswith(';'):
+                    query += ";"
             cursor.execute(query)
         except:
             self.log.warning('DAO.py - Can\'t update the Database')

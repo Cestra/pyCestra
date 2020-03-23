@@ -2,6 +2,7 @@ import sys
 from enum import Enum
 
 from core.logging_handler import Logging
+from dataSource.account_data import AccountData
 
 
 class LoginClient:
@@ -21,6 +22,11 @@ class LoginClient:
         pass
 
     def kick(self):
+        # -----------------------------------------
+        # update 'logged' to 0
+        AccountData().single_update(self.account.get_id(),'logged',0)
+        # -----------------------------------------
+        # delete entries in 'game_client_dic'
         dict_str = self.address[0] + ':' + str(self.address[1])
         self.IoSession.close()
         try:
@@ -30,6 +36,7 @@ class LoginClient:
                             str(self.address[1]) + '][' +        
                             str(self.status.name) +
                             '] The request in "game_client_dic" has been incorrectly removed')
+        # -----------------------------------------
         self.log.info('[' + str(self.address[0]) + ':' +
                     str(self.address[1]) + '][' +        
                     str(self.status.name) + '] Client kick')

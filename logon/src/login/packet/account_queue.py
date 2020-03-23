@@ -28,7 +28,8 @@ class AccountQueue:
                                 'This IP is banned')
                 client.write('AlEb')
                 client.kick()
-                return            
+                return
+        
         AccountQueue().send_information(client,account)
 
     def send_information(self, client, account):
@@ -57,11 +58,16 @@ class AccountQueue:
         # -----------------------------------------
         # Update lastConnectionDate and lastIP
         now = datetime.datetime.now()
-        AccountData().update_lastConnectionDate_lastIP(now.strftime("%Y-%m-%d %H:%M:%S"),client.get_address()[0],account.get_id())
+        AccountData().update_lastConnectionDate_lastIP(account.get_id(),now.strftime("%Y-%m-%d %H:%M:%S"),client.get_address()[0])
         self.log.debug('[' + str(client.get_address()[0]) + ':' +
                         str(client.get_address()[1]) + ']' +
                         '[' + str(client.get_status().name) + '] lastConnectionDate and lastIP update')
         # -----------------------------------------
+        # Update 'logged' to 1
+        AccountData().single_update(account.get_id(),'logged',1)
+        self.log.debug('[' + str(client.get_address()[0]) + ':' +
+                str(client.get_address()[1]) + ']' +
+                '[' + str(client.get_status().name) + '] logged from 0 to 1 update')
 
 class Status(Enum):
     WAIT_VERSION = 0
