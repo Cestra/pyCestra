@@ -27,10 +27,10 @@ class LoginHandler:
         dict_str = addr[0] + ':' + str(addr[1])
         game_client_dic[dict_str] = client
 
-        HelloConnection(client)
-        LoginHandler().recv_loop(client, game_client_dic, ipbans)
+        HelloConnection(client, ipbans)
+        LoginHandler().recv_loop(client, game_client_dic)
 
-    def recv_loop(self, client, game_client_dic, ipbans):
+    def recv_loop(self, client, game_client_dic):
         while True:
             data = client.get_io_session().recv(2048)
             packet = data.decode()
@@ -45,7 +45,7 @@ class LoginHandler:
                             '[' + str(client.get_status().name) + '] PacketLoop no data')
                 client.kick()
                 break
-            PacketHandler().parser(client, packet, game_client_dic, ipbans)
+            PacketHandler().parser(client, packet, game_client_dic)
 
     def session_created(self, soecket, addr, game_client_dic, ipbans):
         key = LoginHandler.generate_key(0)

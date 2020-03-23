@@ -5,7 +5,7 @@ from core.logging_handler import Logging
 
 class HelloConnection():
 
-    def __init__(self, c):
+    def __init__(self, c, ipbans):
         self.log = Logging()
         client = c
         # We send the first package (HC + KEY + empty byte)
@@ -23,6 +23,14 @@ class HelloConnection():
             # TODO wrong text window is displayed "Invalid login or password."
             client.write('AlEf')
             sys.exit(0)
+        for i in ipbans:
+            if client.get_address()[0] == i['ip']:
+                self.log.debug('[' + str(client.get_address()[0]) + ':' +
+                                str(client.get_address()[1]) + ']' +
+                                '[' + str(client.get_status().name) + '] ' +
+                                'This IP is banned')
+                client.write('AlEb')
+                client.kick()
         self.log.debug('[' + str(client.get_address()[0]) + ':' +
                         str(client.get_address()[1]) +'][' +
                         str(client.get_status().name) + '] Version accepted ' +

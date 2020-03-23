@@ -12,7 +12,7 @@ class PacketHandler:
     def __init__(self):
         self.log = Logging()
 
-    def parser(self, client, packet, game_client_dic, ipbans):
+    def parser(self, client, packet, game_client_dic):
         # client arrived here, the version has been checked
         if client.get_status().name == Status.WAIT_VERSION.name:
             # set client status to WAIT_ACCOUNT
@@ -31,7 +31,7 @@ class PacketHandler:
                 client.write('AlEf')
 
         if  client.get_status().name == Status.WAIT_NICKNAME.name:
-            ChooseNickName().verify(client, packet[:-2], ipbans)
+            ChooseNickName().verify(client, packet[:-2])
             return
 
         if  client.get_status().name == Status.SERVER.name:
@@ -53,7 +53,7 @@ class PacketHandler:
                                             'this account is already logged in ...' +
                                             'the other session is now closed')
                             game_client.kick()
-                AccountQueue().verify(client, ipbans)
+                AccountQueue().verify(client)
                 return
 
             elif (packet[0:2] == 'Ax') or (packet[-4:-2] == 'Ax'):

@@ -10,7 +10,7 @@ class AccountQueue:
     def __init__(self):
         self.log = Logging()
 
-    def verify(self, client, ipbans):
+    def verify(self, client):
         account = client.get_account()
         if account.is_banned() == 1:
             self.log.debug('[' + str(client.get_address()[0]) + ':' +
@@ -20,16 +20,6 @@ class AccountQueue:
             client.write('AlEb')
             client.kick()
             return
-        for i in ipbans:
-            if client.get_address()[0] == i['ip']:
-                self.log.debug('[' + str(client.get_address()[0]) + ':' +
-                                str(client.get_address()[1]) + ']' +
-                                '[' + str(client.get_status().name) + '] ' +
-                                'This IP is banned')
-                client.write('AlEb')
-                client.kick()
-                return
-        
         AccountQueue().send_information(client,account)
 
     def send_information(self, client, account):

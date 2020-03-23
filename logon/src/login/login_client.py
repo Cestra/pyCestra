@@ -24,7 +24,13 @@ class LoginClient:
     def kick(self):
         # -----------------------------------------
         # update 'logged' to 0
-        AccountData().single_update(self.account.get_id(),'logged',0)
+        try:
+            AccountData().single_update(self.account.get_id(),'logged',0)
+        except AttributeError:
+            self.log.debug('[' + str(self.address[0]) + ':' +
+                    str(self.address[1]) + '][' +        
+                    str(self.status.name) + '] self.account not set')
+            pass
         # -----------------------------------------
         # delete entries in 'game_client_dic'
         dict_str = self.address[0] + ':' + str(self.address[1])
