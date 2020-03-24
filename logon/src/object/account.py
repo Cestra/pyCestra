@@ -90,7 +90,7 @@ class Account():
             # ----------------------------------------
             # current time
             now = datetime.datetime.now()
-            now = now.strftime("%Y-%m-%d %H:%M")            
+            now = now.strftime("%Y-%m-%d %H:%M")
             # ----------------------------------------
             n = datetime.datetime.strptime(now, '%Y-%m-%d %H:%M')
             s = datetime.datetime.strptime(sup, '%Y-%m-%d %H:%M')
