@@ -1,3 +1,5 @@
+import datetime
+
 class Account():
 
     def __init__(self):
@@ -82,7 +84,29 @@ class Account():
         return self.subscribe
 
     def set_subscribe(self, sup):
-        self.subscribe = sup
+        if sup == 0:
+            self.subscribe = sup
+        else:
+            # ----------------------------------------
+            # current time
+            now = datetime.datetime.now()
+            now = now.strftime("%Y-%m-%d %H:%M")            
+            # ----------------------------------------
+            n = datetime.datetime.strptime(now, '%Y-%m-%d %H:%M')
+            s = datetime.datetime.strptime(sup, '%Y-%m-%d %H:%M')
+            # ----------------------------------------
+            # value = subscription - now
+            v = s - n
+            # ----------------------------------------
+            # value in milliseconds
+            x = (v.days * 24 * 60 * 60 * 1000) + (v.seconds * 1000)
+            # ----------------------------------------
+            # the subscribe is in the past ?
+            if x < 0:
+                self.subscribe = 0
+            else:
+                self.subscribe = x
+            # ----------------------------------------
 
     def is_subscribes(self):
         pass

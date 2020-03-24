@@ -18,7 +18,7 @@ def main():
     console.clear()
 
     def wel():
-        welmsg = [58*'─', '|  0.01  |'+ 12*' ' + 
+        welmsg = [58*'─', '|  0.01  |' + 12*' ' + 
                 'pyCestra - Logon Server'+ 12*' ' + '|', 58*"─"]
         for x in welmsg:
             print(bcolors.blue + x + bcolors.cend)
