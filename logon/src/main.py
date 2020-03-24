@@ -18,13 +18,14 @@ def main():
     console.clear()
 
     def wel():
-        welmsg = [31*"─", "|   pyCestra - Logon Server   |", 31*"─"]
+        welmsg = [58*'─', '|  0.01  |'+ 12*' ' + 
+                'pyCestra - Logon Server'+ 12*' ' + '|', 58*"─"]
         for x in welmsg:
             print(bcolors.blue + x + bcolors.cend)
     wel()
 
     # ======================================================
-    # data tests
+    # preload data
 
     config = Config()
     config.initialize()
