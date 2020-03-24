@@ -44,6 +44,9 @@ class AccountData(DAO):
             finally:
                 cursor.close()
                 connection.close()
+    
+    def get_account_data(self):
+        return self.Datasource
 
     # Use databank account ID to find the right account
     def get_from_id(self, idwis):

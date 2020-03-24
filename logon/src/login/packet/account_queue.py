@@ -48,7 +48,8 @@ class AccountQueue:
         # -----------------------------------------
         # Update lastConnectionDate and lastIP
         now = datetime.datetime.now()
-        AccountData().update_lastConnectionDate_lastIP(account.get_id(),now.strftime("%Y-%m-%d %H:%M:%S"),client.get_address()[0])
+        test = AccountData()
+        test.update_lastConnectionDate_lastIP(account.get_id(),now.strftime("%Y-%m-%d %H:%M:%S"),client.get_address()[0])
         self.log.debug('[' + str(client.get_address()[0]) + ':' +
                         str(client.get_address()[1]) + ']' +
                         '[' + str(client.get_status().name) + '] lastConnectionDate and lastIP update')

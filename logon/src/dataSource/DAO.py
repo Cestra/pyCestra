@@ -1,7 +1,14 @@
 import dataSource
+import pymysql.connections
+from core.logging_handler import Logging
 
 
 class DAO:
+
+    def __init__(self):
+        self.log = Logging()
+        self.connection = dataSource.Database().get_connection()
+        self.cursor = self.connection.cursor()
 
     def get_data(self, query):
         connection = dataSource.Database().get_connection()
@@ -22,18 +29,29 @@ class DAO:
             connection.close()
 
     def update_data(self, query):
-        connection = dataSource.Database().get_connection()
-        cursor = connection.cursor()
         try:
             if not query.endswith(';'):
                     query += ";"
-            cursor.execute(query)
-        except:
-            self.log.warning('DAO.py - Can\'t update the Database')
-            self.log.warning(query)
+            self.cursor.execute(query)
+        except pymysql.Error as Error:
+            self.log.warning('DAO.py - update_data - Can\'t update the Database\n{}\n{}'.format(Error,query))
         finally:
-            cursor.close()
-            connection.close()
+            pass
+            # self.cursor.close()
+            # self.connection.close()
+    
+    def multi_update_data(self, query):
+        '''
+        This function does not end the connection after use
+        '''
+        try:
+            if not query.endswith(';'):
+                    query += ";"
+            self.cursor.execute(query)
+        except pymysql.Error as Error:
+            self.log.warning('DAO.py - update_data - Can\'t update the Database\n{}\n{}'.format(Error,query))
+            
+
 
 # name = 'admin'
 # data = DAO().get_data("SELECT * FROM accounts WHERE account = '" + str(name) + "';")
