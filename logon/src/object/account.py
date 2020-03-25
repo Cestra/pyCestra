@@ -104,12 +104,14 @@ class Account():
             # the subscribe is in the past ?
             if x < 0:
                 self.subscribe = 0
+                self.is_sub = 0
             else:
                 self.subscribe = x
+                self.is_sub = 1
             # ----------------------------------------
 
     def is_subscribes(self):
-        pass
+        return self.is_sub
 
 # ----------------------------------------
 
