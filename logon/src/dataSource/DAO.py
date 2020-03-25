@@ -50,8 +50,3 @@ class DAO:
             self.cursor.execute(query)
         except pymysql.Error as Error:
             self.log.warning('DAO.py - update_data - Can\'t update the Database\n{}\n{}'.format(Error,query))
-            
-
-
-# name = 'admin'
-# data = DAO().get_data("SELECT * FROM accounts WHERE account = '" + str(name) + "';")

@@ -60,7 +60,7 @@ class ChooseNickName:
         if flag ==-1:
             return False
 
-    def verify(self, client, nickname):
+    def verify(self, client, nickname, accountDataDic):
 
         # test if the nickname of the account is empty
         account = client.get_account()
@@ -93,11 +93,16 @@ class ChooseNickName:
 
         account.set_nickname(nickname)
         account.set_state(0)
+
         # set client status to SERVER
         client.set_status(Status(4))
-        # update of the database entry 
-        AccountData().single_update(account.get_id(),'nickname',account.get_nickname())
-        AccountQueue().verify(client)
+        
+        # update of the accountDataDic entry 
+        for i in accountDataDic:
+            if i['id'] == account.get_id():
+                i['nickname'] = account.get_nickname()
+        AccountQueue().verify(client, accountDataDic)
+
 
 class Status(Enum):
     WAIT_VERSION = 0

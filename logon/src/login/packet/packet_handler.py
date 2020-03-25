@@ -5,6 +5,7 @@ from dataSource.account_data import AccountData
 from login.packet.account_queue import AccountQueue
 from login.packet.choose_nickname import ChooseNickName
 from login.packet.server_list import ServerList
+from object.account import Account
 
 
 class PacketHandler:
@@ -12,7 +13,7 @@ class PacketHandler:
     def __init__(self):
         self.log = Logging()
 
-    def parser(self, client, packet, game_client_dic):
+    def parser(self, client, packet, game_client_dic, accountDataDic):
         # client arrived here, the version has been checked
         if client.get_status().name == Status.WAIT_VERSION.name:
             # set client status to WAIT_ACCOUNT
@@ -22,7 +23,7 @@ class PacketHandler:
                             '[' + str(client.get_status().name) + '] Status change')
 
         if  client.get_status().name == Status.WAIT_ACCOUNT.name:
-            verifyAccountName = PacketHandler().verify_account_name(client, packet.split('\n')[0])
+            verifyAccountName = PacketHandler().verify_account_name(client, packet.split('\n')[0], accountDataDic)
             verifyPassword = PacketHandler().verify_password(client, packet.split('\n')[1])
             if not (verifyAccountName and verifyPassword):
                 self.log.debug('[' + str(client.get_address()[0]) + ':' +
@@ -31,7 +32,7 @@ class PacketHandler:
                 client.write('AlEf')
 
         if  client.get_status().name == Status.WAIT_NICKNAME.name:
-            ChooseNickName().verify(client, packet[:-2])
+            ChooseNickName().verify(client, packet[:-2], accountDataDic)
             return
 
         if  client.get_status().name == Status.SERVER.name:
@@ -53,7 +54,7 @@ class PacketHandler:
                                             'this account is already logged in ...' +
                                             'the other session is now closed')
                             game_client.kick()
-                AccountQueue().verify(client)
+                AccountQueue().verify(client, accountDataDic)
                 return
 
             elif (packet[0:2] == 'Ax') or (packet[-4:-2] == 'Ax'):
@@ -63,13 +64,32 @@ class PacketHandler:
             client.kick()
         client.kick()
 
-    def verify_account_name(self, client, name):
-        account = AccountData().load_from_name(name)
-        client.set_account(account)
-        # check if the query is empty
+    def verify_account_name(self, client, name, accountDataDic):
+        # accountDataDic is checked whether the account exists
+        def load_from_result_set(resultSet):
+            account = Account()
+            account.set_id(resultSet['id'])
+            account.set_name(resultSet['account'])
+            account.set_pass(resultSet['pass'])
+            account.set_nickname(resultSet['nickname'])
+            account.set_question(resultSet['question'])
+            account.set_state(resultSet['logged'])
+            account.set_subscribe(resultSet['subscribe'])
+            account.set_banned(resultSet['banned'])
+            account.set_staff(resultSet['rank'])
+            return account
+        
+        for i in accountDataDic:
+            if i['account'] == name:
+                account = load_from_result_set(i)
+                client.set_account(account)
+                break
+            else:
+                account = 0
+
         if account == 0:
             return False
-        # client.getAccount().setClient(client)
+        client.get_account().set_client(client)
         # set client status to WAIT_PASSWORD
         client.set_status(Status(1))
         self.log.debug('[' + str(client.get_address()[0]) + ':' +

@@ -45,15 +45,15 @@ def main():
 
     accountData = dataSource.AccountData()
     accountData.load()
+    accountDataDic = accountData.get_account_data()
     log.info('AccountData were loaded')
-    # print(accountData.get_from_id(1))
 
     ipbans = dataSource.IpBans().load()
     log.info('IP Bans were loaded')
 
-    updateTime = 2
+    updateTime = 16
 
-    databaseUpdateService = dataSource.DatabaseUpdateService().start(accountData.get_account_data(), updateTime)
+    databaseUpdateService = dataSource.DatabaseUpdateService().start(accountDataDic, updateTime)
 
     # ======================================================
     # socket tests
@@ -63,9 +63,15 @@ def main():
     game_client_dic = {}
     host_list_dic = {}
 
-    LoginServer().start(config.get_login_ip(), config.get_login_port(), game_client_dic, ipbans)
+    LoginServer().start(config.get_login_ip(),
+                        config.get_login_port(),
+                        game_client_dic,
+                        accountDataDic,
+                        ipbans)
 
-    ExchangeServer().start(config.get_exchange_ip(), config.get_exchange_port(), host_list_dic)
+    ExchangeServer().start(config.get_exchange_ip(),
+                        config.get_exchange_port(),
+                        host_list_dic)
 
     while True:
         time.sleep(15)

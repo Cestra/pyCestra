@@ -3,7 +3,7 @@ import typing
 import dataSource
 from core.logging_handler import Logging
 from dataSource.DAO import DAO
-from object.account import Account
+# from object.account import Account
 
 
 class AccountData(DAO):
@@ -35,12 +35,9 @@ class AccountData(DAO):
                 cursor.execute('SELECT * FROM accounts;')
                 data = cursor.fetchall()
                 for row in data:
-                    Rows = [row]
-                    self.Datasource.append(Rows)
+                    self.Datasource.append(row)
             except:
                 self.log.warning(' account_data.py - Can\'t load table accounts')
-                cursor.close()
-                connection.close()
             finally:
                 cursor.close()
                 connection.close()
@@ -63,6 +60,9 @@ class AccountData(DAO):
         data = super().get_data("SELECT nickname FROM accounts;")
         return data
 
+    '''
+    ! at the top of the file is the import !
+
     def load_from_name(self, name):
         data = super().get_data('SELECT * FROM accounts WHERE account = \'{}\';'.format(str(name)))
         if (isinstance(data, typing.List)):
@@ -84,6 +84,7 @@ class AccountData(DAO):
         account.set_banned(resultSet['banned'])
         account.set_staff(resultSet['rank'])
         return account
+    '''
 
     def update_lastConnectionDate_lastIP(self, acc_id, date, ip):
         data = 'UPDATE `cestra_logon`.`accounts` SET `lastConnectionDate` = \'{}\', `lastIP` = \'{}\' WHERE (`id` = \'{}\');'.format(str(date),str(ip),str(acc_id))

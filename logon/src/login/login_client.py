@@ -7,8 +7,9 @@ from dataSource.account_data import AccountData
 
 class LoginClient:
 
-    def __init__(self, game_client_dic):
+    def __init__(self, game_client_dic, accountDataDic):
         self.game_client_dic = game_client_dic
+        self.accountDataDic = accountDataDic
         self.log = Logging()
 
     def write(self, o):
@@ -18,19 +19,12 @@ class LoginClient:
                     str(self.status.name) + '][SEND->] ' + o)
         self.IoSession.send(msg)
 
-    def parser(self):
-        pass
-
     def kick(self):
         # -----------------------------------------
         # update 'logged' to 0
-        try:
-            AccountData().single_update(self.account.get_id(),'logged',0)
-        except AttributeError:
-            self.log.debug('[' + str(self.address[0]) + ':' +
-                    str(self.address[1]) + '][' +        
-                    str(self.status.name) + '] self.account not set')
-            pass
+        for i in self.accountDataDic:
+            if i['id'] == self.account.get_id():
+                i['logged'] = 0
         # -----------------------------------------
         # delete entries in 'game_client_dic'
         dict_str = self.address[0] + ':' + str(self.address[1])
@@ -81,8 +75,8 @@ class LoginClient:
     def get_account(self):
         return self.account
 
-    def set_account(self, accountTupel):
-        self.account = accountTupel
+    def set_account(self, account):
+        self.account = account
 
 class Status(Enum):
     WAIT_VERSION = 0

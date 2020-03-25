@@ -5,7 +5,7 @@ from core.logging_handler import Logging
 from dataSource.DAO import DAO
 
 
-class DatabaseUpdateService():
+class DatabaseUpdateService:
 
     def __init__(self):
         self.log = Logging()
@@ -22,35 +22,36 @@ class DatabaseUpdateService():
             self.log.warning('Database-Update-Service could not be created')
 
     def update_loop(self, accountDic, updateTime):
+
+        def string_builder(i):
+            queryPart = (
+                'UPDATE `accounts` SET '
+                '`pass` = \'{}\','
+                '`rank` = \'{}\','
+                '`nickname` = \'{}\','
+                '`lastConnectionDate` = \'{}\','
+                '`lastIP` = \'{}\','
+                '`friends` = \'{}\','
+                '`reload_needed` = \'{}\','
+                '`logged` = \'{}\','
+                '`subscribe` = \'{}\' '
+                'WHERE (`id` = \'{}\');'.format(i["pass"],i["rank"],i["nickname"],
+                                        i["lastConnectionDate"],
+                                        i["lastIP"],i["friends"],i["reload_needed"],
+                                        i["logged"],i["subscribe"],i["id"]))
+            return queryPart
+
         dao = DAO()
         while True:
             time.sleep(updateTime)
-            self.log.debug('[Database-Update-Service] - SAVE DATA')
+            self.log.debug('[Database-Update-Service] - '
+                            'Data is send to the database')
             start = time.time()
             counter = 0
             for i in accountDic:
-                query = DatabaseUpdateService.string_builder(i)
+                query = string_builder(i)
                 dao.multi_update_data(query)
                 counter = counter + 1
             ende = time.time()
-            self.log.debug('[Database-Update-Service] - SAVE PROCESS '
-                            'FINISHED (counter:{}, total time:{:5.3f}s)'.format(counter, ende-start))
-
-    def string_builder(i):
-        i = i[0]
-        queryPart = (
-            'UPDATE `accounts` SET '
-            '`pass` = \'{}\','
-            '`rank` = \'{}\','
-            '`nickname` = \'{}\','
-            '`lastConnectionDate` = \'{}\','
-            '`lastIP` = \'{}\','
-            '`friends` = \'{}\','
-            '`reload_needed` = \'{}\','
-            '`logged` = \'{}\','
-            '`subscribe` = \'{}\' '
-            'WHERE (`id` = \'{}\');'.format(i["pass"],i["rank"],i["nickname"],
-                                    i["lastConnectionDate"],
-                                    i["lastIP"],i["friends"],i["reload_needed"],
-                                    i["logged"],i["subscribe"],i["id"]))
-        return queryPart
+            self.log.debug('[Database-Update-Service] - Data was transferred '
+                            '(query:{}, total time: {:5.3f}s)'.format(counter, ende-start))

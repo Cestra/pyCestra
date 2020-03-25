@@ -63,7 +63,10 @@ class Account():
 # ----------------------------------------
 
     def get_client(self):
-        pass
+        return self.client
+
+    def set_client(self, client):
+        self.client = client
 
 # ----------------------------------------
 
@@ -84,7 +87,7 @@ class Account():
         return self.subscribe
 
     def set_subscribe(self, sup):
-        if sup == 0:
+        if sup == 0 or sup == '0':
             self.subscribe = sup
         else:
             # ----------------------------------------
