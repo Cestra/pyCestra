@@ -96,8 +96,8 @@ class ChooseNickName:
 
         # set client status to SERVER
         client.set_status(Status(4))
-        
-        # update of the accountDataDic entry 
+
+        # update of the accountDataDic entry
         for i in accountDataDic:
             if i['id'] == account.get_id():
                 i['nickname'] = account.get_nickname()

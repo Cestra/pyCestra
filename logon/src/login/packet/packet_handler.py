@@ -78,7 +78,7 @@ class PacketHandler:
             account.set_banned(resultSet['banned'])
             account.set_staff(resultSet['rank'])
             return account
-        
+
         for i in accountDataDic:
             if i['account'] == name:
                 account = load_from_result_set(i)

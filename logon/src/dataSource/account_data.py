@@ -11,18 +11,6 @@ class AccountData(DAO):
     def __init__(self):
         self.log = Logging()
 
-    def single_update(self, acc_id, valueTyp, value):
-        '''
-        acc_id
-        valueTyp = Column name as in the database
-        value
-
-        example:
-        update(1,'logged','1')
-        '''
-        data = 'UPDATE `accounts` SET `{}` = \'{}\' WHERE (`id` = \'{}\');'.format(str(valueTyp),str(value),str(acc_id))
-        super().update_data(data)
-
     def load(self):
             '''
             DataFrame:
@@ -45,6 +33,18 @@ class AccountData(DAO):
     def get_account_data(self):
         return self.Datasource
 
+    def single_update(self, acc_id, valueTyp, value):
+        '''
+        acc_id
+        valueTyp = Column name as in the database
+        value
+
+        example:
+        update(1,'logged','1')
+        '''
+        data = 'UPDATE `accounts` SET `{}` = \'{}\' WHERE (`id` = \'{}\');'.format(str(valueTyp),str(value),str(acc_id))
+        super().update_data(data)
+
     # Use databank account ID to find the right account
     def get_from_id(self, idwis):
         '''
@@ -55,37 +55,3 @@ class AccountData(DAO):
             return self.Datasource[account]
         else:
             self.log.warning('account_data.py - Can\'t load account id 0')
-
-    def load_nickname(self):
-        data = super().get_data("SELECT nickname FROM accounts;")
-        return data
-
-    '''
-    ! at the top of the file is the import !
-
-    def load_from_name(self, name):
-        data = super().get_data('SELECT * FROM accounts WHERE account = \'{}\';'.format(str(name)))
-        if (isinstance(data, typing.List)):
-            if (isinstance(data[0], typing.Dict)):
-                account = AccountData().load_from_result_set(data[0])
-                return account
-            return 0
-        return 0
-
-    def load_from_result_set(self, resultSet):
-        account = Account()
-        account.set_id(resultSet['id'])
-        account.set_name(resultSet['account'])
-        account.set_pass(resultSet['pass'])
-        account.set_nickname(resultSet['nickname'])
-        account.set_question(resultSet['question'])
-        account.set_state(resultSet['logged'])
-        account.set_subscribe(resultSet['subscribe'])
-        account.set_banned(resultSet['banned'])
-        account.set_staff(resultSet['rank'])
-        return account
-    '''
-
-    def update_lastConnectionDate_lastIP(self, acc_id, date, ip):
-        data = 'UPDATE `cestra_logon`.`accounts` SET `lastConnectionDate` = \'{}\', `lastIP` = \'{}\' WHERE (`id` = \'{}\');'.format(str(date),str(ip),str(acc_id))
-        super().update_data(data)
