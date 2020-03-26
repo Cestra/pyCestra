@@ -1,9 +1,6 @@
-import typing
-
 import dataSource
 from core.logging_handler import Logging
 from dataSource.DAO import DAO
-# from object.account import Account
 
 
 class AccountData(DAO):
@@ -24,12 +21,13 @@ class AccountData(DAO):
                 data = cursor.fetchall()
                 for row in data:
                     self.Datasource.append(row)
-            except:
+            except pymysql.Error as Error:
                 self.log.warning(' account_data.py - Can\'t load table accounts')
+                self.log.warning(Error)
             finally:
                 cursor.close()
                 connection.close()
-    
+
     def get_account_data(self):
         return self.Datasource
 
@@ -47,9 +45,6 @@ class AccountData(DAO):
 
     # Use databank account ID to find the right account
     def get_from_id(self, idwis):
-        '''
-        preloading necessary!
-        '''
         if not idwis == 0:
             account = idwis - 1
             return self.Datasource[account]

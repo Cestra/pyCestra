@@ -2,7 +2,6 @@ import re
 from enum import Enum
 
 from core.logging_handler import Logging
-from dataSource.account_data import AccountData
 from login.packet.account_queue import AccountQueue
 
 

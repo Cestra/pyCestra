@@ -2,7 +2,6 @@ import datetime
 from enum import Enum
 
 from core.logging_handler import Logging
-from dataSource.account_data import AccountData
 
 
 class AccountQueue:

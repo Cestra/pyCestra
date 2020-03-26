@@ -19,27 +19,27 @@ class DAO:
             cursor.execute(query)
             data = cursor.fetchall()
             return data
-        except:
-            self.log.warning('DAO.py - Can\'t load:')
-            self.log.warning(query)
+        except Exception as e:
+            self.log.warning('DAO.py - Can\'t load: \n{}\n{}'.format(query,e))
             cursor.close()
             connection.close()
         finally:
             cursor.close()
             connection.close()
 
-    def update_data(self, query):
+    def singel_update_data(self, query):
         try:
             if not query.endswith(';'):
                     query += ";"
             self.cursor.execute(query)
         except pymysql.Error as Error:
             self.log.warning('DAO.py - update_data - Can\'t update the Database\n{}\n{}'.format(Error,query))
+            cursor.close()
+            connection.close()
         finally:
-            pass
-            # self.cursor.close()
-            # self.connection.close()
-    
+            cursor.close()
+            connection.close()
+
     def multi_update_data(self, query):
         '''
         This function does not end the connection after use

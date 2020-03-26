@@ -2,7 +2,6 @@ import sys
 from enum import Enum
 
 from core.logging_handler import Logging
-from dataSource.account_data import AccountData
 
 
 class LoginClient:
@@ -33,7 +32,7 @@ class LoginClient:
             self.game_client_dic.pop(dict_str)
         except KeyError:
             self.log.warning('[' + str(self.address[0]) + ':' +
-                            str(self.address[1]) + '][' +        
+                            str(self.address[1]) + '][' +
                             str(self.status.name) +
                             '] The request in "game_client_dic" has been incorrectly removed')
         # -----------------------------------------
