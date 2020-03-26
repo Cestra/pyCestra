@@ -51,9 +51,8 @@ def main():
     ipbans = dataSource.IpBans().load()
     log.info('IP Bans were loaded')
 
-    updateTime = 16
-
-    databaseUpdateService = dataSource.DatabaseUpdateService().start(accountDataDic, updateTime)
+    databaseUpdateService = dataSource.DatabaseUpdateService().start(accountDataDic,
+                                                                    config.get_update_time(),)
 
     # ======================================================
     # socket tests

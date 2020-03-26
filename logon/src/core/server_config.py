@@ -19,6 +19,7 @@ class Config:
         self.name = 'cestra_logon'
         self.user = 'root'
         self.passwo = 'root'
+        self.updateTime = 120
         self.exchangeIp = '127.0.0.1'
         self.exchangePort = 451
 
@@ -36,7 +37,8 @@ class Config:
                 'logon_database_port': '3306',
                 'logon_database_name': 'cestra_game',
                 'logon_database_user': 'root',
-                'logon_database_pass': 'fabio312'
+                'logon_database_pass': 'fabio312',
+                'logon_database_update_service': '120'
             }
             self.config['RealmList Configuration'] = {
                 'network_realmList_ip': '127.0.0.1',
@@ -65,6 +67,7 @@ class Config:
             self.name = self.config.get(section02, 'logon_database_name')
             self.user = self.config.get(section02, 'logon_database_user')
             self.passwo = self.config.get(section02, 'logon_database_pass')
+            self.updateTime = self.config.getint(section02, 'logon_database_update_service')
 
             self.exchangeIp = self.config.get(section03, 'network_realmList_ip')
             self.exchangePort = self.config.getint(section03, 'network_realmList_port')
@@ -98,6 +101,9 @@ class Config:
 
     def get_pass(self):
         return self.passwo
+    
+    def get_update_time(self):
+        return self.updateTime
 
     def get_exchange_ip(self):
         return self.exchangeIp
