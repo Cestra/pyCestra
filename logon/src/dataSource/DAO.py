@@ -20,7 +20,7 @@ class DAO:
             data = cursor.fetchall()
             return data
         except Exception as e:
-            self.log.warning('DAO.py - Can\'t load: \n{}\n{}'.format(query,e))
+            self.log.warning('DAO.py - Can\'t load: \n{}\n{}'.format(query,str(e)))
             cursor.close()
             connection.close()
         finally:
@@ -28,12 +28,14 @@ class DAO:
             connection.close()
 
     def singel_update_data(self, query):
+        connection = dataSource.Database().get_connection()
+        cursor = connection.cursor()
         try:
             if not query.endswith(';'):
                     query += ";"
             self.cursor.execute(query)
         except pymysql.Error as Error:
-            self.log.warning('DAO.py - update_data - Can\'t update the Database\n{}\n{}'.format(Error,query))
+            self.log.warning('DAO.py - update_data - Can\'t update the Database\n{}\n{}'.format(str(Error),query))
             cursor.close()
             connection.close()
         finally:
@@ -49,4 +51,4 @@ class DAO:
                     query += ";"
             self.cursor.execute(query)
         except pymysql.Error as Error:
-            self.log.warning('DAO.py - update_data - Can\'t update the Database\n{}\n{}'.format(Error,query))
+            self.log.warning('DAO.py - update_data - Can\'t update the Database\n{}\n{}'.format(str(Error),query))

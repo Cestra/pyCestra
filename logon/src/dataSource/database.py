@@ -35,5 +35,5 @@ class Database():
                             str(config.get_user()) + ' - ' +
                             str(config.get_pass()) + ' - ' +
                             str(config.get_database_name()) +
-                            '\nDatabase - inicon - Something went wrong: {}'.format(Error))
+                            '\nDatabase - inicon - Something went wrong: {}'.format(str(Error)))
             return False

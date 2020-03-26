@@ -25,7 +25,7 @@ class ServerData(DAO):
                 Rows = [row]
                 self.Datasource.append(Rows)
         except pymysql.Error as Error:
-            self.log.warning('server_data.py - Can\'t load table servers - ' + Error)
+            self.log.warning('server_data.py - Can\'t load table servers - ' + str(Error))
             cursor.close()
             connection.close()
         finally:

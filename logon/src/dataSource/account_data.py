@@ -21,9 +21,9 @@ class AccountData(DAO):
                 data = cursor.fetchall()
                 for row in data:
                     self.Datasource.append(row)
-            except pymysql.Error as Error:
+            except Exception as Error:
                 self.log.warning(' account_data.py - Can\'t load table accounts')
-                self.log.warning(Error)
+                self.log.warning(str(Error))
             finally:
                 cursor.close()
                 connection.close()
