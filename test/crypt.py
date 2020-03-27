@@ -28,15 +28,16 @@ def decryptPassword(passs, key):
 
 def encryptPassword(rawPass, key):
     Chaine = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
-    #encrypted = ''
+    encrypted = '#1'
     for i in range(len(rawPass)):
         loc6 = ord(rawPass[i])
         loc7 = ord(key[i])
         loc8 = loc6//16
         loc9 = loc6%16
-        test = Chaine[loc8 + loc7 % len(Chaine) % len(Chaine)] + Chaine[loc9 + loc7 % len(Chaine) % len(Chaine)]
-        print(test)
-    return "#1" + encrypted
+        loc10 = Chaine[(loc8 + loc7 % len(Chaine)) % len(Chaine)]
+        loc11 = Chaine[(loc9 + loc7 % len(Chaine)) % len(Chaine)]
+        encrypted += loc10 + loc11
+    return encrypted
 
 print(45*'-')
 print('encrypted: ' + encryptPassword('admin','fxzgopoueppehteyixzzshavenlynqbz') + ' <- [#1SN-8ahTW19]')
