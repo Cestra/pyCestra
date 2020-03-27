@@ -111,24 +111,24 @@ class PacketHandler:
         return True
 
     def decrypt_password(self, passs, key):
-        Chaine = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
-        decrypted = ""
+        _Chaine = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_"
+        _decrypted = ""
         for i in range(len(passs)//2):
-            PKey = ord(key[i])
-            ANB = Chaine.index(passs[i*2])
-            ANB2 = Chaine.index(passs[i*2+1])
-            somme1 = ANB + len(Chaine)
-            somme2 = ANB2 + len(Chaine)
-            APass = somme1 - PKey
-            if APass < 0:
-                APass += 64
-            APass *= 16
-            AKey = somme2 - PKey
-            if AKey < 0:
-                AKey += 64
-            PPass = chr(APass + AKey)
-            decrypted = decrypted + PPass
-        return decrypted
+            _PKey = ord(key[i])
+            _ANB = _Chaine.index(passs[i*2])
+            _ANB2 = _Chaine.index(passs[i*2+1])
+            _somme1 = _ANB + len(_Chaine)
+            _somme2 = _ANB2 + len(_Chaine)
+            _APass = _somme1 - _PKey
+            if _APass < 0:
+                _APass += 64
+            _APass *= 16
+            _AKey = _somme2 - _PKey
+            if _AKey < 0:
+                _AKey += 64
+            _PPass = chr(_APass + _AKey)
+            _decrypted = _decrypted + _PPass
+        return _decrypted
 
 class Status(Enum):
     WAIT_VERSION = 0
