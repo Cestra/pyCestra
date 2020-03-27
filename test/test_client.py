@@ -1,6 +1,6 @@
 import unittest
 
-from client_normal_customer_connection import DemoClient
+from client_normal_connection import DemoClient
 
 class TestClient(unittest.TestCase):
 
