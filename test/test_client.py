@@ -1,7 +1,7 @@
 import unittest
 
-from demoClient.client_normal_connection import DemoClient01
-from demoClient.client_no_nickname_connection import DemoClient02
+from demo_client.client_normal_connection import DemoClient01
+from demo_client.client_no_nickname_connection import DemoClient02
 
 class TestClient(unittest.TestCase):
 

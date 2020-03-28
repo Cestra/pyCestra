@@ -1,11 +1,11 @@
 import os
 import socket
 import time
+import unittest
 
-from demoClient.cryptCalculation import Crypt
+from demo_client.crypt_calculation import Crypt
 
-
-class DemoClient01:
+class DemoClient02:
 
     def start(self, account, password):
 
@@ -45,6 +45,16 @@ class DemoClient01:
         dp = Crypt().encryptPassword(password, key[2:])
         send(account + '\n' + dp + '\n Af\n')
         # # ----------------------
+        # AlEr
+        packet = response()
+        if packet == 'AlEr':
+            result_dic["test_packet_00"] = True
+        else:
+            result_dic["test_packet_00"] = False
+        # # ----------------------
+        # sned nickname
+        send('uni-two\n')
+        # # ----------------------
         # Af0|0|0|1|-1
         packet = response()
         if packet == 'Af0|0|0|1|-1':
@@ -54,7 +64,7 @@ class DemoClient01:
         # # ----------------------
         # unittest-01
         packet = response()
-        if packet == 'Aduni-one':
+        if packet == 'Aduni-two':
             result_dic["test_packet_02"] = True
         else:
             result_dic["test_packet_02"] = False
