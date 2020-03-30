@@ -57,11 +57,11 @@ class Config:
             self.server_name = self.config.get(section01, 'world_server_name')
             self.log_Level = self.config.get(section01, 'world_server_log_level')
 
-            self.host = self.config.get(section02, 'world_database_ip')
-            self.port = self.config.getint(section02, 'world_database_port')
-            self.name = self.config.get(section02, 'world_database_name')
-            self.user = self.config.get(section02, 'world_database_user')
-            self.passwo = self.config.get(section02, 'world_database_pass')
+            self.world_db_host = self.config.get(section02, 'world_database_ip')
+            self.world_db_port = self.config.getint(section02, 'world_database_port')
+            self.world_db_name = self.config.get(section02, 'world_database_name')
+            self.world_db_user = self.config.get(section02, 'world_database_user')
+            self.world_db_passwo = self.config.get(section02, 'world_database_pass')
 
             self.exchangeIp = self.config.get(section03, 'network_realmList_ip')
             self.exchangePort = self.config.getint(section03, 'network_realmList_port')
