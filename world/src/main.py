@@ -1,6 +1,8 @@
 import os
+import sys
 import time
 
+import dataSource
 from core.logging_handler import Logging, bcolors
 from core.server_config import Config
 from exchange.exchange_client import ExchangeClient
@@ -26,13 +28,26 @@ class Main:
                 print(bcolors.blue + x + bcolors.cend)
         wel()
 
+        # ======================================================
+        # preload data
+
+        self.log.info('Connection Test...')
+        database = dataSource.Database()
+        if database.get_connection():
+            self.log.info('Connection Successfully')
+        else:
+            self.log.warning('Connection ERROR')
+            sys.exit(0)
+
+        
+
         #  ======================================================
         #  exchange client test
 
-        exClient = ExchangeClient()
-        exClient.initialize(self.config.get_exchange_ip(), self.config.get_exchange_port())
+        # exClient = ExchangeClient()
+        # exClient.initialize(self.config.get_exchange_ip(), self.config.get_exchange_port())
 
-        time.sleep(3)
+        # time.sleep(3)
         # exClient.send('SS0')
 
         # self.log.debug('Game Server Start')
