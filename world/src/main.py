@@ -7,6 +7,8 @@ from core.logging_handler import Logging, bcolors
 from core.server_config import Config
 from exchange.exchange_client import ExchangeClient
 from game.game_server import GameServer
+from dataSource.database import Database
+from dataSource.map_data import MapData
 
 
 class Main:
@@ -31,21 +33,22 @@ class Main:
         # ======================================================
         # preload data
 
-        self.log.info('Connection Test...')
-        database = dataSource.Database()
-        if database.get_connection():
-            self.log.info('Connection Successfully')
-        else:
-            self.log.warning('Connection ERROR')
-            sys.exit(0)
+        # self.log.info('Connection Test...')
+        # database = Database()
+        # if database.get_connection():
+        #     self.log.info('Connection Successfully')
+        # else:
+        #     self.log.warning('Connection ERROR')
+        #     sys.exit(0)
 
+        # test = MapData().pre_Load()
         
 
         #  ======================================================
         #  exchange client test
 
-        # exClient = ExchangeClient()
-        # exClient.initialize(self.config.get_exchange_ip(), self.config.get_exchange_port())
+        exClient = ExchangeClient()
+        exClient.initialize(self.config.get_exchange_ip(), self.config.get_exchange_port())
 
         # time.sleep(3)
         # exClient.send('SS0')

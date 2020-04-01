@@ -26,6 +26,12 @@ class Database():
                                         password=config.get_world_db_passwo(),
                                         db=config.get_world_db_name(),
                                         cursorclass=pymysql.cursors.DictCursor)
+            self.log.warning('Database - initialize_connection\n' +
+                            'Config: '+ str(config.get_world_db_host()) + ' - ' +
+                            str(config.get_world_db_port()) + ' - ' +
+                            str(config.get_world_db_user()) + ' - ' +
+                            str(config.get_world_db_passwo()) + ' - ' +
+                            str(config.get_world_db_name()))
             return connection
 
         except pymysql.Error as Error:
