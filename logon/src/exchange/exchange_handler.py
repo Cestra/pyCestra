@@ -6,25 +6,19 @@ from exchange.exchange_client import ExchangeClient
 
 class HelloExchangeClient():
 
-    def __init__(self, socket, addr, host_list_dic):
-        exClient = ExchangeClient(host_list_dic)
+    def __init__(self, socket, addr, hostList):
+        exClient = ExchangeClient()
         exClient.set_io_session(socket)
         exClient.set_addr(addr)
-        exClient.set_id(ExchangeHandler().generate_session_id())
-
-        # the object is save in the global Host-List
-        dict_str = str(addr[0]) + ':' + str(addr[1]) + ':' + str(exClient.get_id())
-        host_list_dic[dict_str] = exClient
-
         exClient.send('SK?')
-        ExchangeHandler().recv_loop(exClient)
+        ExchangeHandler().recv_loop(exClient, hostList)
 
 class ExchangeHandler():
 
     def __init__(self):
         self.log = Logging()
 
-    def recv_loop(self, exClient):
+    def recv_loop(self, exClient, hostList):
         while True:
             try:
                 data = exClient.get_io_session().recv(2048)
@@ -32,46 +26,48 @@ class ExchangeHandler():
                 exClient.kick()
             packet = data.decode()
             packetPrint = packet.replace('\n', '[n]')
-            self.log.debug('[' + str(exClient.get_id()) + ']' +
-                            '[<-EX-RECV] ' + packetPrint)
+            self.log.debug('[{}:{}][<-EX-RECV] {}'.format(str(exClient.get_addr()[0]),
+                                                    str(exClient.get_addr()[1]),
+                                                    packetPrint))            
             if not data:
                 self.log.debug('[SERVER-NAME] PacketLoop no data')
                 exClient.kick()
                 break
-            ExchangeHandler().parse(exClient, packet)
+            ExchangeHandler().parse(exClient, packet, hostList)
 
-    def generate_session_id(self):
-        key = ''
-        alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-        while len(key) < 16:
-            char = random.choice(alphabet)
-            key += char
-        return key
-
-    def parse(self, exClient, packet):
+    def parse(self, exClient, packet, hostList):
         if packet[0] == 'F': #F
             # org.cestra.exchange.ExchangePacketHandler @ parser
             # F + getPlayerNumber
             return
         elif packet[0] == 'S':
             if packet[1] == 'H': #SH
+                # SH Ip ; Port
                 s = packet[2:].split(';')
                 ip = str(s[0])
                 port = int(s[1])
-                # TODO set State 1
+                for i in hostList:
+                    if exClient.get_id() == i.get_id():
+                        i.set_status(1)
+                self.log.debug('[{}:{}] Status to 1'.format(str(exClient.get_addr()[0]),
+                                                    str(exClient.get_addr()[1])))
                 exClient.send('SHK')
                 return
             elif packet[1] == 'K': #SK
+                # 'SK id; key; freePlaces'
                 s = packet[2:].split(';')
                 id = int(s[0])
                 key = str(s[1])
                 freePlaces = int(s[2])
-                self.log.warning('save somehow !')
-                # TODO
-                # if (!server.getKey().equals(key)) {
-                    # send("SKR")
-                    # kick()
-                exClient.send('SKK')
+                exClient.set_id(id)
+                for i in hostList:
+                    if i.get_key() == key:
+                        i.set_ex_client(exClient)
+                        exClient.send('SKK')
+                        break
+                    else:
+                        exClient.send('SKR')
+                        exClient.kick()
                 return
             elif packet[1] == 'S': #SS
                 # org.cestra.game.GameServer @ setState

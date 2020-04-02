@@ -23,7 +23,7 @@ class ExchangePacketHandler:
                 if packet[2] == '?': # SK?
                     i = 50000 - 0 # Main.gameServer.getPlayerNumber()
 					# TODO Main.exchangeClient.send("SK" + Main.serverId + ";" + Main.key + ";" + i)
-                    ExchangePacketHandler().send(exClient,'SK1;1;' + str(i))
+                    ExchangePacketHandler().send(exClient,'SK1;demo;' + str(i))
                     return
                 elif packet[2] == 'K': # SKK
                     self.log.debug('The Logon-Server has accepted the connection')  

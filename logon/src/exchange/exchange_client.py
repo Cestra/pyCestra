@@ -5,24 +5,19 @@ from core.logging_handler import Logging
 
 class ExchangeClient():
 
-    def __init__(self, host_list_dic):
-        self.host_list_dic = host_list_dic
+    def __init__(self):
         self.log = Logging()
 
     def send(self, i):
         msg = bytes(i, 'utf-8')
-        self.log.debug('[' + str(self.id) + ']' +
-                        '[EX-SEND->] ' + i)
+        self.log.debug('[{}:{}][EX-SEND->] {}'.format(str(self.addr[0]),
+                                                str(self.addr[1]),
+                                                i))               
         self.IoSession.send(msg)
 
     def kick(self):
-        dict_str = str(self.addr[0]) + ':' + str(self.addr[1]) + ':' + str(self.id)
-        try:
-            self.host_list_dic.pop(dict_str)
-        except KeyError:
-            self.log.warning('[' + str(self.id[0]) + ']' +
-                            '] The request in "host_list_dic" has been incorrectly removed')
-        self.log.info('[' + str(self.id) + '] Exchange Client has disconnected')
+        self.log.info('[{}:{}] Exchange Client has disconnected'.format(str(self.addr[0]),
+                                                                str(self.addr[1])))
         sys.exit(0)
 
     def set_addr(self, addr):
