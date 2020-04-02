@@ -59,7 +59,7 @@ class ChooseNickName:
         if flag ==-1:
             return False
 
-    def verify(self, client, nickname, accountDataDic):
+    def verify(self, client, nickname, accountDataDic, hostList):
 
         # test if the nickname of the account is empty
         account = client.get_account()
@@ -102,7 +102,7 @@ class ChooseNickName:
                 i['nickname'] = account.get_nickname()
                 break
 
-        AccountQueue().verify(client, accountDataDic)
+        AccountQueue().verify(client, accountDataDic, hostList)
 
 
 class Status(Enum):

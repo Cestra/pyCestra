@@ -32,7 +32,7 @@ class PacketHandler:
                 client.write('AlEf')
 
         if  client.get_status().name == Status.WAIT_NICKNAME.name:
-            ChooseNickName().verify(client, packet[:-2], accountDataDic)
+            ChooseNickName().verify(client, packet[:-2], accountDataDic, hostList)
             return
 
         if  client.get_status().name == Status.SERVER.name:

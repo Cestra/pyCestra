@@ -66,9 +66,9 @@ class DemoClient01:
         else:
             result_dic["test_packet_03"] = False
         # # ----------------------
-        # AH127.0.0.1;1;110;1|
+        # AH
         packet = response()
-        if packet == 'AH127.0.0.1;1;110;1|':
+        if packet[:2] == 'AH':
             result_dic["test_packet_04"] = True
         else:
             result_dic["test_packet_04"] = False
