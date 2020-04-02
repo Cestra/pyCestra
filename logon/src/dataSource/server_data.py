@@ -3,12 +3,14 @@ import pymysql
 import dataSource
 from core.logging_handler import Logging
 from dataSource.DAO import DAO
+from object.server import Server
 
 
 class ServerData(DAO):
 
     def __init__(self):
         self.log = Logging()
+        self.Datasource = []
 
     def load(self):
         '''
@@ -20,7 +22,6 @@ class ServerData(DAO):
         id, key, population, isSubscriberServer
         ['1', 'key', 'population', 'isSubscriberServer']
         '''
-        self.Datasource = []
         connection = dataSource.Database().get_connection()
         cursor = connection.cursor()
         try:
@@ -28,11 +29,13 @@ class ServerData(DAO):
             data = cursor.fetchall()
             for result in data:
                 # only relevant data is saved
-                row = {'id':result['id'],
-                        'key':result['key'],
-                        'population':result['population'],
-                        'isSubscriberServer':result['isSubscriberServer'],}
-                self.Datasource.append(row)
+                server = Server(result['id'],
+                                result['key'],
+                                0,
+                                result['population'],
+                                result['isSubscriberServer'])
+                
+                self.Datasource.append(server)
         except pymysql.Error as Error:
             self.log.warning('server_data.py - Can\'t load table servers - ')
             self.log.warning(str(Error))
@@ -40,10 +43,5 @@ class ServerData(DAO):
             cursor.close()
             connection.close()
 
-    # Use databank server ID to find the right server
-    def get_from_id(self, idwis):
-        if not idwis == 0:
-            player = idwis - 1
-            return self.Datasource[player]
-        else:
-            self.log.warning('player_data.py - Can\'t load server id 0')
+    def get_server_data(self):
+        return self.Datasource
