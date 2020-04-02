@@ -7,13 +7,13 @@ class AccountData(DAO):
 
     def __init__(self):
         self.log = Logging()
+        self.Datasource = []
 
     def load(self):
             '''
             DataFrame:
 
             '''
-            self.Datasource = []
             connection = dataSource.Database().get_connection()
             cursor = connection.cursor()
             try:

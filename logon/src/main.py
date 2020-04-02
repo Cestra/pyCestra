@@ -38,10 +38,10 @@ def main():
         log.warning('Connection ERROR')
         sys.exit(0)
 
-    serverData = dataSource.ServerData()
-    serverData.load()
+    hostList = dataSource.ServerData()
+    hostList.load()
+    hostList = hostList.get_server_data()
     log.info('ServerData were loaded')
-    # print(serverData.get_from_id(1))
 
     accountData = dataSource.AccountData()
     accountData.load()
@@ -74,14 +74,16 @@ def main():
 
     while True:
         time.sleep(15)
+
         log.warning('---- game_client_dic ----')
         for x in game_client_dic:
             log.warning(str(x))
         log.warning('-------------------------')
-        log.warning('---- host_list_dic ------')
-        for x in host_list_dic:
-            log.warning(str(x))
-        log.warning('-------------------------')
+
+        # log.warning('---- host_list_dic ------')
+        # for x in host_list_dic:
+        #     log.warning(str(x))
+        # log.warning('-------------------------')
 
     # ======================================================
 

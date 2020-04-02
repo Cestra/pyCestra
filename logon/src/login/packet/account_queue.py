@@ -40,7 +40,8 @@ class AccountQueue:
         # -----------------------------------------
         # DEMO
         # client.write(Server.getHostList())
-        client.write('AH127.0.0.1;1;110;1|')
+        #             AH ID ; STATUS ; 110 ; 1 |
+        client.write('AH10;1;110;1|')
         # -----------------------------------------
         client.write('AlK' + str(account.is_staff()))
         client.write('AQ' + account.get_question())

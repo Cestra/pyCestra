@@ -3,39 +3,45 @@ import pymysql
 import dataSource
 from core.logging_handler import Logging
 from dataSource.DAO import DAO
+from object.server import Server
 
 
 class ServerData(DAO):
 
     def __init__(self):
         self.log = Logging()
+        self.Datasource = []
 
     def load(self):
         '''
         DataFrame:
-        [['Demo', 'demo', 0, 0, 1494344975925], ['Jiva', 'jiv', 0, 0, 1494344975925]]
+        id, name, key, population, isSubscriberServer
+        ['1','Demo', 'demo', 0, 0,]
+
+        relevant data:
+        id, key, population, isSubscriberServer
+        ['1', 'key', 'population', 'isSubscriberServer']
         '''
-        self.Datasource = []
         connection = dataSource.Database().get_connection()
         cursor = connection.cursor()
         try:
             cursor.execute('SELECT * FROM servers;')
             data = cursor.fetchall()
-            for row in data:
-                Rows = [row]
-                self.Datasource.append(Rows)
+            for result in data:
+                # only relevant data is saved
+                server = Server(result['id'],
+                                result['key'],
+                                0,
+                                result['population'],
+                                result['isSubscriberServer'])
+                
+                self.Datasource.append(server)
         except pymysql.Error as Error:
-            self.log.warning('server_data.py - Can\'t load table servers - ' + str(Error))
-            cursor.close()
-            connection.close()
+            self.log.warning('server_data.py - Can\'t load table servers - ')
+            self.log.warning(str(Error))
         finally:
             cursor.close()
             connection.close()
 
-    # Use databank server ID to find the right server
-    def get_from_id(self, idwis):
-        if not idwis == 0:
-            player = idwis - 1
-            return self.Datasource[player]
-        else:
-            self.log.warning('player_data.py - Can\'t load server id 0')
+    def get_server_data(self):
+        return self.Datasource
