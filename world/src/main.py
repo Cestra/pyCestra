@@ -45,13 +45,29 @@ class Main:
         
 
         #  ======================================================
+        #  data test
+
+        self.log.info('Connection Test...')
+        database = dataSource.Database()
+        if database.get_connection():
+            self.log.info('Connection Successfully')
+        else:
+            self.log.warning('Connection ERROR')
+            sys.exit(0)
+        
+        mapdata = dataSource.MapData()
+        mapdata.load()
+        #mapdatatest = mapdatatest.get_map_data()
+        #print(mapdatatest)
+
+
+        #  ======================================================
         #  exchange client test
 
-        exClient = ExchangeClient()
-        exClient.initialize(self.config.get_exchange_ip(), self.config.get_exchange_port())
+        # exClient = ExchangeClient()
+        # exClient.initialize(self.config.get_exchange_ip(), self.config.get_exchange_port())
 
         # time.sleep(3)
-        # exClient.send('SS0')
 
         # self.log.debug('Game Server Start')
         # GameServer().initialize(exClient, self.config.get_world_ip(), self.config.get_world_port())
