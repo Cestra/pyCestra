@@ -9,7 +9,7 @@ class AccountQueue:
     def __init__(self):
         self.log = Logging()
 
-    def verify(self, client, accountDataDic):
+    def verify(self, client, accountDataDic, hostList):
         account = client.get_account()
         if account.is_banned() == 1:
             self.log.debug('[' + str(client.get_address()[0]) + ':' +
@@ -19,9 +19,9 @@ class AccountQueue:
             client.write('AlEb')
             client.kick()
             return
-        AccountQueue().send_information(client,account, accountDataDic)
+        AccountQueue().send_information(client,account, accountDataDic, hostList)
 
-    def send_information(self, client, account, accountDataDic):
+    def send_information(self, client, account, accountDataDic, hostList):
         if account.get_nickname() == '':
             client.write('AlEr')
             # set client status to WAIT_NICKNAME
@@ -41,7 +41,10 @@ class AccountQueue:
         # DEMO
         # client.write(Server.getHostList())
         #             AH ID ; STATUS ; 110 ; 1 |
-        client.write('AH10;1;110;1|')
+        hostListStr = 'AH'
+        for i in hostList:
+            hostListStr += str(i.get_id()) + ';' + str(i.get_status()) + ';110;1|'
+        client.write(hostListStr)
         # -----------------------------------------
         client.write('AlK' + str(account.is_staff()))
         client.write('AQ' + account.get_question())

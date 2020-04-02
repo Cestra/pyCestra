@@ -66,6 +66,7 @@ def main():
                         config.get_login_port(),
                         game_client_dic,
                         accountDataDic,
+                        hostList,
                         ipbans)
 
     ExchangeServer().start(config.get_exchange_ip(),
