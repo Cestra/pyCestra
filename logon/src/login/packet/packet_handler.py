@@ -5,6 +5,7 @@ from dataSource.account_data import AccountData
 from login.packet.account_queue import AccountQueue
 from login.packet.choose_nickname import ChooseNickName
 from login.packet.server_list import ServerList
+from login.packet.server_selected import ServerSelected
 from object.account import Account
 
 
@@ -40,8 +41,7 @@ class PacketHandler:
                 # FriendServerList.get(client, packet)
                 print('packet[0:2] == AF:')
             elif (packet[0:2] == 'AX') or (packet[-4:-2] == 'AX'):
-                # ServerSelected.get()
-                print('packet[0:2] == AX:')
+                ServerSelected(client,packet[2:],hostList)
             elif (packet[0:2] == 'Af') or (packet[-4:-2] == 'Af'):
                 account = client.get_account()
                 for game_client in game_client_dic.values():

@@ -71,10 +71,10 @@ class Account():
 # ----------------------------------------
 
     def get_server(self):
-        pass
+        return server
 
-    def set_server(self):
-        pass
+    def set_server(self, server):
+        self.server = server
 
 # ----------------------------------------
 

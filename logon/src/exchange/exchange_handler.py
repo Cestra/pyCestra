@@ -51,6 +51,7 @@ class ExchangeHandler():
                         i.set_status(1)
                 self.log.debug('[{}:{}] Status to 1'.format(str(exClient.get_addr()[0]),
                                                     str(exClient.get_addr()[1])))
+                self.log.info('World-Server (ID:{}) has successfully registered'.format(exClient.get_id()))
                 exClient.send('SHK')
                 return
             elif packet[1] == 'K': #SK
