@@ -25,7 +25,7 @@ class ServerSelected():
                                                                     str(client.get_address()[1]),
                                                                     str(client.get_status().name),
                                                                     packet))
-            if server == None:
+            if server is None:
                 self.log.debug('[{}:{}][{}] The selected server does not exist for the account'.format(str(client.get_address()[0]),
                                                                     str(client.get_address()[1]),
                                                                     str(client.get_status().name)))
@@ -37,7 +37,7 @@ class ServerSelected():
                                                                     str(client.get_status().name)))
                 client.write('AXEd')
                 return
-            if account.is_subscribes() == False and server.get_sub() == 1:
+            if account.is_subscribes() is False and server.get_sub() == 1:
                 self.log.debug('[{}:{}][{}] The selected server is full or you must be subscribed for the account'.format(str(client.get_address()[0]),
                                                                                                                     str(client.get_address()[1]),
                                                                                                                     str(client.get_status().name)))
@@ -52,10 +52,11 @@ class ServerSelected():
             self.log.debug('[{}:{}][{}] The test account has chosen its server well: the world-server takes over.'.format(str(client.get_address()[0]),
                                                                                                                     str(client.get_address()[1]),
                                                                                                                     str(client.get_status().name)))
-        except:
-            self.log.warning('[{}:{}][{}] The server selection failed'.format(str(client.get_address()[0]),
+        except Exception as e:
+            self.log.warning('[{}:{}][{}] The server selection failed\n{}'.format(str(client.get_address()[0]),
                                                                     str(client.get_address()[1]),
-                                                                    str(client.get_status().name)))
+                                                                    str(client.get_status().name),
+                                                                    e))
             client.write('AXEr')
             client.kick()
             return
