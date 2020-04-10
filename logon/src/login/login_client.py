@@ -39,9 +39,14 @@ class LoginClient:
     def kick(self):
         # -----------------------------------------
         # update 'logged' to 0
-        for i in self.accountDataDic:
-            if i['id'] == self.account.get_id():
-                i['logged'] = 0
+        try:
+            for i in self.accountDataDic:
+                if i['id'] == self.account.get_id():
+                    i['logged'] = 0
+        except AttributeError:
+            self.log.debug('[{}:{}][{}] The Login-Client was kicked so early that no account was set up yet'.format(str(self.address[0]),
+                                                                                                            str(self.address[1]),
+                                                                                                            str(self.status.name)))
         # -----------------------------------------
         # delete entries in 'game_client_dic'
         dict_str = self.address[0] + ':' + str(self.address[1])

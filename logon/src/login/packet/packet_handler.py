@@ -105,6 +105,7 @@ class PacketHandler:
                 break
             else:
                 account = 0
+                client.set_account(account)
 
         if account == 0:
             return False
