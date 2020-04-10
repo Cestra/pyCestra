@@ -69,8 +69,8 @@ class ExchangeHandler():
                         i.set_status(1)
                 self.log.debug('[{}:{}] Status to 1'.format(str(exClient.get_addr()[0]),
                                                     str(exClient.get_addr()[1])))
-                self.log.info('World-Server (ID:{}) has successfully registered'.format(exClient.get_id()))
                 exClient.send('SHK')
+                self.log.info('World-Server (ID:{}) has successfully registered'.format(exClient.get_id()))
                 return
             elif packet[1] == 'K': #SK
                 # 'SK id; key; freePlaces'
@@ -79,14 +79,14 @@ class ExchangeHandler():
                 key = str(s[1])
                 freePlaces = int(s[2])
                 exClient.set_id(id)
-                for i in hostList:
-                    if i.get_key() == key:
-                        i.set_ex_client(exClient)
+                for serverObject in hostList:
+                    if serverObject.get_key() == key:
+                        serverObject.set_ex_client(exClient)
+                        serverObject.set_free_places(freePlaces)
                         exClient.send('SKK')
-                        break
-                    else:
-                        exClient.send('SKR')
-                        exClient.kick()
+                        return
+                exClient.send('SKR')
+                exClient.kick()
                 return
             elif packet[1] == 'S': #SS
                 # org.cestra.game.GameServer @ setState

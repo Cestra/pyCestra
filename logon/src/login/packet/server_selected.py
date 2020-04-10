@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 from core.logging_handler import Logging
+from login.packet.server_list import ServerList
 
 
 class ServerSelected():
@@ -31,11 +32,17 @@ class ServerSelected():
         def get_free_server(hostList):
             msg = 'AXEf'
             for s in hostList:
-                if s.get_sub() != 0 or s.get_free_places() > 0:
+                try:
+                    fp = s.get_free_places()
+                except AttributeError:
+                    fp = 0
+                if s.get_sub() != 0 or fp > 0:
                     continue
                 msg += str(s.get_id()) + '|'
-
+                return msg
+        
         try:
+            # server is searched from the host list
             for i in hostList:
                 if i.get_id() == packet:
                     server = i
@@ -43,23 +50,31 @@ class ServerSelected():
                                                                     str(client.get_address()[1]),
                                                                     str(client.get_status().name),
                                                                     packet))
+            # client is kicked if this server id does not exist
             if server is None:
                 self.log.debug('[{}:{}][{}] The selected server does not exist for the account'.format(str(client.get_address()[0]),
-                                                                    str(client.get_address()[1]),
-                                                                    str(client.get_status().name)))
+                                                                                                    str(client.get_address()[1]),
+                                                                                                    str(client.get_status().name)))
+                # clinet msg: You are not allowed to connect to this server.
                 client.write('AXEr')
                 return
+            # the selected server is not in the correct status for the account
             if server.get_status() != 1:
                 self.log.debug('[{}:{}][{}] The status of the selected server is unavailable for the account'.format(str(client.get_address()[0]),
-                                                                    str(client.get_address()[1]),
-                                                                    str(client.get_status().name)))
+                                                                                                                str(client.get_address()[1]),
+                                                                                                                str(client.get_status().name)))
+                # clinet msg: The server you selected is unavailable at this time.
                 client.write('AXEd')
                 return
-            if account.is_subscribes() is False and server.get_sub() == 1:
+            # the selected server is only available to subscribers
+            if account.is_subscribes() == 0 and server.get_sub() == 1:
                 self.log.debug('[{}:{}][{}] The selected server is full or you must be subscribed for the account'.format(str(client.get_address()[0]),
                                                                                                                     str(client.get_address()[1]),
                                                                                                                     str(client.get_status().name)))
+                # clinet msg: Server:FULL Maximum number of players reached.
+                #             To get priority access, please becomme a full member by subscribing..
                 client.write(get_free_server(hostList))
+                ServerList().get_list(client)
                 return
             account.set_server(server.get_id())
             server.get_ex_client().send('WA{}'.format(str(account.get_id())))
@@ -67,7 +82,7 @@ class ServerSelected():
                                         str(server.get_ex_client().get_addr()[1]),
                                         str(account.get_id())))
             account.set_state(0)
-            self.log.debug('[{}:{}][{}] The test account has chosen its server well: the world-server takes over.'.format(str(client.get_address()[0]),
+            self.log.debug('[{}:{}][{}] The account has chosen its server well. the world-server takes over.'.format(str(client.get_address()[0]),
                                                                                                                     str(client.get_address()[1]),
                                                                                                                     str(client.get_status().name)))
         except Exception as e:

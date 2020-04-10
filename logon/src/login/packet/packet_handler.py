@@ -78,6 +78,7 @@ class PacketHandler:
             elif (packet[0:2] == 'Ax') or (packet[-4:-2] == 'Ax'):
                 ServerList().get_list(client)
                 return
+            return
 
             client.kick()
         client.kick()

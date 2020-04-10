@@ -21,7 +21,7 @@ import datetime
 class Account():
 
     def __init__(self):
-        pass
+        self.isSub = 0
 
 # ----------------------------------------
 
