@@ -19,3 +19,4 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from dataSource.DAO import DAO
 from dataSource.database import Database
 from dataSource.map_data import MapData
+from dataSource.players_data import PlayersData

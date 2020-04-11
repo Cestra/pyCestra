@@ -27,7 +27,7 @@ from exchange.exchange_client import ExchangeClient
 from game.game_server import GameServer
 from dataSource.database import Database
 from dataSource.map_data import MapData
-
+from dataSource.players_data import PlayersData
 
 class Main:
 
@@ -48,35 +48,26 @@ class Main:
                 print(bcolors.blue + x + bcolors.cend)
         wel()
 
-        # ======================================================
-        # preload data
-
-        # self.log.info('Connection Test...')
-        # database = Database()
-        # if database.get_connection():
-        #     self.log.info('Connection Successfully')
-        # else:
-        #     self.log.warning('Connection ERROR')
-        #     sys.exit(0)
-
-        # test = MapData().pre_Load()
-        
-
         #  ======================================================
-        #  data test
+        #  preload data
 
-        # self.log.info('Connection Test...')
-        # database = dataSource.Database()
-        # if database.get_connection():
-        #     self.log.info('Connection Successfully')
-        # else:
-        #     self.log.warning('Connection ERROR')
-        #     sys.exit(0)
+        self.log.info('Connection Test...')
+        database = dataSource.Database()
+        if database.get_connection():
+            self.log.info('Connection Successfully')
+        else:
+            self.log.warning('Connection ERROR')
+            sys.exit(0)
         
-        # mapdata = dataSource.MapData()
-        # mapdata.load()
-        #mapdatatest = mapdatatest.get_map_data()
-        #print(mapdatatest)
+        mapData = dataSource.MapData()
+        mapData.load()
+        mapData = mapData.get_map_data()
+        self.log.info('MapData were loaded')
+
+        playersData = dataSource.PlayersData()
+        playersData.load()
+        playersData = playersData.get_map_data()
+        self.log.info('MapData were loaded')
 
 
         #  ======================================================

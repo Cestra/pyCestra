@@ -23,7 +23,7 @@ from core.logging_handler import Logging
 from dataSource.DAO import DAO
 
 
-class MapData(DAO):
+class PlayersData(DAO):
 
     def __init__(self):
         self.log = Logging()
@@ -37,12 +37,12 @@ class MapData(DAO):
         connection = dataSource.Database().get_connection()
         cursor = connection.cursor()
         try:
-            cursor.execute('SELECT * FROM maps;')
+            cursor.execute('SELECT * FROM players;')
             data = cursor.fetchall()
-            for row in progressbar.progressbar(data, prefix='Map Data: '):
+            for row in progressbar.progressbar(data, prefix='Player Data: '):
                 self.dataSource.append(row)
         except Exception as Error:
-            self.log.warning('map_data.py - Can\'t load table accounts')
+            self.log.warning('player_data.py - Can\'t load table accounts')
             self.log.warning(str(Error))
         finally:
             cursor.close()
