@@ -41,7 +41,7 @@ class GameHandler:
             GameHandler.parse(packet)
 
     def session_created(self, soecket, addr):
-        threadName = 'Game-Client '+str(addr[0])+':'+ str(addr[1])
+        threadName = 'Game-Client-Session '+str(addr[0])+':'+ str(addr[1])
         try:
             t = threading.Thread(target=GameClient,
                                 name=threadName,

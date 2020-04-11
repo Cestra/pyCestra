@@ -43,11 +43,11 @@ class LoginServer:
         try:
             s.bind((logon_ip, login_port))
         except socket.error:
-            print('Binding faild')
+            print('Login Socket - Binding faild')
         s.listen()
         self.log.info('Logon Socket is listening on Port: ' + str(login_port))
         while True:
             c, self.addr = s.accept()
-            self.log.info('Connected '+ str(self.addr[0])+ ':'+ str(self.addr[1]))
+            self.log.info('[{}:{}] Client Connected '.format(str(self.addr[0]),str(self.addr[1])))
             LoginHandler().session_created(c, self.addr, game_client_dic, accountDataDic, hostList, ipbans)
         s.close()

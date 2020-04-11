@@ -82,9 +82,10 @@ class ServerSelected():
                                         str(server.get_port()),
                                         str(account.get_id())))
             account.set_state(0)
-            self.log.debug('[{}:{}][{}] The account has chosen its server well. the world-server takes over.'.format(str(client.get_address()[0]),
-                                                                                                                    str(client.get_address()[1]),
-                                                                                                                    str(client.get_status().name)))
+            self.log.info('[{}:{}][{}] Client connects to World-Server:{}'.format(str(client.get_address()[0]),
+                                                                                str(client.get_address()[1]),
+                                                                                str(client.get_status().name),
+                                                                                str(server.get_id())))
         except Exception as e:
             self.log.warning('[{}:{}][{}] The server selection failed\n{}'.format(str(client.get_address()[0]),
                                                                     str(client.get_address()[1]),

@@ -43,7 +43,8 @@ class Main:
         clear()
 
         def wel():
-            welmsg = [31*"─", "|   pyCestra - World Server   |", 31*"─"]
+            welmsg = [58*'─', '|  0.01  |' + 12*' ' + 
+                'pyCestra -  World Server'+ 11*' ' + '|', 58*"─"]
             for x in welmsg:
                 print(bcolors.blue + x + bcolors.cend)
         wel()
@@ -59,15 +60,16 @@ class Main:
             self.log.warning('Connection ERROR')
             sys.exit(0)
         
-        mapData = dataSource.MapData()
-        mapData.load()
-        mapData = mapData.get_map_data()
-        self.log.info('MapData were loaded')
 
-        playersData = dataSource.PlayersData()
-        playersData.load()
-        playersData = playersData.get_map_data()
-        self.log.info('MapData were loaded')
+        # mapData = dataSource.MapData()
+        # mapData.load()
+        # mapData = mapData.get_map_data()
+        # self.log.info('MapData were loaded')
+
+        # playersData = dataSource.PlayersData()
+        # playersData.load()
+        # playersData = playersData.get_map_data()
+        # self.log.info('MapData were loaded')
 
 
         #  ======================================================
@@ -76,10 +78,11 @@ class Main:
         exClient = ExchangeClient()
         exClient.initialize(self.config.get_exchange_ip(), self.config.get_exchange_port())
 
-        # time.sleep(3)
+        time.sleep(1)
 
-        # self.log.debug('Game Server Start')
+        self.log.debug('Game Server Start')
         # GameServer().initialize(exClient, self.config.get_world_ip(), self.config.get_world_port())
+        GameServer().initialize(self.config.get_world_ip(), self.config.get_world_port())
 
 def main():
   Main().start()
