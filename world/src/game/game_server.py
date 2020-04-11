@@ -48,6 +48,6 @@ class GameServer:
         self.log.info('Game Socket is listening on Port: ' + str(game_port))
         while True:
             c, self.addr = s.accept()
-            self.log.info('Connected '+ str(self.addr[0])+ ':'+ str(self.addr[1]))
+            self.log.debug('[{}:{}] Client Connected '.format(str(self.addr[0]),str(self.addr[1])))
             GameHandler().session_created(c, self.addr)
         s.close()

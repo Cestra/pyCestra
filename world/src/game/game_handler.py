@@ -38,19 +38,25 @@ class GameHandler:
                 self.log.debug('[TODO client ip] PacketLoop no data')
                 gameClient.kick()
                 break
-            GameHandler.parse(packet)
+            GameHandler().parse(gameClient, packet)
 
     def session_created(self, soecket, addr):
         threadName = 'Game-Client-Session '+str(addr[0])+':'+ str(addr[1])
         try:
-            t = threading.Thread(target=GameClient,
+            t = threading.Thread(target=GameHandler.hello_game_client,
                                 name=threadName,
-                                args=(soecket, addr,))
+                                args=(self, soecket, addr,))
             t.start()
         except:
             self.log.warning('Game Client could not be created '+ str(addr[0])+':'+ str(addr[1]))
 
-    def parse(self, packet):
+    def hello_game_client(self, soecket, addr):
+        gameClient = GameClient(soecket, addr)
+        msg = bytes('HG'+'\x00', 'utf-8')
+        gameClient.get_io_session().send(msg)
+        GameHandler().loop(gameClient)
+
+    def parse(self, gameClient, packet):
         if packet[0] == 'A':
             print('parse_account_packet')
             return

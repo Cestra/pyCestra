@@ -16,10 +16,20 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
+import sys
+
 from core.logging_handler import Logging
 
 
 class GameClient:
 
-    def __init__(self):
+    def __init__(self, soecket, addr):
+        self.ioSession = soecket
+        self.addr = addr
         self.log = Logging()
+    
+    def kick(self):
+        sys.exit(0)
+
+    def get_io_session(self):
+        return self.ioSession
