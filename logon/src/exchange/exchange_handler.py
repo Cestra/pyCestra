@@ -66,6 +66,8 @@ class ExchangeHandler():
                 port = int(s[1])
                 for i in hostList:
                     if exClient.get_id() == i.get_id():
+                        i.set_ip(ip)
+                        i.set_port(port)
                         i.set_status(1)
                 self.log.debug('[{}:{}] Status to 1'.format(str(exClient.get_addr()[0]),
                                                     str(exClient.get_addr()[1])))

@@ -78,8 +78,8 @@ class ServerSelected():
                 return
             account.set_server(server.get_id())
             server.get_ex_client().send('WA{}'.format(str(account.get_id())))
-            client.write('AYK{}:{};{}'.format(str(server.get_ex_client().get_addr()[0]),
-                                        str(server.get_ex_client().get_addr()[1]),
+            client.write('AYK{}:{};{}'.format(str(server.get_ip()),
+                                        str(server.get_port()),
                                         str(account.get_id())))
             account.set_state(0)
             self.log.debug('[{}:{}][{}] The account has chosen its server well. the world-server takes over.'.format(str(client.get_address()[0]),
