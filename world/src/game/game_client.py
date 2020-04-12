@@ -23,8 +23,8 @@ from core.logging_handler import Logging
 
 class GameClient:
 
-    def __init__(self, soecket, addr):
-        self.ioSession = soecket
+    def __init__(self, socket, addr):
+        self.ioSession = socket
         self.addr = addr
         self.log = Logging()
     
@@ -33,3 +33,6 @@ class GameClient:
 
     def get_io_session(self):
         return self.ioSession
+
+    def get_addr(self):
+        return self.addr

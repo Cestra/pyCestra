@@ -20,6 +20,7 @@ import threading
 
 from core.logging_handler import Logging
 from game.game_client import GameClient
+from common.socket_manager import SocketManager
 
 
 class GameHandler:
@@ -32,33 +33,40 @@ class GameHandler:
             data = gameClient.get_io_session().recv(2048)
             packet = data.decode()
             packetLog = packet.replace('\n', '[]')
-            self.log.debug('[TODO client ip][<-GM-RECV] '
-                            + packetLog)
+            self.log.debug('[{}][ACC:{}][<-RECV] {}'.format(str(gameClient.get_addr()[0]),
+                                                            str('X'),
+                                                            str(packetLog)))
             if not data:
                 self.log.debug('[TODO client ip] PacketLoop no data')
                 gameClient.kick()
                 break
             GameHandler().parse(gameClient, packet)
 
-    def session_created(self, soecket, addr):
+    def session_created(self, socket, addr):
         threadName = 'Game-Client-Session '+str(addr[0])+':'+ str(addr[1])
         try:
             t = threading.Thread(target=GameHandler.hello_game_client,
                                 name=threadName,
-                                args=(self, soecket, addr,))
+                                args=(self, socket, addr,))
             t.start()
         except:
             self.log.warning('Game Client could not be created '+ str(addr[0])+':'+ str(addr[1]))
 
-    def hello_game_client(self, soecket, addr):
-        gameClient = GameClient(soecket, addr)
-        msg = bytes('HG'+'\x00', 'utf-8')
-        gameClient.get_io_session().send(msg)
+    def hello_game_client(self, socket, addr):
+        gameClient = GameClient(socket, addr)
+        # msg = bytes('HG'+'\x00', 'utf-8')
+        # gameClient.get_io_session().send(msg)
+
+        SocketManager().GAME_SEND_HELLOGAME_PACKET(gameClient)
+
         GameHandler().loop(gameClient)
 
     def parse(self, gameClient, packet):
         if packet[0] == 'A':
             print('parse_account_packet')
+            msg = bytes('ATK0'+'\x00', 'utf-8')
+            gameClient.get_io_session().send(msg)
+            GameHandler().loop(gameClient)
             return
         elif packet[0] == 'B':
             print('parseBasicsPacket')
