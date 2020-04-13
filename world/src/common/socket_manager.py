@@ -23,21 +23,25 @@ class SocketManager:
     def __init__(self):
         self.log = Logging()
     
-    def send(self, gameClient, packet):
+    def send(self, gameClient, packet, name):
         msg = bytes(packet + '\x00', 'utf-8')
         gameClient.get_io_session().send(msg)
-        self.log.debug('[{}][ACC:{}][SEND->] {}'.format(str(gameClient.get_addr()[0]),
+        self.log.debug('[{}][ACC:{}][SEND->] {} ({})'.format(str(gameClient.get_addr()[0]),
                                                         str('X'),
-                                                        str(packet)))
+                                                        str(packet),
+                                                        name))
 
     def GAME_SEND_HELLOGAME_PACKET(self, gameClient):
-        __packet = "HG"
-        SocketManager().send(gameClient, __packet)
+        __name = 'GAME_SEND_HELLOGAME_PACKET'
+        __packet = 'HG'
+        SocketManager().send(gameClient, __packet, __name)
 
     def GAME_SEND_ATTRIBUTE_FAILED(self, gameClient):
-        __packet = "ATE"
-        SocketManager().send(gameClient, __packet)
+        __name = 'GAME_SEND_ATTRIBUTE_FAILED'
+        __packet = 'ATE'
+        SocketManager().send(gameClient, __packet, __name)
 
     def GAME_SEND_ATTRIBUTE_SUCCESS(self, gameClient):
-        __packet = "ATK0"
-        SocketManager().send(gameClient, __packet)
+        __name = 'GAME_SEND_ATTRIBUTE_SUCCESS'
+        __packet = 'ATK0'
+        SocketManager().send(gameClient, __packet, __name)

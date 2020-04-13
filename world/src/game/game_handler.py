@@ -54,124 +54,141 @@ class GameHandler:
 
     def hello_game_client(self, socket, addr):
         gameClient = GameClient(socket, addr)
-        # msg = bytes('HG'+'\x00', 'utf-8')
-        # gameClient.get_io_session().send(msg)
-
         SocketManager().GAME_SEND_HELLOGAME_PACKET(gameClient)
-
         GameHandler().loop(gameClient)
 
     def parse(self, gameClient, packet):
         if packet[0] == 'A':
-            print('parse_account_packet')
-            msg = bytes('ATK0'+'\x00', 'utf-8')
-            gameClient.get_io_session().send(msg)
-            GameHandler().loop(gameClient)
+            self.log.warning('parse_account_packet')
+            GameHandler().parse_account_packet(gameClient, packet)
             return
         elif packet[0] == 'B':
-            print('parseBasicsPacket')
+            self.log.warning('parseBasicsPacket')
             return
         elif packet[0] == 'C':
-            print('parseConquestPacket')
+            self.log.warning('parseConquestPacket')
             return
         elif packet[0] == 'c':
-            print('parseChanelPacket')
+            self.log.warning('parseChanelPacket')
             return
         elif packet[0] == 'D':
-            print('parseDialogPacket')
+            self.log.warning('parseDialogPacket')
             return
         elif packet[0] == 'd':
-            print('parseDocumentPacket')
+            self.log.warning('parseDocumentPacket')
             return
         elif packet[0] == 'E':
-            print('parseExchangePacket')
+            self.log.warning('parseExchangePacket')
             return
         elif packet[0] == 'e':
-            print('parseEnvironementPacket')
+            self.log.warning('parseEnvironementPacket')
             return
         elif packet[0] == 'F':
-            print('parseFrienDDacket')
+            self.log.warning('parseFrienDDacket')
             return
         elif packet[0] == 'f':
-            print('parseFightPacket')
+            self.log.warning('parseFightPacket')
             return
         elif packet[0] == 'G':
-            print('parseGamePacket')
+            self.log.warning('parseGamePacket')
             return
         elif packet[0] == 'g':
-            print('parseGuildPacket')
+            self.log.warning('parseGuildPacket')
             return
         elif packet[0] == 'h':
-            print('parseHousePacket')
+            self.log.warning('parseHousePacket')
             return
         elif packet[0] == 'i':
-            print('parseEnemyPacket')
+            self.log.warning('parseEnemyPacket')
             return
         elif packet[0] == 'J':
-            print('parseJobOption')
+            self.log.warning('parseJobOption')
             return
         elif packet[0] == 'K':
-            print('parseHouseKodePacket')
+            self.log.warning('parseHouseKodePacket')
             return
         elif packet[0] == 'O':
-            print('parseObjectPacket')
+            self.log.warning('parseObjectPacket')
             return
         elif packet[0] == 'P':
-            print('parseGroupPacket')
+            self.log.warning('parseGroupPacket')
             return
         elif packet[0] == 'R':
-            print('parseMountPacket')
+            self.log.warning('parseMountPacket')
             return
         elif packet[0] == 'Q':
-            print('parseQuestData')
+            self.log.warning('parseQuestData')
             return
         elif packet[0] == 'S':
-            print('parseSpellPacket')
+            self.log.warning('parseSpellPacket')
             return
         elif packet[0] == 'T':
-            print('parseFoireTroll')
+            self.log.warning('parseFoireTroll')
             return
         elif packet[0] == 'W':
-            print('parseWaypointPacket')
+            self.log.warning('parseWaypointPacket')
             return
 
-    def parse_account_packet(self, packet):
+    def parse_account_packet(self, gameClient, packet):
         if packet[1] == 'A':
-            print('addCharacter')
+            self.log.warning('addCharacter')
             return
         elif packet[1] == 'B':
-            print('boost')
+            self.log.warning('boost')
             return
         elif packet[1] == 'D':
-            print('deleteCharacter')
+            self.log.warning('deleteCharacter')
             return
         elif packet[1] == 'f':
-            print('getQueuePosition')
+            self.log.warning('getQueuePosition')
             return
         elif packet[1] == 'g':
-            print('getGifts')
+            self.log.warning('getGifts')
             return
         elif packet[1] == 'G':
-            print('attributeGiftToCharacter')
+            self.log.warning('attributeGiftToCharacter')
             return
         elif packet[1] == 'i':
-            print('sendIdentity')
+            self.log.warning('sendIdentity')
             return
         elif packet[1] == 'L':
-            print('getCharacters')
+            self.log.warning('getCharacters')
             return
         elif packet[1] == 'M':
-            print('parseMigration')
+            self.log.warning('parseMigration')
             return
         elif packet[1] == 'S':
-            print('setCharacter')
+            self.log.warning('setCharacter')
             return
         elif packet[1] == 'T':
-            print('sendTicket')
+            self.log.warning('sendTicket')
+            GameHandler().send_ticket(gameClient, packet)
             return
         elif packet[1] == 'V':
-            print('requestRegionalVersion')
+            self.log.warning('requestRegionalVersion')
             return
         elif packet[1] == 'P':
-            print('SocketManager.REALM_SEND_REQUIRED_APK')
+            self.log.warning('SocketManager.REALM_SEND_REQUIRED_APK')
             return
+
+    def send_ticket(self, gameClient, packet):
+        # TODO In my opinion, the queue is sent here (Main.gameServer.getWaitingCompte(id))
+        accId = packet[2:-2]
+        try:
+            try:
+                pass
+                # this.compte = Main.gameServer.getWaitingCompte(id);
+            except Exception as e:
+                SocketManager().GAME_SEND_ATTRIBUTE_FAILED(gameClient)
+                self.log.warning(e)
+                gameClient.kick()
+            # String ip = this.session.getRemoteAddress().toString().substring(1).split("\\:")[0];
+			# this.compte.setGameClient(this);
+			# this.compte.setCurIP(ip);
+            # Main.gameServer.delWaitingCompte(this.compte);
+            # Database.getStatique().getPlayerData().loadByAccountId(this.compte.getGuid());
+            # SocketManager.GAME_SEND_ATTRIBUTE_SUCCESS(this);
+            SocketManager().GAME_SEND_ATTRIBUTE_SUCCESS(gameClient)
+        except Exception as e:
+            self.log.warning(e)
+            gameClient.kick()
