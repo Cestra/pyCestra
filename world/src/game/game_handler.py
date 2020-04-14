@@ -30,7 +30,7 @@ class GameHandler:
 
     def loop(self, gameClient):
         while True:
-            data = gameClient.get_io_session().recv(2048)
+            data = gameClient.get_session().recv(2048)
             packet = data.decode()
             packetLog = packet.replace('\n', '[]')
             self.log.debug('[{}][ACC:{}][<-RECV] {}'.format(str(gameClient.get_addr()[0]),
@@ -56,6 +56,9 @@ class GameHandler:
         gameClient = GameClient(socket, addr)
         SocketManager().GAME_SEND_HELLOGAME_PACKET(gameClient)
         GameHandler().loop(gameClient)
+
+# --------------------------------------------------------------------
+# MAIN PARSE
 
     def parse(self, gameClient, packet):
         if packet[0] == 'A':
@@ -129,6 +132,9 @@ class GameHandler:
             self.log.warning('parseWaypointPacket')
             return
 
+# --------------------------------------------------------------------
+# PARSE ACCOUNT PACKET
+
     def parse_account_packet(self, gameClient, packet):
         if packet[1] == 'A':
             self.log.warning('addCharacter')
@@ -192,3 +198,5 @@ class GameHandler:
         except Exception as e:
             self.log.warning(e)
             gameClient.kick()
+
+# --------------------------------------------------------------------

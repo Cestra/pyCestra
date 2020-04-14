@@ -25,7 +25,7 @@ class SocketManager:
     
     def send(self, gameClient, packet, name):
         msg = bytes(packet + '\x00', 'utf-8')
-        gameClient.get_io_session().send(msg)
+        gameClient.get_session().send(msg)
         self.log.debug('[{}][ACC:{}][SEND->] {} ({})'.format(str(gameClient.get_addr()[0]),
                                                         str('X'),
                                                         str(packet),

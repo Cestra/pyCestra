@@ -24,15 +24,29 @@ from core.logging_handler import Logging
 class GameClient:
 
     def __init__(self, socket, addr):
-        self.ioSession = socket
-        self.addr = addr
         self.log = Logging()
-    
+        self.session = socket
+        self.addr = addr
+        # self.actions = 
+        self.timeLastChatMsg = 0
+        self.timeLastIncarnamMsg = 0
+        self.timeLastAlignMsg = 0
+        self.timeLastRecrutmentMsg = 0
+        self.timeLastTradeMsg = 0
+        self.walk = False
+        self.waiter
+
     def kick(self):
         sys.exit(0)
 
-    def get_io_session(self):
-        return self.ioSession
+    def get_session(self):
+        return self.session
 
     def get_addr(self):
         return self.addr
+
+    def set_character(self, character):
+        self.character = character
+    
+    def get_character(self):
+        return self.character
