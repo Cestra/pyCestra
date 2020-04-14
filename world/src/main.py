@@ -43,7 +43,7 @@ class Main:
         clear()
 
         def wel():
-            welmsg = [58*'─', '|  0.01  |' + 12*' ' + 
+            welmsg = [58*'─', '|  0.01  |' + 12*' ' +
                 'pyCestra -  World Server'+ 11*' ' + '|', 58*"─"]
             for x in welmsg:
                 print(bcolors.blue + x + bcolors.cend)
@@ -59,7 +59,6 @@ class Main:
         else:
             self.log.warning('Connection ERROR')
             sys.exit(0)
-        
 
         # mapData = dataSource.MapData()
         # mapData.load()

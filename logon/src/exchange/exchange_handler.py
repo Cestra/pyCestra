@@ -16,8 +16,6 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-import random
-
 from core.logging_handler import Logging
 from exchange.exchange_client import ExchangeClient
 
@@ -46,7 +44,7 @@ class ExchangeHandler():
             packetPrint = packet.replace('\n', '[n]')
             self.log.debug('[{}:{}][<-EX-RECV] {}'.format(str(exClient.get_addr()[0]),
                                                     str(exClient.get_addr()[1]),
-                                                    packetPrint))            
+                                                    packetPrint))
             if not data:
                 self.log.debug('[SERVER-NAME] PacketLoop no data')
                 exClient.kick()

@@ -34,7 +34,7 @@ class GameClient:
         self.timeLastRecrutmentMsg = 0
         self.timeLastTradeMsg = 0
         self.walk = False
-        self.waiter
+        # self.waiter = 
 
     def kick(self):
         sys.exit(0)
@@ -47,6 +47,6 @@ class GameClient:
 
     def set_character(self, character):
         self.character = character
-    
+
     def get_character(self):
         return self.character

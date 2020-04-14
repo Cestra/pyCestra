@@ -19,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from enum import Enum
 
 from core.logging_handler import Logging
-from dataSource.account_data import AccountData
 from login.packet.account_queue import AccountQueue
 from login.packet.choose_nickname import ChooseNickName
 from login.packet.server_list import ServerList
