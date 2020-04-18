@@ -37,6 +37,8 @@ class GameClient:
         # self.waiter = 
 
     def kick(self):
+        self.log.info('[{}][ACC:{}] Client kick'.format(str(self.addr[0]),
+                                                str('X')))
         sys.exit(0)
 
     def get_session(self):

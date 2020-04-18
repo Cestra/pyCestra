@@ -32,15 +32,22 @@ class GameHandler:
         while True:
             data = gameClient.get_session().recv(2048)
             packet = data.decode()
-            packetLog = packet.replace('\n', '[]')
+            packetLog = packet.replace('\n\x00', '[n][x00]')
             self.log.debug('[{}][ACC:{}][<-RECV] {}'.format(str(gameClient.get_addr()[0]),
                                                             str('X'),
                                                             str(packetLog)))
             if not data:
-                self.log.debug('[TODO client ip] PacketLoop no data')
+                self.log.debug('[{}][ACC:{}] PacketLoop no data'.format(str(gameClient.get_addr()[0]),
+                                                                str('X')))
                 gameClient.kick()
                 break
-            GameHandler().parse(gameClient, packet)
+            multiPacket = packet.split("\n\x00")
+            if len(multiPacket) > 2:
+                for p in multiPacket:
+                    if not p == '':
+                        GameHandler().parse(gameClient, p)
+            else:
+                GameHandler().parse(gameClient, packet.replace('\n\x00', ''))
 
     def session_created(self, socket, addr):
         threadName = 'Game-Client-Session '+str(addr[0])+':'+ str(addr[1])
