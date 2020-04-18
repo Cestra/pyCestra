@@ -172,6 +172,7 @@ class GameHandler:
             return
         elif packet[1] == 'V':
             self.log.warning('requestRegionalVersion')
+            SocketManager().GAME_SEND_AV0(gameClient)
             return
         elif packet[1] == 'P':
             self.log.warning('SocketManager.REALM_SEND_REQUIRED_APK')

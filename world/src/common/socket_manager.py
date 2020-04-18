@@ -24,8 +24,8 @@ class SocketManager:
         self.log = Logging()
     
     def send(self, gameClient, packet, name):
-        msg = bytes(packet + '\x00', 'utf-8')
-        gameClient.get_session().send(msg)
+        __msg = bytes(packet + '\x00', 'utf-8')
+        gameClient.get_session().send(__msg)
         self.log.debug('[{}][ACC:{}][SEND->] {} ({})'.format(str(gameClient.get_addr()[0]),
                                                         str('X'),
                                                         str(packet),
@@ -44,4 +44,9 @@ class SocketManager:
     def GAME_SEND_ATTRIBUTE_SUCCESS(self, gameClient):
         __name = 'GAME_SEND_ATTRIBUTE_SUCCESS'
         __packet = 'ATK0'
+        SocketManager().send(gameClient, __packet, __name)
+
+    def GAME_SEND_AV0(self, gameClient):
+        __name = 'GAME_SEND_AV0'
+        __packet = 'AV0'
         SocketManager().send(gameClient, __packet, __name)
