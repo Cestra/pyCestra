@@ -64,6 +64,14 @@ class Account():
 
 # ----------------------------------------
 
+    def get_reponse(self):
+        return self.reponse
+    
+    def set_reponse(self, r):
+        self.reponse = r
+
+# ----------------------------------------
+
     def get_state(self):
         return self.state
 

@@ -16,13 +16,15 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
+import datetime
+
 from core.logging_handler import Logging
 from login.packet.server_list import ServerList
 
 
 class ServerSelected():
 
-    def __init__(self, client, packet, hostList):
+    def __init__(self, client, packet, accountDataDic, hostList):
         self.log = Logging()
         account = client.get_account()
         packet = packet.replace('\n\x00', '')
@@ -77,10 +79,24 @@ class ServerSelected():
                 ServerList().get_list(client)
                 return
             account.set_server(server.get_id())
-            server.get_ex_client().send('WA{}'.format(str(account.get_id())))
+            # all important account data are sent to the game server
+            for __i in accountDataDic:
+                if __i['id'] == account.get_id():
+                    lastConnectionDate = __i['lastConnectionDate']
+                    lastIP = __i['lastIP']
+            server.get_ex_client().send('WA{}#{}#{}#{}#{}#{}#{}'.format(str(account.get_id()),
+                                                                account.get_nickname(),
+                                                                account.get_question(),
+                                                                account.get_reponse(),
+                                                                account.get_subscribe(),
+                                                                lastConnectionDate,
+                                                                lastIP
+                                                                ))
+            # the address of the world server is sent to the client
             client.write('AYK{}:{};{}'.format(str(server.get_ip()),
                                         str(server.get_port()),
                                         str(account.get_id())))
+            # set client status to WAIT_VERSION
             account.set_state(0)
             self.log.info('[{}:{}][{}] Client connects to World-Server:{}'.format(str(client.get_address()[0]),
                                                                                 str(client.get_address()[1]),

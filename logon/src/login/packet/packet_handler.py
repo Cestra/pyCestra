@@ -58,7 +58,7 @@ class PacketHandler:
                 # FriendServerList.get(client, packet)
                 print('packet[0:2] == AF:')
             elif (packet[0:2] == 'AX') or (packet[-4:-2] == 'AX'):
-                ServerSelected(client,packet[2:],hostList)
+                ServerSelected(client, packet[2:], accountDataDic, hostList)
             elif (packet[0:2] == 'Af') or (packet[-4:-2] == 'Af'):
                 account = client.get_account()
                 for game_client in game_client_dic.values():
@@ -91,6 +91,7 @@ class PacketHandler:
             account.set_pass(resultSet['pass'])
             account.set_nickname(resultSet['nickname'])
             account.set_question(resultSet['question'])
+            account.set_reponse(resultSet['reponse'])
             account.set_state(resultSet['logged'])
             account.set_subscribe(resultSet['subscribe'])
             account.set_banned(resultSet['banned'])
