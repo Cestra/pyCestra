@@ -50,3 +50,13 @@ class SocketManager:
         __name = 'GAME_SEND_AV0'
         __packet = 'AV0'
         SocketManager().send(gameClient, __packet, __name)
+    
+    def MULTI_SEND_Af_PACKET(self, gameClient, position, totalAbo, totalNonAbo, subscribe, queueID):
+        __name = 'MULTI_SEND_Af_PACKET'
+        __packet = ('Af{}|{}|{}|{}|{}'.format(str(position),
+                                            str(totalAbo),
+                                            str(totalNonAbo),
+                                            str(subscribe),
+                                            str(queueID)))
+        SocketManager().send(gameClient, __packet, __name)
+        

@@ -154,6 +154,7 @@ class GameHandler:
             return
         elif packet[1] == 'f':
             self.log.warning('getQueuePosition')
+            GameHandler().get_queue_position(gameClient)
             return
         elif packet[1] == 'g':
             self.log.warning('getGifts')
@@ -186,6 +187,12 @@ class GameHandler:
         elif packet[1] == 'P':
             self.log.warning('SocketManager.REALM_SEND_REQUIRED_APK')
             return
+    
+    def get_queue_position(self, gameClient):
+        # placeholder ¯\_(ツ)_/¯
+        __queueID = 1
+        __position = 1
+        SocketManager().MULTI_SEND_Af_PACKET(gameClient, __position, 1, 1, "1", __queueID)
 
     def send_identity(self, gameClient, packet):
         gameClient.get_account().set_key(packet[2:])
