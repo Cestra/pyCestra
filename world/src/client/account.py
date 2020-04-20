@@ -16,12 +16,9 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-from core.logging_handler import Logging
-
 class Account:
 
     def __init__(self, accId, nickname, question, reponse, subscribe, lastConnection, ip):
-        self.log = Logging()
         self.accId = accId
         self.nickname = nickname
         self.question = question
@@ -50,3 +47,9 @@ class Account:
 
     def get_last_ip(self):
         return self.ip
+
+    def get_key(self):
+        return self.key
+
+    def set_key(self, key):
+        self.key = key

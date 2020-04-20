@@ -163,9 +163,11 @@ class GameHandler:
             return
         elif packet[1] == 'i':
             self.log.warning('sendIdentity')
+            GameHandler().send_identity(gameClient, packet)
             return
         elif packet[1] == 'L':
             self.log.warning('getCharacters')
+            GameHandler().get_characters()
             return
         elif packet[1] == 'M':
             self.log.warning('parseMigration')
@@ -184,7 +186,10 @@ class GameHandler:
         elif packet[1] == 'P':
             self.log.warning('SocketManager.REALM_SEND_REQUIRED_APK')
             return
-    
+
+    def send_identity(self, gameClient, packet):
+        gameClient.get_account().set_key(packet[2:])
+
     def get_characters(self):
         pass
 
