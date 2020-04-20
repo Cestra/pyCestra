@@ -25,7 +25,7 @@ class ExchangeHandler:
     def __init__(self):
         self.log = Logging()
 
-    def loop(self, exSocket):
+    def loop(self, exSocket, exchangeTransferList):
         self.log.debug('Exchange-Receiver is started')
         while True:
             data = exSocket.recv(2048)
@@ -37,4 +37,4 @@ class ExchangeHandler:
                 self.log.debug('[logon ip] PacketLoop no data')
                 # kick
                 break
-            ExchangePacketHandler().parser(packet, exSocket)
+            ExchangePacketHandler().parser(packet, exSocket, exchangeTransferList)

@@ -84,7 +84,7 @@ class ServerSelected():
                 if __i['id'] == account.get_id():
                     lastConnectionDate = __i['lastConnectionDate']
                     lastIP = __i['lastIP']
-            server.get_ex_client().send('WA{}#{}#{}#{}#{}#{}#{}'.format(str(account.get_id()),
+            server.get_ex_client().send('WA#{}#{}#{}#{}#{}#{}#{}'.format(str(account.get_id()),
                                                                 account.get_nickname(),
                                                                 account.get_question(),
                                                                 account.get_reponse(),
@@ -99,14 +99,14 @@ class ServerSelected():
             # set client status to WAIT_VERSION
             account.set_state(0)
             self.log.info('[{}:{}][{}] Client connects to World-Server:{}'.format(str(client.get_address()[0]),
-                                                                                str(client.get_address()[1]),
-                                                                                str(client.get_status().name),
-                                                                                str(server.get_id())))
+                                                                            str(client.get_address()[1]),
+                                                                            str(client.get_status().name),
+                                                                            str(server.get_id())))
         except Exception as e:
             self.log.warning('[{}:{}][{}] The server selection failed\n{}'.format(str(client.get_address()[0]),
-                                                                    str(client.get_address()[1]),
-                                                                    str(client.get_status().name),
-                                                                    e))
+                                                                            str(client.get_address()[1]),
+                                                                            str(client.get_status().name),
+                                                                            e))
             client.write('AXEr')
             client.kick()
             return

@@ -29,7 +29,7 @@ class ExchangeClient():
     def __init__(self):
         self.log = Logging()
 
-    def initialize(self, exchange_ip, exchange_port):
+    def initialize(self, exchange_ip, exchange_port, exchangeTransferList):
         try:
             exSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             exSocket.connect((exchange_ip, exchange_port))
@@ -45,7 +45,7 @@ class ExchangeClient():
             threadName = 'Exchange-Receiver - Port: '+str(exchange_port)
             t = threading.Thread(target=exchangeHandler.loop,
                                 name=threadName,
-                                args=(self.ioConnector,))
+                                args=(self.ioConnector, exchangeTransferList,))
             t.start()
         except threading.ThreadError as e:
             self.log.warning('Exchange-Receiver could not be created ' + str(e))

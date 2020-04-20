@@ -17,14 +17,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 from core.logging_handler import Logging
-
+from client.account import Account
 
 class ExchangePacketHandler:
 
     def __init__(self):
         self.log = Logging()
 
-    def parser(self, packet, exClient):
+    def parser(self, packet, exClient, exchangeTransferList):
         if packet[0] == 'F':
             if packet[1] == '?': # F?
                 # i = 50000 - Main.gameServer.getPlayerNumber()
@@ -58,6 +58,15 @@ class ExchangePacketHandler:
             # if (packet.split("W").length > 2)
                 # magic !
             if packet[1] == 'A': # WA
+                packet = packet.split("#")
+                account = Account(packet[1],
+                                packet[2],
+                                packet[3],
+                                packet[4],
+                                packet[5],
+                                packet[6],
+                                packet[7])
+                exchangeTransferList.append(account)
                 return
             elif packet[1] == 'K': # WK
                 return

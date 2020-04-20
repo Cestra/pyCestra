@@ -20,5 +20,33 @@ from core.logging_handler import Logging
 
 class Account:
 
-    def __init__(self):
+    def __init__(self, accId, nickname, question, reponse, subscribe, lastConnection, ip):
         self.log = Logging()
+        self.accId = accId
+        self.nickname = nickname
+        self.question = question
+        self.reponse = reponse
+        self.subscribe = subscribe
+        self.lastConnection = lastConnection
+        self.ip = ip
+
+    def get_id(self):
+        return self.accId
+
+    def get_nickname(self):
+        return self.nickname
+
+    def get_question(self):
+        return self.question
+
+    def get_reponse(self):
+        return self.reponse
+
+    def get_subscribe(self):
+        return self.subscribe
+
+    def get_last_connection_date(self):
+        return self.lastConnection
+
+    def get_last_ip(self):
+        return self.ip

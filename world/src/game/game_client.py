@@ -27,6 +27,7 @@ class GameClient:
         self.log = Logging()
         self.session = socket
         self.addr = addr
+        # self.account = account
         # self.actions = 
         self.timeLastChatMsg = 0
         self.timeLastIncarnamMsg = 0
@@ -52,3 +53,9 @@ class GameClient:
 
     def get_character(self):
         return self.character
+
+    def set_account(self, account):
+        self.account = account
+
+    def get_account(self):
+        return self.account
