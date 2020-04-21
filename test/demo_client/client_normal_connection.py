@@ -18,28 +18,14 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import socket
 
+from demo_client.client import DemoClient
 from demo_client.crypt_calculation import Crypt
 
 
-class DemoClient01:
+class DemoClient01(DemoClient):
 
     def start(self, account, password):
-
-        def response():
-            data = client.recv(2048)
-            packet = data.decode()
-            packet = packet.replace('\x00', '')
-            packetPrint = packet.replace('\n', '[n]')
-            print('>>> ' + packetPrint)
-            return packet
-
-        def send(o):
-            msg = bytes(o+'\x00', 'utf-8')
-            client.send(msg)
-            print('<<< ' + o.replace('\n', '[n]'))
-
         result_dic = {}
-
         # ----------------------
         # test 01 connection
         try:
@@ -50,71 +36,71 @@ class DemoClient01:
             result_dic["test_connection"] = False
         # ----------------------
         # # key response
-        key = response()
+        key = super().response(client)
         if len(key) == 34 and type(key) is str:
             result_dic["test_key_response"] = True
         else:
             result_dic["test_key_response"] = False
         # # ----------------------
         # # version und account send
-        send('1.29.1\n')
+        super().send(client, '1.29.1\n')
         dp = Crypt().encryptPassword(password, key[2:])
-        send(account + '\n' + dp + '\n Af\n')
+        super().send(client, account + '\n' + dp + '\n Af\n')
         # # ----------------------
         # Af0|0|0|1|-1
-        packet = response()
+        packet = super().response(client)
         if packet == 'Af0|0|0|1|-1':
             result_dic["test_packet_01"] = True
         else:
             result_dic["test_packet_01"] = False
         # # ----------------------
         # unittest-01
-        packet = response()
+        packet = super().response(client)
         if packet == 'Aduni-one':
             result_dic["test_packet_02"] = True
         else:
             result_dic["test_packet_02"] = False
         # # ----------------------
         # Ac0
-        packet = response()
+        packet = super().response(client)
         if packet == 'Ac0':
             result_dic["test_packet_03"] = True
         else:
             result_dic["test_packet_03"] = False
         # # ----------------------
         # AH
-        packet = response()
+        packet = super().response(client)
         if packet[:2] == 'AH':
             result_dic["test_packet_04"] = True
         else:
             result_dic["test_packet_04"] = False
         # # ----------------------
         # AlK0      
-        packet = response()
+        packet = super().response(client)
         if packet == 'AlK0':
             result_dic["test_packet_05"] = True
         else:
             result_dic["test_packet_05"] = False
         # # ----------------------
         # AQDELETE?
-        packet = response()
+        packet = super().response(client)
         if packet == 'AQDELETE?':
             result_dic["test_packet_06"] = True
         else:
             result_dic["test_packet_06"] = False
         # # ----------------------
         # Ax[n]
-        send('Ax[n]')
+        super().send(client, 'Ax[n]')
         # # ----------------------
         # AxK0|0,0
-        packet = response()
+        packet = super().response(client)
         if packet == 'AxK0|0,0':
             result_dic["test_packet_07"] = True
         else:
             result_dic["test_packet_07"] = False
         # # ----------------------
         # test ende
-        send('')
+        super().send(client, '')
         client.close()
 
         return result_dic
