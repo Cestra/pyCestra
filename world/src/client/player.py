@@ -20,5 +20,57 @@ from core.logging_handler import Logging
 
 class Player:
 
-    def __init__(self):
-        self.log = Logging()
+    def __init__(self, id, name, account, groupe, sexe, pclass, color1,
+                color2, color3, kamas, spellboost, capital, energy, level,
+                xp, size, gfx, alignement, honor, deshonor, alvl, stats,
+                seeFriend, seeAlign, seeSeller, channel, map, cell, pdvper,
+                spells, objets, storeObjets, savepos, zaaps, jobs, mountxpgive,
+                title, wife, morphMode, emotes, prison, server, logged,
+                allTitle, parcho, timeDeblo, noall):
+        self.id = id
+        self.name = name
+        self.account = account
+        self.groupe = groupe
+        self.sexe = sexe
+        self.pclass = pclass
+        self.color1 = color1
+        self.color2 = color2
+        self.color3 = color3
+        self.kamas = kamas
+        self.spellboost = spellboost
+        self.capital = capital
+        self.energy = energy
+        self.level = level
+        self.xp = xp
+        self.size = size
+        self.gfx = gfx
+        self.alignement = alignement
+        self.honor = honor
+        self.deshonor = deshonor
+        self.alvl = alvl
+        self.stats, = stats,
+        self.seeFriend = seeFriend
+        self.seeAlign = seeAlign
+        self.seeSeller = seeSeller
+        self.channel = channel
+        self.map = map
+        self.cell = cell
+        self.pdvper = pdvper
+        self.spells = spells
+        self.objets = objets
+        self.storeObjets = storeObjets
+        self.savepos = savepos
+        self.zaaps = zaaps
+        self.jobs = jobs
+        self.mountxpgive = mountxpgive
+        self.title = title
+        self.wife = wife
+        self.morphMode = morphMode
+        self.emotes = emotes
+        self.prison = prison
+        self.server = server
+        self.logged = logged
+        self.allTitle = allTitle
+        self.parcho = parcho
+        self.timeDeblo = timeDeblo
+        self.noall = noall

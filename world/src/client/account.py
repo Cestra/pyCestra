@@ -27,29 +27,55 @@ class Account:
         self.lastConnection = lastConnection
         self.ip = ip
 
+# ----------------------------------------
+
     def get_id(self):
         return self.accId
+
+# ----------------------------------------
 
     def get_nickname(self):
         return self.nickname
 
+# ----------------------------------------
+
     def get_question(self):
         return self.question
+
+# ----------------------------------------
 
     def get_reponse(self):
         return self.reponse
 
+# ----------------------------------------
+
     def get_subscribe(self):
         return self.subscribe
+
+# ----------------------------------------
 
     def get_last_connection_date(self):
         return self.lastConnection
 
+# ----------------------------------------
+
     def get_last_ip(self):
         return self.ip
+
+# ----------------------------------------
 
     def get_key(self):
         return self.key
 
     def set_key(self, key):
         self.key = key
+
+# ----------------------------------------
+
+    def get_game_client(self):
+        return self.gameClient
+
+    def set_game_client(self, gc):
+        self.gameClient = gc
+
+# ----------------------------------------

@@ -23,11 +23,11 @@ import time
 import dataSource
 from core.logging_handler import Logging, bcolors
 from core.server_config import Config
+from dataSource.database import Database
 from exchange.exchange_client import ExchangeClient
 from game.game_server import GameServer
-from dataSource.database import Database
-from dataSource.map_data import MapData
-from dataSource.players_data import PlayersData
+from game.world.world import World
+
 
 class Main:
 
@@ -50,7 +50,7 @@ class Main:
         wel()
 
         #  ======================================================
-        #  preload data
+        #  connection test
 
         self.log.info('Connection Test...')
         database = dataSource.Database()
@@ -60,33 +60,27 @@ class Main:
             self.log.warning('Connection ERROR')
             sys.exit(0)
 
-        # mapData = dataSource.MapData()
-        # mapData.load()
-        # mapData = mapData.get_map_data()
-        # self.log.info('MapData were loaded')
-
-        # playersData = dataSource.PlayersData()
-        # playersData.load()
-        # playersData = playersData.get_map_data()
-        # self.log.info('MapData were loaded')
-
+        #  ======================================================
+        #  world class test
+             
+        world = World().createWorld()
 
         #  ======================================================
         #  exchange client test
 
-        exchangeTransferList = []
-        exClient = ExchangeClient()
-        exClient.initialize(self.config.get_exchange_ip(),
-                            self.config.get_exchange_port(),
-                            exchangeTransferList)
+        # exchangeTransferList = []
+        # exClient = ExchangeClient()
+        # exClient.initialize(self.config.get_exchange_ip(),
+        #                     self.config.get_exchange_port(),
+        #                     exchangeTransferList)
 
-        time.sleep(1)
+        # time.sleep(1)
 
-        self.log.debug('Game Server Start')
-        # GameServer().initialize(exClient, self.config.get_world_ip(), self.config.get_world_port())
-        GameServer().initialize(self.config.get_world_ip(),
-                                self.config.get_world_port(),
-                                exchangeTransferList)
+        # self.log.debug('Game Server Start')
+        # # GameServer().initialize(exClient, self.config.get_world_ip(), self.config.get_world_port())
+        # GameServer().initialize(self.config.get_world_ip(),
+        #                         self.config.get_world_port(),
+        #                         exchangeTransferList)
 
 def main():
   Main().start()

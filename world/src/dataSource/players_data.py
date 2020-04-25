@@ -20,6 +20,7 @@ import progressbar
 
 import dataSource
 from core.logging_handler import Logging
+from client.player import Player
 from dataSource.DAO import DAO
 
 
@@ -28,25 +29,41 @@ class PlayersData(DAO):
     def __init__(self):
         self.log = Logging()
 
-    def load(self):
+    def load_in_to_class(self):
         '''
         DataFrame:
 
         '''
         self.dataSource = []
         connection = dataSource.Database().get_connection()
-        cursor = connection.cursor()
+        cursor = connection.cursor(dictionary=True)
         try:
             cursor.execute('SELECT * FROM players;')
             data = cursor.fetchall()
-            for row in progressbar.progressbar(data, prefix='Player Data: '):
-                self.dataSource.append(row)
+            for result in data:
+                # the attributes are the inGame order
+                stats = [result['vitality'], result['wisdom'], result['strength'],
+                        result['intelligence'], result['chance'], result['agility']]
+                player = Player(result['id'], result['name'], result['account'], result['groupe'],
+                                result['sexe'], result['class'], result['color1'], result['color2'],
+                                result['color3'], result['kamas'], result['spellboost'], result['capital'],
+                                result['energy'], result['level'], result['xp'], result['size'],
+                                result['gfx'], result['alignement'], result['honor'], result['deshonor'],
+                                result['alvl'], stats, result['seeFriend'], result['seeAlign'],
+                                result['seeSeller'], result['channel'], result['map'], result['cell'],
+                                result['pdvper'], result['spells'], result['objets'], result['storeObjets'],
+                                result['savepos'], result['zaaps'], result['jobs'], result['mountxpgive'],
+                                result['title'], result['wife'], result['morphMode'], result['emotes'],
+                                result['prison'], result['server'], result['logged'], result['allTitle'],
+                                result['parcho'], result['timeDeblo'], result['noall'],)
+                self.dataSource.append(player)
+                return self.dataSource
         except Exception as Error:
-            self.log.warning('player_data.py - Can\'t load table accounts')
+            self.log.warning('player_data.py - Can\'t load table player')
             self.log.warning(str(Error))
         finally:
             cursor.close()
             connection.close()
 
-    def get_map_data(self):
+    def get_player_data(self):
         return self.dataSource

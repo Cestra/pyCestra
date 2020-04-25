@@ -168,7 +168,7 @@ class GameHandler:
             return
         elif packet[1] == 'L':
             self.log.warning('getCharacters')
-            GameHandler().get_characters()
+            GameHandler().get_characters(gameClient)
             return
         elif packet[1] == 'M':
             self.log.warning('parseMigration')
@@ -197,8 +197,10 @@ class GameHandler:
     def send_identity(self, gameClient, packet):
         gameClient.get_account().set_key(packet[2:])
 
-    def get_characters(self):
-        pass
+    def get_characters(self, gameClient):
+        # both objects refer to each other    gameClient <-> account
+        gameClient.get_account().set_game_client(gameClient)
+        # TODO relog in the fight
 
     def send_ticket(self, gameClient, packet, exchangeTransferList):
         accId = packet[2:]
