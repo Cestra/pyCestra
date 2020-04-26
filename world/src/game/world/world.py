@@ -30,12 +30,15 @@ class World:
         self.log.info(35*'-')
         self.log.info('Creation of the world begins:')
 
-        playersData = dataSource.PlayersData()
-        playersData.load_in_to_class()
-        playersData = playersData.get_player_data()
+        self.playersData = dataSource.PlayersData()
+        self.playersData.load_in_to_class()
+        self.playersData = playersData.get_player_data()
         self.log.info('Player were loaded')
 
         self.log.info(35*'-')
 
     def getPlayers(self):
-        pass
+        return self.playersData
+
+    def getPlayers(self):
+        return self.playersData
