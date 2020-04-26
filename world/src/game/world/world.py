@@ -35,10 +35,15 @@ class World:
         self.playersData = self.playersData.get_player_data()
         self.log.info('Player were loaded')
 
+        self.log.info('The world-server has finished loading')
         self.log.info(35*'-')
 
     def get_players(self):
         return self.playersData
 
-    def get_players_by_accid(self):
-        return self.playersData
+    def get_players_by_accid(self, accid):
+        __playerList = []
+        for player in self.playersData:
+            if player.get_id() == accid:
+                __playerList.append(player)
+        return __playerList

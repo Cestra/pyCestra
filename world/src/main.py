@@ -62,9 +62,8 @@ class Main:
 
         #  ======================================================
         #  world class test
-             
-        world = World().createWorld()
-
+        world = World()
+        world.createWorld()
         #  ======================================================
         #  exchange client test
 

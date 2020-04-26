@@ -74,3 +74,6 @@ class Player:
         self.parcho = parcho
         self.timeDeblo = timeDeblo
         self.noall = noall
+
+    def get_id(self):
+        return self.id
