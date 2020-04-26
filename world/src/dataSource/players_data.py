@@ -44,7 +44,7 @@ class PlayersData(DAO):
                 # the attributes are the inGame order
                 stats = [result['vitality'], result['wisdom'], result['strength'],
                         result['intelligence'], result['chance'], result['agility']]
-                player = Player(result['id'], result['name'], result['account'], result['groupe'],
+                player = Player(result['id'], result['name'], result['account'], result['group'],
                                 result['sexe'], result['class'], result['color1'], result['color2'],
                                 result['color3'], result['kamas'], result['spellboost'], result['capital'],
                                 result['energy'], result['level'], result['xp'], result['size'],

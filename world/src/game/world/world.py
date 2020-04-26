@@ -32,13 +32,13 @@ class World:
 
         self.playersData = dataSource.PlayersData()
         self.playersData.load_in_to_class()
-        self.playersData = playersData.get_player_data()
+        self.playersData = self.playersData.get_player_data()
         self.log.info('Player were loaded')
 
         self.log.info(35*'-')
 
-    def getPlayers(self):
+    def get_players(self):
         return self.playersData
 
-    def getPlayers(self):
+    def get_players_by_accid(self):
         return self.playersData
