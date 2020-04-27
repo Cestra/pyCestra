@@ -59,11 +59,11 @@ class ExchangePacketHandler:
                 # magic !
             if packet[1] == 'A': # WA
                 packet = packet.split("#")
-                account = Account(packet[1],
+                account = Account(int(packet[1]),
                                 packet[2],
                                 packet[3],
                                 packet[4],
-                                packet[5],
+                                int(packet[5]),
                                 packet[6],
                                 packet[7])
                 exchangeTransferList.append(account)

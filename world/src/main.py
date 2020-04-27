@@ -67,19 +67,19 @@ class Main:
         #  ======================================================
         #  exchange client test
 
-        # exchangeTransferList = []
-        # exClient = ExchangeClient()
-        # exClient.initialize(self.config.get_exchange_ip(),
-        #                     self.config.get_exchange_port(),
-        #                     exchangeTransferList)
+        exchangeTransferList = []
+        exClient = ExchangeClient()
+        exClient.initialize(self.config.get_exchange_ip(),
+                            self.config.get_exchange_port(),
+                            exchangeTransferList)
 
         # time.sleep(1)
 
-        # self.log.debug('Game Server Start')
-        # # GameServer().initialize(exClient, self.config.get_world_ip(), self.config.get_world_port())
-        # GameServer().initialize(self.config.get_world_ip(),
-        #                         self.config.get_world_port(),
-        #                         exchangeTransferList)
+        self.log.debug('Game Server Start')
+        GameServer().initialize(self.config.get_world_ip(),
+                                self.config.get_world_port(),
+                                exchangeTransferList,
+                                world)
 
 def main():
   Main().start()

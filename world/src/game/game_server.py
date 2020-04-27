@@ -28,17 +28,17 @@ class GameServer:
     def __init__(self):
         self.log = Logging()
 
-    def initialize(self, ip, port, exchangeTransferList):
+    def initialize(self, ip, port, exchangeTransferList, world):
         threadName = 'Game-Server - ' + str(port)
         try:
             t = threading.Thread(target=GameServer.server,
                                 name=threadName,
-                                args=(self, ip, port, exchangeTransferList))
+                                args=(self, ip, port, exchangeTransferList, world))
             t.start()
         except threading.ThreadError as e:
             self.log.warning('Game Server could not be created: ' + str(e))
 
-    def server(self, game_ip, game_port, exchangeTransferList):
+    def server(self, game_ip, game_port, exchangeTransferList, world):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             s.bind((game_ip, game_port))
@@ -49,5 +49,5 @@ class GameServer:
         while True:
             c, self.addr = s.accept()
             self.log.debug('[{}:{}] Client Connected '.format(str(self.addr[0]),str(self.addr[1])))
-            GameHandler().session_created(c, self.addr, exchangeTransferList)
+            GameHandler().session_created(c, self.addr, exchangeTransferList, world)
         s.close()

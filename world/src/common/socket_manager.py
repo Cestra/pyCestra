@@ -59,4 +59,24 @@ class SocketManager:
                                             str(subscribe),
                                             str(queueID)))
         SocketManager().send(gameClient, __packet, __name)
+
+    def GAME_SEND_PERSO_LIST(self, gameClient):
+        __name = 'GAME_SEND_PERSO_LIST'
+        # print('hex: ' + hex(number).replace("0x",""))
+        # ALK55751880000|1|1;pyCestra;1;80;-1;-1;-1;bc,96b,306,2593,2341;0;1;0;0;
+        # ALK sub | characters number | player ID ; player name ; player level ; gfx ID ;
+        # color 1 in hex ;
+        # color 2 in hex ;
+        # color 3 in hex ;
+        # weapon ID in hex ,
+        # hat ID in hex ,
+        # cape ID in hex ,
+        # pet ID in hex ,
+        # shield ID in hex ;
+        # isShowSeller 0 ;
+        # server ID ;
+        # 0 ;
+        # 0 ;
+        __packet = 'ALK55751880000|1|1;pyCestra;1;80;-1;-1;-1;bc,96b,306,2593,2341;0;1;0;0;'
+        SocketManager().send(gameClient, __packet, __name)
         

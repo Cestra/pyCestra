@@ -28,7 +28,7 @@ class GameHandler:
     def __init__(self):
         self.log = Logging()
 
-    def loop(self, gameClient, exchangeTransferList):
+    def loop(self, gameClient, exchangeTransferList, world):
         while True:
             data = gameClient.get_session().recv(2048)
             packet = data.decode()
@@ -45,32 +45,32 @@ class GameHandler:
             if len(multiPacket) > 2:
                 for p in multiPacket:
                     if not p == '':
-                        GameHandler().parse(gameClient, p, exchangeTransferList)
+                        GameHandler().parse(gameClient, p, exchangeTransferList, world)
             else:
-                GameHandler().parse(gameClient, packet.replace('\n\x00', ''), exchangeTransferList)
+                GameHandler().parse(gameClient, packet.replace('\n\x00', ''), exchangeTransferList, world)
 
-    def session_created(self, socket, addr, exchangeTransferList):
+    def session_created(self, socket, addr, exchangeTransferList, world):
         threadName = 'Game-Client-Session '+str(addr[0])+':'+ str(addr[1])
         try:
             t = threading.Thread(target=GameHandler.hello_game_client,
                                 name=threadName,
-                                args=(self, socket, addr, exchangeTransferList,))
+                                args=(self, socket, addr, exchangeTransferList, world,))
             t.start()
         except:
             self.log.warning('Game Client could not be created '+ str(addr[0])+':'+ str(addr[1]))
 
-    def hello_game_client(self, socket, addr, exchangeTransferList):
+    def hello_game_client(self, socket, addr, exchangeTransferList, world):
         gameClient = GameClient(socket, addr)
         SocketManager().GAME_SEND_HELLOGAME_PACKET(gameClient)
-        GameHandler().loop(gameClient, exchangeTransferList)
+        GameHandler().loop(gameClient, exchangeTransferList, world)
 
 # --------------------------------------------------------------------
 # MAIN PARSE
 
-    def parse(self, gameClient, packet, exchangeTransferList):
+    def parse(self, gameClient, packet, exchangeTransferList, world):
         if packet[0] == 'A':
             self.log.warning('parse_account_packet')
-            GameHandler().parse_account_packet(gameClient, packet, exchangeTransferList)
+            GameHandler().parse_account_packet(gameClient, packet, exchangeTransferList, world)
             return
         elif packet[0] == 'B':
             self.log.warning('parseBasicsPacket')
@@ -142,7 +142,7 @@ class GameHandler:
 # --------------------------------------------------------------------
 # PARSE ACCOUNT PACKET
 
-    def parse_account_packet(self, gameClient, packet, exchangeTransferList):
+    def parse_account_packet(self, gameClient, packet, exchangeTransferList, world):
         if packet[1] == 'A':
             self.log.warning('addCharacter')
             return
@@ -154,7 +154,7 @@ class GameHandler:
             return
         elif packet[1] == 'f':
             self.log.warning('getQueuePosition')
-            GameHandler().get_queue_position(gameClient)
+            # GameHandler().get_queue_position(gameClient)
             return
         elif packet[1] == 'g':
             self.log.warning('getGifts')
@@ -168,7 +168,7 @@ class GameHandler:
             return
         elif packet[1] == 'L':
             self.log.warning('getCharacters')
-            GameHandler().get_characters(gameClient)
+            GameHandler().get_characters(gameClient, world)
             return
         elif packet[1] == 'M':
             self.log.warning('parseMigration')
@@ -197,10 +197,15 @@ class GameHandler:
     def send_identity(self, gameClient, packet):
         gameClient.get_account().set_key(packet[2:])
 
-    def get_characters(self, gameClient):
+    def get_characters(self, gameClient, world):
         # both objects refer to each other    gameClient <-> account
         gameClient.get_account().set_game_client(gameClient)
         # TODO relog in the fight
+        
+        playerList = world.get_players_by_accid(gameClient.get_account().get_id())
+        if len(playerList) == 0:
+            pass
+        SocketManager().GAME_SEND_PERSO_LIST(gameClient)
 
     def send_ticket(self, gameClient, packet, exchangeTransferList):
         accId = packet[2:]
