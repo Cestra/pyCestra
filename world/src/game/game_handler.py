@@ -25,10 +25,15 @@ from common.socket_manager import SocketManager
 
 class GameHandler:
 
-    def __init__(self):
+    def __init__(self, socket, addr, exchangeTransferList, world):
         self.log = Logging()
+        self.world = world
+        self.socketManager = SocketManager()
+        gameClient = GameClient(socket, addr)
+        self.socketManager.GAME_SEND_HELLOGAME_PACKET(gameClient)
+        self.loop(gameClient, exchangeTransferList)
 
-    def loop(self, gameClient, exchangeTransferList, world):
+    def loop(self, gameClient, exchangeTransferList):
         while True:
             data = gameClient.get_session().recv(2048)
             packet = data.decode()
@@ -45,32 +50,17 @@ class GameHandler:
             if len(multiPacket) > 2:
                 for p in multiPacket:
                     if not p == '':
-                        GameHandler().parse(gameClient, p, exchangeTransferList, world)
+                        self.parse(gameClient, p, exchangeTransferList)
             else:
-                GameHandler().parse(gameClient, packet.replace('\n\x00', ''), exchangeTransferList, world)
-
-    def session_created(self, socket, addr, exchangeTransferList, world):
-        threadName = 'Game-Client-Session '+str(addr[0])+':'+ str(addr[1])
-        try:
-            t = threading.Thread(target=GameHandler.hello_game_client,
-                                name=threadName,
-                                args=(self, socket, addr, exchangeTransferList, world,))
-            t.start()
-        except:
-            self.log.warning('Game Client could not be created '+ str(addr[0])+':'+ str(addr[1]))
-
-    def hello_game_client(self, socket, addr, exchangeTransferList, world):
-        gameClient = GameClient(socket, addr)
-        SocketManager().GAME_SEND_HELLOGAME_PACKET(gameClient)
-        GameHandler().loop(gameClient, exchangeTransferList, world)
+                self.parse(gameClient, packet.replace('\n\x00', ''), exchangeTransferList)
 
 # --------------------------------------------------------------------
 # MAIN PARSE
 
-    def parse(self, gameClient, packet, exchangeTransferList, world):
+    def parse(self, gameClient, packet, exchangeTransferList):
         if packet[0] == 'A':
             self.log.warning('parse_account_packet')
-            GameHandler().parse_account_packet(gameClient, packet, exchangeTransferList, world)
+            self.parse_account_packet(gameClient, packet, exchangeTransferList)
             return
         elif packet[0] == 'B':
             self.log.warning('parseBasicsPacket')
@@ -142,7 +132,7 @@ class GameHandler:
 # --------------------------------------------------------------------
 # PARSE ACCOUNT PACKET
 
-    def parse_account_packet(self, gameClient, packet, exchangeTransferList, world):
+    def parse_account_packet(self, gameClient, packet, exchangeTransferList):
         if packet[1] == 'A':
             self.log.warning('addCharacter')
             return
@@ -154,7 +144,7 @@ class GameHandler:
             return
         elif packet[1] == 'f':
             self.log.warning('getQueuePosition')
-            # GameHandler().get_queue_position(gameClient)
+            self.get_queue_position(gameClient)
             return
         elif packet[1] == 'g':
             self.log.warning('getGifts')
@@ -164,11 +154,11 @@ class GameHandler:
             return
         elif packet[1] == 'i':
             self.log.warning('sendIdentity')
-            GameHandler().send_identity(gameClient, packet)
+            self.send_identity(gameClient, packet)
             return
         elif packet[1] == 'L':
             self.log.warning('getCharacters')
-            GameHandler().get_characters(gameClient, world)
+            self.get_characters(gameClient)
             return
         elif packet[1] == 'M':
             self.log.warning('parseMigration')
@@ -178,35 +168,35 @@ class GameHandler:
             return
         elif packet[1] == 'T':
             self.log.warning('sendTicket')
-            GameHandler().send_ticket(gameClient, packet, exchangeTransferList)
+            self.send_ticket(gameClient, packet, exchangeTransferList)
             return
         elif packet[1] == 'V':
             self.log.warning('requestRegionalVersion')
-            SocketManager().GAME_SEND_AV0(gameClient)
+            self.socketManager.GAME_SEND_AV0(gameClient)
             return
         elif packet[1] == 'P':
             self.log.warning('SocketManager.REALM_SEND_REQUIRED_APK')
-            SocketManager().REALM_SEND_REQUIRED_APK(gameClient)
+            self.socketManager.REALM_SEND_REQUIRED_APK(gameClient)
             return
     
     def get_queue_position(self, gameClient):
         # placeholder ¯\_(ツ)_/¯
         __queueID = 1
         __position = 1
-        SocketManager().MULTI_SEND_Af_PACKET(gameClient, __position, 1, 1, "1", __queueID)
+        self.socketManager.MULTI_SEND_Af_PACKET(gameClient, __position, 1, 1, "1", __queueID)
 
     def send_identity(self, gameClient, packet):
         gameClient.get_account().set_key(packet[2:])
 
-    def get_characters(self, gameClient, world):
+    def get_characters(self, gameClient):
         # both objects refer to each other    gameClient <-> account
         gameClient.get_account().set_game_client(gameClient)
         # TODO relog in the fight
         
-        playerList = world.get_players_by_accid(gameClient.get_account().get_id())
+        playerList = self.world.get_players_by_accid(gameClient.get_account().get_id())
         if len(playerList) == 0:
             pass
-        SocketManager().GAME_SEND_PLAYER_LIST(gameClient)
+        self.socketManager.GAME_SEND_PLAYER_LIST(gameClient)
 
     def send_ticket(self, gameClient, packet, exchangeTransferList):
         accId = packet[2:]
@@ -219,9 +209,9 @@ class GameHandler:
                 del exchangeTransferList[__delCount]
             __delCount += 1
         if __accIsAvailable == True:
-            SocketManager().GAME_SEND_ATTRIBUTE_SUCCESS(gameClient)
+            self.socketManager.GAME_SEND_ATTRIBUTE_SUCCESS(gameClient)
         else:
-            SocketManager().GAME_SEND_ATTRIBUTE_FAILED(gameClient)
+            self.socketManager.GAME_SEND_ATTRIBUTE_FAILED(gameClient)
             gameClient.kick()        
         
         # TODO In my opinion, the queue is sent here (Main.gameServer.getWaitingCompte(id))
@@ -230,7 +220,7 @@ class GameHandler:
                 # pass
                 # this.compte = Main.gameServer.getWaitingCompte(id);
             # except Exception as e:
-                # SocketManager().GAME_SEND_ATTRIBUTE_FAILED(gameClient)
+                # self.socketManager.GAME_SEND_ATTRIBUTE_FAILED(gameClient)
                 # self.log.warning(e)
                 # gameClient.kick()
             # String ip = this.session.getRemoteAddress().toString().substring(1).split("\\:")[0];
@@ -238,7 +228,7 @@ class GameHandler:
 			# this.compte.setCurIP(ip);
             # Main.gameServer.delWaitingCompte(this.compte);
             # Database.getStatique().getPlayerData().loadByAccountId(this.compte.getGuid());
-            # SocketManager.GAME_SEND_ATTRIBUTE_SUCCESS(this);
+            # self.socketManager.GAME_SEND_ATTRIBUTE_SUCCESS(this);
         # except Exception as e:
         #     self.log.warning(e)
         #     gameClient.kick()
