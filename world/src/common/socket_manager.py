@@ -15,8 +15,12 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import random
+
+from pronounceable import generate_word
 
 from core.logging_handler import Logging
+
 
 class SocketManager:
 
@@ -34,22 +38,22 @@ class SocketManager:
     def GAME_SEND_HELLOGAME_PACKET(self, gameClient):
         __name = 'GAME_SEND_HELLOGAME_PACKET'
         __packet = 'HG'
-        SocketManager().send(gameClient, __packet, __name)
+        self.send(gameClient, __packet, __name)
 
     def GAME_SEND_ATTRIBUTE_FAILED(self, gameClient):
         __name = 'GAME_SEND_ATTRIBUTE_FAILED'
         __packet = 'ATE'
-        SocketManager().send(gameClient, __packet, __name)
+        self.send(gameClient, __packet, __name)
 
     def GAME_SEND_ATTRIBUTE_SUCCESS(self, gameClient):
         __name = 'GAME_SEND_ATTRIBUTE_SUCCESS'
         __packet = 'ATK0'
-        SocketManager().send(gameClient, __packet, __name)
+        self.send(gameClient, __packet, __name)
 
     def GAME_SEND_AV0(self, gameClient):
         __name = 'GAME_SEND_AV0'
         __packet = 'AV0'
-        SocketManager().send(gameClient, __packet, __name)
+        self.send(gameClient, __packet, __name)
     
     def MULTI_SEND_Af_PACKET(self, gameClient, position, totalAbo, totalNonAbo, subscribe, queueID):
         __name = 'MULTI_SEND_Af_PACKET'
@@ -58,10 +62,10 @@ class SocketManager:
                                             str(totalNonAbo),
                                             str(subscribe),
                                             str(queueID)))
-        SocketManager().send(gameClient, __packet, __name)
+        self.send(gameClient, __packet, __name)
 
-    def GAME_SEND_PERSO_LIST(self, gameClient):
-        __name = 'GAME_SEND_PERSO_LIST'
+    def GAME_SEND_PLAYER_LIST(self, gameClient):
+        __name = 'GAME_SEND_PLAYER_LIST'
         # print('hex: ' + hex(number).replace("0x",""))
         # ALK55751880000|1|1;pyCestra;1;80;-1;-1;-1;bc,96b,306,2593,2341;0;1;0;0;
         # ALK sub | characters number | player ID ; player name ; player level ; gfx ID ;
@@ -78,5 +82,17 @@ class SocketManager:
         # 0 ;
         # 0 ;
         __packet = 'ALK55751880000|1|1;pyCestra;1;80;-1;-1;-1;bc,96b,306,2593,2341;0;1;0;0;'
-        SocketManager().send(gameClient, __packet, __name)
-        
+        self.send(gameClient, __packet, __name)
+
+    def REALM_SEND_REQUIRED_APK(self, gameClient):
+        __name = 'GAME_SEND_APK'
+        __packet = 'APK'
+        __chName = generate_word().capitalize()
+        if len(__chName) < 3:
+            __chName += generate_word().capitalize()
+        if random.choice([True, False]):
+            extra = generate_word()
+            if random.choice([True, False]):
+                extra += generate_word()
+            __chName += '-' + extra.capitalize()
+        self.send(gameClient, __packet + __chName, __name)

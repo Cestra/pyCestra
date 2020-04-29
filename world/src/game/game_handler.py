@@ -186,6 +186,7 @@ class GameHandler:
             return
         elif packet[1] == 'P':
             self.log.warning('SocketManager.REALM_SEND_REQUIRED_APK')
+            SocketManager().REALM_SEND_REQUIRED_APK(gameClient)
             return
     
     def get_queue_position(self, gameClient):
@@ -205,7 +206,7 @@ class GameHandler:
         playerList = world.get_players_by_accid(gameClient.get_account().get_id())
         if len(playerList) == 0:
             pass
-        SocketManager().GAME_SEND_PERSO_LIST(gameClient)
+        SocketManager().GAME_SEND_PLAYER_LIST(gameClient)
 
     def send_ticket(self, gameClient, packet, exchangeTransferList):
         accId = packet[2:]
