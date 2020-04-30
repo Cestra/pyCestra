@@ -16,11 +16,9 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-import threading
-
+from common.socket_manager import SocketManager
 from core.logging_handler import Logging
 from game.game_client import GameClient
-from common.socket_manager import SocketManager
 
 
 class GameHandler:
@@ -28,39 +26,41 @@ class GameHandler:
     def __init__(self, socket, addr, exchangeTransferList, world):
         self.log = Logging()
         self.world = world
-        self.socketManager = SocketManager()
-        gameClient = GameClient(socket, addr)
-        self.socketManager.GAME_SEND_HELLOGAME_PACKET(gameClient)
-        self.loop(gameClient, exchangeTransferList)
+        self.gameClient = GameClient(socket, addr)
+        self.exchangeTransferList = exchangeTransferList
+        self.socketManager = SocketManager(self.gameClient)
 
-    def loop(self, gameClient, exchangeTransferList):
+        self.socketManager.GAME_SEND_HELLOGAME_PACKET()
+        self.loop()
+
+    def loop(self):
         while True:
-            data = gameClient.get_session().recv(2048)
+            data = self.gameClient.get_session().recv(2048)
             packet = data.decode()
             packetLog = packet.replace('\n\x00', '[n][x00]')
-            self.log.debug('[{}][ACC:{}][<-RECV] {}'.format(str(gameClient.get_addr()[0]),
+            self.log.debug('[{}][ACC:{}][<-RECV] {}'.format(str(self.gameClient.get_addr()[0]),
                                                             str('X'),
                                                             str(packetLog)))
             if not data:
-                self.log.debug('[{}][ACC:{}] PacketLoop no data'.format(str(gameClient.get_addr()[0]),
+                self.log.debug('[{}][ACC:{}] PacketLoop no data'.format(str(self.gameClient.get_addr()[0]),
                                                                 str('X')))
-                gameClient.kick()
+                self.gameClient.kick()
                 break
             multiPacket = packet.split("\n\x00")
             if len(multiPacket) > 2:
                 for p in multiPacket:
                     if not p == '':
-                        self.parse(gameClient, p, exchangeTransferList)
+                        self.parse(p)
             else:
-                self.parse(gameClient, packet.replace('\n\x00', ''), exchangeTransferList)
+                self.parse(packet.replace('\n\x00', ''))
 
 # --------------------------------------------------------------------
 # MAIN PARSE
 
-    def parse(self, gameClient, packet, exchangeTransferList):
+    def parse(self, packet):
         if packet[0] == 'A':
             self.log.warning('parse_account_packet')
-            self.parse_account_packet(gameClient, packet, exchangeTransferList)
+            self.parse_account_packet(packet)
             return
         elif packet[0] == 'B':
             self.log.warning('parseBasicsPacket')
@@ -132,7 +132,7 @@ class GameHandler:
 # --------------------------------------------------------------------
 # PARSE ACCOUNT PACKET
 
-    def parse_account_packet(self, gameClient, packet, exchangeTransferList):
+    def parse_account_packet(self, packet):
         if packet[1] == 'A':
             self.log.warning('addCharacter')
             return
@@ -144,7 +144,7 @@ class GameHandler:
             return
         elif packet[1] == 'f':
             self.log.warning('getQueuePosition')
-            self.get_queue_position(gameClient)
+            self.get_queue_position()
             return
         elif packet[1] == 'g':
             self.log.warning('getGifts')
@@ -154,11 +154,11 @@ class GameHandler:
             return
         elif packet[1] == 'i':
             self.log.warning('sendIdentity')
-            self.send_identity(gameClient, packet)
+            self.send_identity(packet)
             return
         elif packet[1] == 'L':
             self.log.warning('getCharacters')
-            self.get_characters(gameClient)
+            self.get_characters()
             return
         elif packet[1] == 'M':
             self.log.warning('parseMigration')
@@ -168,51 +168,51 @@ class GameHandler:
             return
         elif packet[1] == 'T':
             self.log.warning('sendTicket')
-            self.send_ticket(gameClient, packet, exchangeTransferList)
+            self.send_ticket(packet)
             return
         elif packet[1] == 'V':
             self.log.warning('requestRegionalVersion')
-            self.socketManager.GAME_SEND_AV0(gameClient)
+            self.socketManager.GAME_SEND_AV0()
             return
         elif packet[1] == 'P':
             self.log.warning('SocketManager.REALM_SEND_REQUIRED_APK')
-            self.socketManager.REALM_SEND_REQUIRED_APK(gameClient)
+            self.socketManager.REALM_SEND_REQUIRED_APK()
             return
     
-    def get_queue_position(self, gameClient):
+    def get_queue_position(self):
         # placeholder ¯\_(ツ)_/¯
         __queueID = 1
         __position = 1
-        self.socketManager.MULTI_SEND_Af_PACKET(gameClient, __position, 1, 1, "1", __queueID)
+        self.socketManager.MULTI_SEND_Af_PACKET(__position, 1, 1, "1", __queueID)
 
-    def send_identity(self, gameClient, packet):
-        gameClient.get_account().set_key(packet[2:])
+    def send_identity(self, packet):
+        self.gameClient.get_account().set_key(packet[2:])
 
-    def get_characters(self, gameClient):
+    def get_characters(self):
         # both objects refer to each other    gameClient <-> account
-        gameClient.get_account().set_game_client(gameClient)
+        self.gameClient.get_account().set_game_client(self.gameClient)
         # TODO relog in the fight
         
-        playerList = self.world.get_players_by_accid(gameClient.get_account().get_id())
+        playerList = self.world.get_players_by_accid(self.gameClient.get_account().get_id())
         if len(playerList) == 0:
             pass
-        self.socketManager.GAME_SEND_PLAYER_LIST(gameClient)
+        self.socketManager.GAME_SEND_PLAYER_LIST()
 
-    def send_ticket(self, gameClient, packet, exchangeTransferList):
+    def send_ticket(self, packet):
         accId = packet[2:]
         __accIsAvailable = False
         __delCount = 0
-        for acc in exchangeTransferList:
+        for acc in self.exchangeTransferList:
             if str(acc.get_id()) == accId:
-                gameClient.set_account(acc)
+                self.gameClient.set_account(acc)
                 __accIsAvailable = True
-                del exchangeTransferList[__delCount]
+                del self.exchangeTransferList[__delCount]
             __delCount += 1
         if __accIsAvailable == True:
-            self.socketManager.GAME_SEND_ATTRIBUTE_SUCCESS(gameClient)
+            self.socketManager.GAME_SEND_ATTRIBUTE_SUCCESS()
         else:
-            self.socketManager.GAME_SEND_ATTRIBUTE_FAILED(gameClient)
-            gameClient.kick()        
+            self.socketManager.GAME_SEND_ATTRIBUTE_FAILED()
+            self.gameClient.kick()        
         
         # TODO In my opinion, the queue is sent here (Main.gameServer.getWaitingCompte(id))
         # try:
@@ -220,9 +220,9 @@ class GameHandler:
                 # pass
                 # this.compte = Main.gameServer.getWaitingCompte(id);
             # except Exception as e:
-                # self.socketManager.GAME_SEND_ATTRIBUTE_FAILED(gameClient)
+                # self.socketManager.GAME_SEND_ATTRIBUTE_FAILED()
                 # self.log.warning(e)
-                # gameClient.kick()
+                # self.gameClient.kick()
             # String ip = this.session.getRemoteAddress().toString().substring(1).split("\\:")[0];
 			# this.compte.setGameClient(this);
 			# this.compte.setCurIP(ip);
@@ -231,6 +231,6 @@ class GameHandler:
             # self.socketManager.GAME_SEND_ATTRIBUTE_SUCCESS(this);
         # except Exception as e:
         #     self.log.warning(e)
-        #     gameClient.kick()
+        #     self.gameClient.kick()
 
 # --------------------------------------------------------------------

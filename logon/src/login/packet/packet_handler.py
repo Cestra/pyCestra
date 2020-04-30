@@ -32,57 +32,58 @@ class PacketHandler:
         self.log = Logging()
 
     def parser(self, client, packet, game_client_dic, accountDataDic, hostList):
-        # client arrived here, the version has been checked
-        if client.get_status().name == Status.WAIT_VERSION.name:
-            # set client status to WAIT_ACCOUNT
-            client.set_status(Status(2))
-            self.log.debug('[' + str(client.get_address()[0]) + ':' +
-                            str(client.get_address()[1]) + ']' +
-                            '[' + str(client.get_status().name) + '] Status change')
+        self.client = client
+        # self.client arrived here, the version has been checked
+        if self.client.get_status().name == Status.WAIT_VERSION.name:
+            # set self.client status to WAIT_ACCOUNT
+            self.client.set_status(Status(2))
+            self.log.debug('[' + str(self.client.get_address()[0]) + ':' +
+                            str(self.client.get_address()[1]) + ']' +
+                            '[' + str(self.client.get_status().name) + '] Status change')
 
-        if  client.get_status().name == Status.WAIT_ACCOUNT.name:
-            verifyAccountName = PacketHandler().verify_account_name(client, packet.split('\n')[0], accountDataDic)
-            verifyPassword = PacketHandler().verify_password(client, packet.split('\n')[1])
+        if  self.client.get_status().name == Status.WAIT_ACCOUNT.name:
+            verifyAccountName = self.verify_account_name(packet.split('\n')[0], accountDataDic)
+            verifyPassword = self.verify_password(packet.split('\n')[1])
             if not (verifyAccountName and verifyPassword):
-                self.log.debug('[' + str(client.get_address()[0]) + ':' +
-                            str(client.get_address()[1]) + ']' +
-                            '[' + str(client.get_status().name) + '] Login credentials incorrect')
-                client.write('AlEf')
+                self.log.debug('[' + str(self.client.get_address()[0]) + ':' +
+                            str(self.client.get_address()[1]) + ']' +
+                            '[' + str(self.client.get_status().name) + '] Login credentials incorrect')
+                self.client.write('AlEf')
 
-        if  client.get_status().name == Status.WAIT_NICKNAME.name:
-            ChooseNickName().verify(client, packet[:-2], accountDataDic, hostList)
+        if  self.client.get_status().name == Status.WAIT_NICKNAME.name:
+            ChooseNickName().verify(self.client, packet[:-2], accountDataDic, hostList)
             return
 
-        if  client.get_status().name == Status.SERVER.name:
+        if  self.client.get_status().name == Status.SERVER.name:
             if (packet[0:2] == 'AF') or (packet[-4:-2] == 'AF'):
-                # FriendServerList.get(client, packet)
+                # FriendServerList.get(self.client, packet)
                 print('packet[0:2] == AF:')
             elif (packet[0:2] == 'AX') or (packet[-4:-2] == 'AX'):
-                ServerSelected(client, packet[2:], accountDataDic, hostList)
+                ServerSelected(self.client, packet[2:], accountDataDic, hostList)
             elif (packet[0:2] == 'Af') or (packet[-4:-2] == 'Af'):
-                account = client.get_account()
+                account = self.client.get_account()
                 for game_client in game_client_dic.values():
-                    if not game_client.get_key() == client.get_key():
+                    if not game_client.get_key() == self.client.get_key():
                         dic_account = game_client.get_account()
                         if dic_account.get_id() == account.get_id():
-                            self.log.debug('[' + str(client.get_address()[0]) + ':' +
-                                            str(client.get_address()[1]) + ']' +
-                                            '[' + str(client.get_status().name) + '] ' +
+                            self.log.debug('[' + str(self.client.get_address()[0]) + ':' +
+                                            str(self.client.get_address()[1]) + ']' +
+                                            '[' + str(self.client.get_status().name) + '] ' +
                                             'this account is already logged in ...' +
                                             'the other session is now closed')
                             game_client.kick()
-                AccountQueue().verify(client, accountDataDic, hostList)
+                AccountQueue().verify(self.client, accountDataDic, hostList)
                 return
 
             elif (packet[0:2] == 'Ax') or (packet[-4:-2] == 'Ax'):
-                ServerList().get_list(client)
+                ServerList().get_list(self.client)
                 return
             return
 
-            client.kick()
-        client.kick()
+            self.client.kick()
+        self.client.kick()
 
-    def verify_account_name(self, client, name, accountDataDic):
+    def verify_account_name(self, name, accountDataDic):
         # accountDataDic is checked whether the account exists
         def load_from_result_set(resultSet):
             account = Account()
@@ -101,33 +102,33 @@ class PacketHandler:
         for i in accountDataDic:
             if i['account'] == name:
                 account = load_from_result_set(i)
-                client.set_account(account)
+                self.client.set_account(account)
                 break
             else:
                 account = 0
-                client.set_account(account)
+                self.client.set_account(account)
 
         if account == 0:
             return False
-        client.get_account().set_client(client)
-        # set client status to WAIT_PASSWORD
-        client.set_status(Status(1))
-        self.log.debug('[' + str(client.get_address()[0]) + ':' +
-                        str(client.get_address()[1]) + ']' +
-                        '[' + str(client.get_status().name) + '] Status change')
+        self.client.get_account().set_client(self.client)
+        # set self.client status to WAIT_PASSWORD
+        self.client.set_status(Status(1))
+        self.log.debug('[' + str(self.client.get_address()[0]) + ':' +
+                        str(self.client.get_address()[1]) + ']' +
+                        '[' + str(self.client.get_status().name) + '] Status change')
         return True
 
-    def verify_password(self, client, password):
-        account = client.get_account()
+    def verify_password(self, password):
+        account = self.client.get_account()
         if account == 0:
             return False
-        if not PacketHandler().decrypt_password(password[2:], client.get_key()) == account.get_pass():
+        if not self.decrypt_password(password[2:], self.client.get_key()) == account.get_pass():
             return False
-        # set client status to SERVER
-        client.set_status(Status(4))
-        self.log.debug('[' + str(client.get_address()[0]) + ':' +
-                        str(client.get_address()[1]) + ']' +
-                        '[' + str(client.get_status().name) + '] Status change')
+        # set self.client status to SERVER
+        self.client.set_status(Status(4))
+        self.log.debug('[' + str(self.client.get_address()[0]) + ':' +
+                        str(self.client.get_address()[1]) + ']' +
+                        '[' + str(self.client.get_status().name) + '] Status change')
         return True
 
     def decrypt_password(self, passs, key):

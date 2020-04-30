@@ -28,56 +28,46 @@ from login.packet.packet_handler import PacketHandler
 
 class LoginHandler:
 
-    def __init__(self):
+    def __init__(self, soecket ,addr, gameClientDic, accountDataDic, hostList, ipbans):
         self.log = Logging()
+        self.gameClientDic = gameClientDic
+        self.accountDataDic = accountDataDic
+        self.hostList = hostList
 
-    def login(self, soecket ,key ,addr, game_client_dic, accountDataDic, hostList, ipbans):
-        client = LoginClient(game_client_dic, accountDataDic)
-        client.set_key(key)
-        client.set_address(addr)
-        client.set_status(Status(0))
-        client.set_io_session(soecket)
+        self.client = LoginClient(self.gameClientDic, self.accountDataDic)
+        self.client.set_key(self.generate_key())
+        self.client.set_address(addr)
+        self.client.set_status(Status(0))
+        self.client.set_io_session(soecket)
 
         self.log.debug('[' + str(addr[0]) + ':' + str(addr[1]) + '][' +
-                        str(client.get_status().name) + '] Client created - '+key)
+                        str(self.client.get_status().name) + '] Client created - '+ self.client.get_key())
 
         # the object is save in the global dictionary
         dict_str = addr[0] + ':' + str(addr[1])
-        game_client_dic[dict_str] = client
+        self.gameClientDic[dict_str] = self.client
 
-        HelloConnection(client, ipbans)
-        LoginHandler().recv_loop(client, game_client_dic, accountDataDic, hostList)
+        HelloConnection(self.client, ipbans)
+        self.recv_loop()
 
-    def recv_loop(self, client, game_client_dic, accountDataDic, hostList):
+    def recv_loop(self):
+        packetHandler = PacketHandler()
         while True:
-            data = client.get_io_session().recv(2048)
+            data = self.client.get_io_session().recv(2048)
             packet = data.decode()
             packetPrint = packet.replace('\n', '[n]')
-            self.log.debug('[' + str(client.get_address()[0]) + ':' +
-                            str(client.get_address()[1]) + ']' +
-                            '[' + str(client.get_status().name) + '][<-RECV] ' +
+            self.log.debug('[' + str(self.client.get_address()[0]) + ':' +
+                            str(self.client.get_address()[1]) + ']' +
+                            '[' + str(self.client.get_status().name) + '][<-RECV] ' +
                             packetPrint)
             if not data:
-                self.log.debug('[' + str(client.get_address()[0]) + ':' +
-                            str(client.get_address()[1]) + ']' +
-                            '[' + str(client.get_status().name) + '] PacketLoop no data')
-                client.kick()
+                self.log.debug('[' + str(self.client.get_address()[0]) + ':' +
+                            str(self.client.get_address()[1]) + ']' +
+                            '[' + str(self.client.get_status().name) + '] PacketLoop no data')
+                self.client.kick()
                 break
-            PacketHandler().parser(client, packet, game_client_dic, accountDataDic, hostList)
-
-    def session_created(self, soecket, addr, game_client_dic, accountDataDic, hostList, ipbans):
-        key = LoginHandler.generate_key(0)
-        threadName = 'Client-Session '+str(addr[0])+':'+ str(addr[1])
-        try:
-            t = threading.Thread(target=LoginHandler.login,
-                                name=threadName,
-                                args=(self, soecket, key, addr, game_client_dic, accountDataDic, hostList, ipbans))
-            t.start()
-        except threading.ThreadError as e:
-            self.log.debug('Created Session '+ str(addr[0])+':'+ str(addr[1]) + ': ' + str(e))
-
-    def session_opened(self):
-        pass
+            packetHandler.parser(self.client, packet, self.gameClientDic,
+                                self.accountDataDic, self.hostList)
 
     def send_to_all(self):
         pass

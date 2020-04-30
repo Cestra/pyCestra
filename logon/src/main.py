@@ -79,12 +79,12 @@ def main():
 
     game_client_dic = {}
 
-    LoginServer().start(config.get_login_ip(),
-                        config.get_login_port(),
-                        game_client_dic,
-                        accountDataDic,
-                        hostList,
-                        ipbans)
+    LoginServer(config.get_login_ip(),
+                config.get_login_port(),
+                game_client_dic,
+                accountDataDic,
+                hostList,
+                ipbans)
 
     ExchangeServer().start(config.get_exchange_ip(),
                         config.get_exchange_port(),

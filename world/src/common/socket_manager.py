@@ -24,47 +24,48 @@ from core.logging_handler import Logging
 
 class SocketManager:
 
-    def __init__(self):
+    def __init__(self, gameClient):
         self.log = Logging()
+        self.gameClient = gameClient
     
-    def send(self, gameClient, packet, name):
+    def send(self, packet, name):
         __msg = bytes(packet + '\x00', 'utf-8')
-        gameClient.get_session().send(__msg)
-        self.log.debug('[{}][ACC:{}][SEND->] {} ({})'.format(str(gameClient.get_addr()[0]),
+        self.gameClient.get_session().send(__msg)
+        self.log.debug('[{}][ACC:{}][SEND->] {} ({})'.format(str(self.gameClient.get_addr()[0]),
                                                         str('X'),
                                                         str(packet),
                                                         name))
 
-    def GAME_SEND_HELLOGAME_PACKET(self, gameClient):
+    def GAME_SEND_HELLOGAME_PACKET(self):
         __name = 'GAME_SEND_HELLOGAME_PACKET'
         __packet = 'HG'
-        self.send(gameClient, __packet, __name)
+        self.send(__packet, __name)
 
-    def GAME_SEND_ATTRIBUTE_FAILED(self, gameClient):
+    def GAME_SEND_ATTRIBUTE_FAILED(self):
         __name = 'GAME_SEND_ATTRIBUTE_FAILED'
         __packet = 'ATE'
-        self.send(gameClient, __packet, __name)
+        self.send(__packet, __name)
 
-    def GAME_SEND_ATTRIBUTE_SUCCESS(self, gameClient):
+    def GAME_SEND_ATTRIBUTE_SUCCESS(self):
         __name = 'GAME_SEND_ATTRIBUTE_SUCCESS'
         __packet = 'ATK0'
-        self.send(gameClient, __packet, __name)
+        self.send(__packet, __name)
 
-    def GAME_SEND_AV0(self, gameClient):
+    def GAME_SEND_AV0(self):
         __name = 'GAME_SEND_AV0'
         __packet = 'AV0'
-        self.send(gameClient, __packet, __name)
+        self.send(__packet, __name)
     
-    def MULTI_SEND_Af_PACKET(self, gameClient, position, totalAbo, totalNonAbo, subscribe, queueID):
+    def MULTI_SEND_Af_PACKET(self, position, totalAbo, totalNonAbo, subscribe, queueID):
         __name = 'MULTI_SEND_Af_PACKET'
         __packet = ('Af{}|{}|{}|{}|{}'.format(str(position),
                                             str(totalAbo),
                                             str(totalNonAbo),
                                             str(subscribe),
                                             str(queueID)))
-        self.send(gameClient, __packet, __name)
+        self.send(__packet, __name)
 
-    def GAME_SEND_PLAYER_LIST(self, gameClient):
+    def GAME_SEND_PLAYER_LIST(self):
         __name = 'GAME_SEND_PLAYER_LIST'
         # print('hex: ' + hex(number).replace("0x",""))
         # ALK55751880000|1|1;pyCestra;1;80;-1;-1;-1;bc,96b,306,2593,2341;0;1;0;0;
@@ -82,9 +83,9 @@ class SocketManager:
         # 0 ;
         # 0 ;
         __packet = 'ALK55751880000|1|1;pyCestra;1;80;-1;-1;-1;bc,96b,306,2593,2341;0;1;0;0;'
-        self.send(gameClient, __packet, __name)
+        self.send(__packet, __name)
 
-    def REALM_SEND_REQUIRED_APK(self, gameClient):
+    def REALM_SEND_REQUIRED_APK(self):
         __name = 'GAME_SEND_APK'
         __packet = 'APK'
         __chName = generate_word().capitalize()
@@ -95,4 +96,4 @@ class SocketManager:
             if random.choice([True, False]):
                 extra += generate_word()
             __chName += '-' + extra.capitalize()
-        self.send(gameClient, __packet + __chName, __name)
+        self.send(__packet + __chName, __name)
