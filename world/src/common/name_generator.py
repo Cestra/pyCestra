@@ -32,41 +32,41 @@ class NameGenerator:
         del self.matrix
 
     def syllableMatrix(self):
-        matrix = []
+        __matrix = []
         for k in self.konsonant:
             row = []
             for v in self.vokal:
                 syllable = k + v
                 row.append(syllable)
-            matrix.append(row)
+            __matrix.append(row)
         for k in self.konsonant:
             row = []
             for v in self.vokal:
                 syllable = v + k
                 row.append(syllable)
-            matrix.append(row)
-        return matrix
+            __matrix.append(row)
+        return __matrix
 
-    def generator(self):
-        nameLen = random.randint(2, 3)
-        name = ''
-        for _ in range(nameLen):
+    def generator(self, minSyllable, maxSyllable):
+        __nameLen = random.randint(minSyllable, maxSyllable)
+        __name = ''
+        for _ in range(__nameLen):
             column = random.randint(1, len(self.vokal)) - 1
             row = random.randint(1, len(self.konsonant)) - 1
             syllable = self.matrix[row][column]
-            name += syllable
-            if name[0] == name[1]:
-                name = name[1:]
-        return name.capitalize()
+            __name += syllable
+            if __name[0] == __name[1]:
+                __name = __name[1:]
+        return __name.capitalize()
 
     def get_name(self):
-        name = self.generator()
-        if random.choice([True, False, False]):
-            extra = self.generator()
-            name += '-' + extra
-        return name
+        __name = self.generator(2,2)
+        if random.choice([True, False, False, False]):
+            __extra = self.generator(2,2)
+            __name += '-' + __extra
+        return __name
 
-name = NameGenerator()
-for _ in range(0,15):
-    print(name.get_name())
-del name
+# name = NameGenerator()
+# for _ in range(0,15):
+#     print(name.get_name())
+# del name

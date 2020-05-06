@@ -17,7 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 import random
 
-from pronounceable import generate_word
+from common.name_generator import NameGenerator
 
 from core.logging_handler import Logging
 
@@ -26,6 +26,7 @@ class SocketManager:
 
     def __init__(self, gameClient):
         self.log = Logging()
+        self.nameGenerator = NameGenerator() # "world.join()" should quake it
         self.gameClient = gameClient
     
     def send(self, packet, name):
@@ -88,12 +89,5 @@ class SocketManager:
     def REALM_SEND_REQUIRED_APK(self):
         __name = 'GAME_SEND_APK'
         __packet = 'APK'
-        __chName = generate_word().capitalize()
-        if len(__chName) < 3:
-            __chName += generate_word().capitalize()
-        if random.choice([True, False]):
-            extra = generate_word()
-            if random.choice([True, False]):
-                extra += generate_word()
-            __chName += '-' + extra.capitalize()
+        __chName = self.nameGenerator.get_name()
         self.send(__packet + __chName, __name)
