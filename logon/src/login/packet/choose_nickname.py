@@ -32,7 +32,7 @@ class ChooseNickName:
     def __init__(self):
         self.log = Logging()
 
-    def inspect(nickname):
+    def inspect(self, nickname):
         #                  Admin                    Modo                 GM           Game Master
         forbidden_words = [r'[Aa][Dd][Mm][Ii][Nn]', r'[Mm][Oo][Dd][Oo]', r'[Gg][Mm]', r'[Gg][Aa][Mm][Ee]-?[Mm][Aa][Ss][Tt][Ee][Rr]',]
 
@@ -91,7 +91,7 @@ class ChooseNickName:
             return
 
         # the examination of the nickname string
-        if not ChooseNickName.inspect(nickname):
+        if not self.inspect(nickname):
             self.log.debug('[' + str(client.get_address()[0]) + ']'
                 '[' + str(client.get_status().name) + '] This nickname is not available')
             # 'AlEs'= this nickname is not available.
