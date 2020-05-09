@@ -32,10 +32,10 @@ class SocketManager:
     def send(self, packet, name):
         __msg = bytes(packet + '\x00', 'utf-8')
         self.gameClient.get_session().send(__msg)
-        self.log.debug('[{}][ACC:{}][SEND->] {} ({})'.format(str(self.gameClient.get_addr()[0]),
+        self.log.debug('[{}][ACC:{}][SEND->] ({}) {}'.format(str(self.gameClient.get_addr()[0]),
                                                         str('X'),
-                                                        str(packet),
-                                                        name))
+                                                        name,
+                                                        str(packet)))
 
     def GAME_SEND_HELLOGAME_PACKET(self):
         __name = 'GAME_SEND_HELLOGAME_PACKET'
@@ -66,24 +66,28 @@ class SocketManager:
                                             str(queueID)))
         self.send(__packet, __name)
 
-    def GAME_SEND_PLAYER_LIST(self):
-        __name = 'GAME_SEND_PLAYER_LIST'
-        # print('hex: ' + hex(number).replace("0x",""))
+    def GAME_SEND_PLAYER_LIST(self, sub, chrNum, palyerList):
         # ALK55751880000|1|1;pyCestra;1;80;-1;-1;-1;bc,96b,306,2593,2341;0;1;0;0;
-        # ALK sub | characters number | player ID ; player name ; player level ; gfx ID ;
-        # color 1 in hex ;
-        # color 2 in hex ;
-        # color 3 in hex ;
-        # weapon ID in hex ,
-        # hat ID in hex ,
-        # cape ID in hex ,
-        # pet ID in hex ,
-        # shield ID in hex ;
-        # isShowSeller 0 ;
-        # server ID ;
-        # 0 ;
-        # 0 ;
-        __packet = 'ALK55751880000|1|1;pyCestra;1;80;-1;-1;-1;bc,96b,306,2593,2341;0;1;0;0;'
+        playerStr = ''
+        for player in palyerList:
+            string = ('|{};{};{};{};{};{};{};{},{},{},'
+                       '{},{};{};{};0;0;'.format(str(player.get_id()), # player ID ;
+                                                player.get_name(), # player name ;
+                                                str(player.get_level()), # player level ;
+                                                player.get_gfx(), # gfx ID ;
+                                                player.get_color1(), # color 1 in hex ;
+                                                player.get_color2(), # color 2 in hex ;
+                                                player.get_color3(), # color 3 in hex ;
+                                                'ffffffff', # weapon ID in hex ,
+                                                'ffffffff', # hat ID in hex ,
+                                                'ffffffff', # cape ID in hex ,
+                                                'ffffffff', # pet ID in hex ,
+                                                'ffffffff', # shield ID in hex ;
+                                                '0', # isShowSeller 0 ;
+                                                '1',)) # server ID ;
+            playerStr += string
+        __name = 'GAME_SEND_PLAYER_LIST'
+        __packet = 'ALK{}|{}{}'.format(str(sub),str(chrNum),playerStr)
         self.send(__packet, __name)
 
     def REALM_SEND_REQUIRED_APK(self):
@@ -91,3 +95,23 @@ class SocketManager:
         __packet = 'APK'
         __chName = self.nameGenerator.get_name()
         self.send(__packet + __chName, __name)
+
+    def GAME_SEND_NAME_ALREADY_EXIST(self):
+        __name = 'GAME_SEND_NAME_ALREADY_EXIST'
+        __packet = 'AAEa'
+        self.send(__packet, __name)
+
+    def GAME_SEND_CREATE_FAILED(self):
+        __name = 'GAME_SEND_CREATE_FAILED'
+        __packet = 'AAEF'
+        self.send(__packet, __name)
+    
+    def GAME_SEND_CREATE_PERSO_FULL(self):
+        __name = 'GAME_SEND_CREATE_PERSO_FULL'
+        __packet = 'AAEf'
+        self.send(__packet, __name)
+
+    def GAME_SEND_CREATE_PERSO_FULL(self):
+        __name = 'GAME_SEND_CREATE_OK'
+        __packet = 'AAK'
+        self.send(__packet, __name)

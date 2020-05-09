@@ -69,6 +69,7 @@ class DatabaseUpdateService:
             for i in accountDic:
                 query = string_builder(i)
                 dao.multi_update_data(query)
+                del query
                 counter = counter + 1
             ende = time.time()
             self.log.debug('[Database-Update-Service] - Data was transferred '

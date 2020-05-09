@@ -26,6 +26,7 @@ class Account:
         self.subscribe = subscribe
         self.lastConnection = lastConnection
         self.ip = ip
+        self.charNum = 0
 
 # ----------------------------------------
 
@@ -77,5 +78,22 @@ class Account:
 
     def set_game_client(self, gc):
         self.gameClient = gc
+
+# ----------------------------------------
+
+    def get_characters(self):
+        return self.characters
+
+    def set_characters(self, chrlist):
+        self.set_number_of_characters(len(chrlist))
+        self.characters = chrlist
+
+# ----------------------------------------
+
+    def get_number_of_characters(self):
+        return self.charNum
+
+    def set_number_of_characters(self, value):
+        self.charNum = value
 
 # ----------------------------------------

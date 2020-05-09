@@ -44,6 +44,6 @@ class World:
     def get_players_by_accid(self, accid):
         __playerList = []
         for player in self.playersData:
-            if player.get_id() == accid:
+            if player.get_account_id() == accid:
                 __playerList.append(player)
         return __playerList

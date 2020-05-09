@@ -35,7 +35,7 @@ class ServerList:
         client.write("AxK" + ServerList().server_list(client.get_account()))
 
     def server_list(self, account):
-        return str(account.get_subscribe()) + '|1,1'
+        return str(account.get_subscribe()) + '|1,2'
 
     def character_number(self):
         pass

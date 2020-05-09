@@ -41,23 +41,42 @@ class PlayersData(DAO):
             cursor.execute('SELECT * FROM players;')
             data = cursor.fetchall()
             for result in data:
-                # the attributes are the inGame order
-                stats = [result['vitality'], result['wisdom'], result['strength'],
-                        result['intelligence'], result['chance'], result['agility']]
-                player = Player(result['id'], result['name'], result['account'], result['group'],
-                                result['sexe'], result['class'], result['color1'], result['color2'],
-                                result['color3'], result['kamas'], result['spellboost'], result['capital'],
-                                result['energy'], result['level'], result['xp'], result['size'],
-                                result['gfx'], result['alignement'], result['honor'], result['deshonor'],
-                                result['alvl'], stats, result['seeFriend'], result['seeAlign'],
-                                result['seeSeller'], result['channel'], result['map'], result['cell'],
-                                result['pdvper'], result['spells'], result['objets'], result['storeObjets'],
-                                result['savepos'], result['zaaps'], result['jobs'], result['mountxpgive'],
-                                result['title'], result['wife'], result['morphMode'], result['emotes'],
-                                result['prison'], result['server'], result['logged'], result['allTitle'],
-                                result['parcho'], result['timeDeblo'], result['noall'],)
-                self.dataSource.append(player)
-                return self.dataSource
+                try:
+                    # the attributes are the inGame order
+                    stats = [result['vitality'], result['wisdom'], result['strength'],
+                            result['intelligence'], result['chance'], result['agility']]
+
+                    if result['color1'] == -1:
+                        color1 = 'ffffffff'
+                    else:
+                        color1 = hex(result['color1']).replace("0x","")
+
+                    if result['color2'] == -1:
+                        color2 = 'ffffffff'
+                    else:
+                        color2 = hex(result['color2']).replace("0x","")
+
+                    if result['color3'] == -1:
+                        color3 = 'ffffffff'
+                    else:
+                        color3 = hex(result['color3']).replace("0x","")
+
+                    player = Player(result['id'], result['name'], result['account'], result['group'],
+                                    result['sexe'], result['class'], color1, color2,
+                                    color3, result['kamas'], result['spellboost'], result['capital'],
+                                    result['energy'], result['level'], result['xp'], result['size'],
+                                    result['gfx'], result['alignement'], result['honor'], result['deshonor'],
+                                    result['alvl'], stats, result['seeFriend'], result['seeAlign'],
+                                    result['seeSeller'], result['channel'], result['map'], result['cell'],
+                                    result['pdvper'], result['spells'], result['objets'], result['storeObjets'],
+                                    result['savepos'], result['zaaps'], result['jobs'], result['mountxpgive'],
+                                    result['title'], result['wife'], result['morphMode'], result['emotes'],
+                                    result['prison'], result['server'], result['logged'], result['allTitle'],
+                                    result['parcho'], result['timeDeblo'], result['noall'],)
+                    self.dataSource.append(player)
+                except:
+                    self.log.warning('player_data.py - player:{} can\'t be loaded'.format(result['id']))
+            return self.dataSource
         except Exception as Error:
             self.log.warning('player_data.py - Can\'t load table player')
             self.log.warning(str(Error))

@@ -75,5 +75,40 @@ class Player:
         self.timeDeblo = timeDeblo
         self.noall = noall
 
+# ----------------------------------------
+
     def get_id(self):
         return self.id
+
+# ----------------------------------------
+    
+    def get_name(self):
+        return self.name
+
+# ----------------------------------------
+
+    def get_account_id(self):
+        return self.account
+
+# ----------------------------------------
+
+    def get_level(self):
+        return self.level
+
+# ----------------------------------------
+
+    def get_gfx(self):
+        return self.gfx
+        
+# ----------------------------------------
+
+    def get_color1(self):
+        return self.color1
+
+    def get_color2(self):
+        return self.color2
+
+    def get_color3(self):
+        return self.color3
+
+# ----------------------------------------

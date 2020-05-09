@@ -15,6 +15,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import re
 
 from common.socket_manager import SocketManager
 from core.logging_handler import Logging
@@ -135,6 +136,7 @@ class GameHandler:
     def parse_account_packet(self, packet):
         if packet[1] == 'A':
             self.log.warning('addCharacter')
+            self.add_character(packet)
             return
         elif packet[1] == 'B':
             self.log.warning('boost')
@@ -178,7 +180,41 @@ class GameHandler:
             self.log.warning('SocketManager.REALM_SEND_REQUIRED_APK')
             self.socketManager.REALM_SEND_REQUIRED_APK()
             return
-    
+
+    def add_character(self, packet):
+        __packetList = packet[2:].split('|')
+        __forbiddenWords = [r'[Aa][Dd][Mm][Ii][Nn]', r'[Mm][Oo][Dd][Oo]', r'[Gg][Mm]',
+                            r'[Gg][Aa][Mm][Ee]-?[Mm][Aa][Ss][Tt][Ee][Rr]']
+        __isValid = True
+        for player in self.world.get_players():
+            if player.get_name() == __packetList[0]:
+                self.socketManager.GAME_SEND_NAME_ALREADY_EXIST()
+                return
+        for __f in __forbiddenWords:
+            if re.search(__f, __packetList[0]):
+                __isValid = False
+        for __i in __packetList[0]:
+            nick = re.match(r'[a-zA-Z]?\x2D?', __i)
+            if nick.group(0) == '':
+                __isValid = False
+        if __isValid:
+            self.socketManager.GAME_SEND_NAME_ALREADY_EXIST()
+            return
+        if self.gameClient.get_account().get_number_of_characters() >= 5:
+            self.socketManager.GAME_SEND_CREATE_PERSO_FULL()
+            return
+        try:
+            createPerso(__packetList[0],int(__packetList[1]),int(__packetList[2]),
+                        int(__packetList[3]),int(__packetList[4]),int(__packetList[5]))
+            self.socketManager.GAME_SEND_CREATE_OK()
+            # self.socketManager.GAME_SEND_PERSO_LIST()
+            # self.socketManager.GAME_SEND_cMK_PACKET_TO_MAP()
+        except Exception as e:
+            self.socketManager.GAME_SEND_CREATE_FAILED()
+            self.log.warning('[{}][ACC:{}] add_character {}'.format(str(self.gameClient.get_addr()[0]),
+                                                                    str('X'),
+                                                                    str(e)))
+
     def get_queue_position(self):
         # placeholder ¯\_(ツ)_/¯
         __queueID = 1
@@ -192,18 +228,20 @@ class GameHandler:
         # both objects refer to each other    gameClient <-> account
         self.gameClient.get_account().set_game_client(self.gameClient)
         # TODO relog in the fight
-        
-        playerList = self.world.get_players_by_accid(self.gameClient.get_account().get_id())
-        if len(playerList) == 0:
-            pass
-        self.socketManager.GAME_SEND_PLAYER_LIST()
+
+        __playerList = self.world.get_players_by_accid(self.gameClient.get_account().get_id())
+        if len(__playerList) != 0:
+            self.gameClient.get_account().set_characters(__playerList)
+        self.socketManager.GAME_SEND_PLAYER_LIST(self.gameClient.get_account().get_subscribe(),
+                                                self.gameClient.get_account().get_number_of_characters(),
+                                                self.gameClient.get_account().get_characters())
 
     def send_ticket(self, packet):
-        accId = packet[2:]
+        __accId = packet[2:]
         __accIsAvailable = False
         __delCount = 0
         for acc in self.exchangeTransferList:
-            if str(acc.get_id()) == accId:
+            if str(acc.get_id()) == __accId:
                 self.gameClient.set_account(acc)
                 __accIsAvailable = True
                 del self.exchangeTransferList[__delCount]
@@ -212,8 +250,8 @@ class GameHandler:
             self.socketManager.GAME_SEND_ATTRIBUTE_SUCCESS()
         else:
             self.socketManager.GAME_SEND_ATTRIBUTE_FAILED()
-            self.gameClient.kick()        
-        
+            self.gameClient.kick()
+
         # TODO In my opinion, the queue is sent here (Main.gameServer.getWaitingCompte(id))
         # try:
             # try:
