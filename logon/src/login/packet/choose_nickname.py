@@ -34,10 +34,10 @@ class ChooseNickName:
 
     def inspect(self, nickname):
         #                  Admin                    Modo                 GM           Game Master
-        forbidden_words = [r'[Aa][Dd][Mm][Ii][Nn]', r'[Mm][Oo][Dd][Oo]', r'[Gg][Mm]', r'[Gg][Aa][Mm][Ee]-?[Mm][Aa][Ss][Tt][Ee][Rr]',]
+        forbiddenWords = [r'[Aa][Dd][Mm][Ii][Nn]', r'[Mm][Oo][Dd][Oo]', r'[Gg][Mm]', r'[Gg][Aa][Mm][Ee]-?[Mm][Aa][Ss][Tt][Ee][Rr]',]
 
         def forbidden_words_check(val):
-            for x in forbidden_words:
+            for x in forbiddenWords:
                 if re.search(x, nickname):
                     return False
             return True
