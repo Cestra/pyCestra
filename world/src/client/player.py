@@ -20,7 +20,7 @@ from core.logging_handler import Logging
 
 class Player:
 
-    def __init__(self, id, name, account, groupe, sexe, pclass, color1,
+    def __init__(self, id, name, account, groupe, sexe, pClass, color1,
                 color2, color3, kamas, spellboost, capital, energy, level,
                 xp, size, gfx, alignement, honor, deshonor, alvl, stats,
                 seeFriend, seeAlign, seeSeller, channel, map, cell, pdvper,
@@ -32,7 +32,7 @@ class Player:
         self.account = account
         self.groupe = groupe
         self.sexe = sexe
-        self.pclass = pclass
+        self.pclass = pClass
         self.color1 = color1
         self.color2 = color2
         self.color3 = color3

@@ -78,11 +78,11 @@ class SocketManager:
                                                 player.get_color1(), # color 1 in hex ;
                                                 player.get_color2(), # color 2 in hex ;
                                                 player.get_color3(), # color 3 in hex ;
-                                                'ffffffff', # weapon ID in hex ,
-                                                'ffffffff', # hat ID in hex ,
-                                                'ffffffff', # cape ID in hex ,
-                                                'ffffffff', # pet ID in hex ,
-                                                'ffffffff', # shield ID in hex ;
+                                                '', # weapon ID in hex ,
+                                                '', # hat ID in hex ,
+                                                '', # cape ID in hex ,
+                                                '', # pet ID in hex ,
+                                                '', # shield ID in hex ;
                                                 '0', # isShowSeller 0 ;
                                                 '1',)) # server ID ;
             playerStr += string
@@ -111,7 +111,7 @@ class SocketManager:
         __packet = 'AAEf'
         self.send(__packet, __name)
 
-    def GAME_SEND_CREATE_PERSO_FULL(self):
+    def GAME_SEND_CREATE_OK(self):
         __name = 'GAME_SEND_CREATE_OK'
         __packet = 'AAK'
         self.send(__packet, __name)

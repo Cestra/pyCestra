@@ -197,21 +197,30 @@ class GameHandler:
             nick = re.match(r'[a-zA-Z]?\x2D?', __i)
             if nick.group(0) == '':
                 __isValid = False
-        if __isValid:
+        if __isValid == False:
             self.socketManager.GAME_SEND_NAME_ALREADY_EXIST()
             return
         if self.gameClient.get_account().get_number_of_characters() >= 5:
             self.socketManager.GAME_SEND_CREATE_PERSO_FULL()
             return
         try:
-            createPerso(__packetList[0],int(__packetList[1]),int(__packetList[2]),
-                        int(__packetList[3]),int(__packetList[4]),int(__packetList[5]))
+            self.world.create_player(self.gameClient.get_account().get_id(),
+                                    __packetList[0],int(__packetList[1]),int(__packetList[2]),
+                                    int(__packetList[3]),int(__packetList[4]),int(__packetList[5]))
+
+            __playerList = self.world.get_players_by_accid(self.gameClient.get_account().get_id())
+            if len(__playerList) != 0:
+                self.gameClient.get_account().set_characters(__playerList)
+
             self.socketManager.GAME_SEND_CREATE_OK()
-            # self.socketManager.GAME_SEND_PERSO_LIST()
+
+            self.socketManager.GAME_SEND_PLAYER_LIST(self.gameClient.get_account().get_subscribe(),
+                                                    self.gameClient.get_account().get_number_of_characters(),
+                                                    self.gameClient.get_account().get_characters())
             # self.socketManager.GAME_SEND_cMK_PACKET_TO_MAP()
         except Exception as e:
             self.socketManager.GAME_SEND_CREATE_FAILED()
-            self.log.warning('[{}][ACC:{}] add_character {}'.format(str(self.gameClient.get_addr()[0]),
+            self.log.warning('[{}][ACC:{}] GameHandler.add_character Exception: {}'.format(str(self.gameClient.get_addr()[0]),
                                                                     str('X'),
                                                                     str(e)))
 

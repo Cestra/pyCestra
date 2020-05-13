@@ -20,12 +20,12 @@ from core.logging_handler import Logging
 class Constant():
 
     def __init__(self):
-        self.log = Logging
-    
+        self.log = Logging()
+
     def get_start_map_incarnam(self, classID):
-        '''
-        return [mapId(int), cellId(int)]\n
-        default: [10298,236]
+        ''' 
+        Return [mapId(int), cellId(int)]\n
+        Default: [10298,236]
         '''
         if classID == 1:
             return [10300,323]
