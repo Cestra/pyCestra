@@ -69,9 +69,9 @@ class SocketManager:
     def GAME_SEND_PLAYER_LIST(self, sub, chrNum, palyerList):
         # ALK55751880000|1|1;pyCestra;1;80;-1;-1;-1;bc,96b,306,2593,2341;0;1;0;0;
         playerStr = ''
-        for player in palyerList:
+        for position, player in palyerList.items():
             string = ('|{};{};{};{};{};{};{};{},{},{},'
-                       '{},{};{};{};0;0;'.format(str(player.get_id()), # player ID ;
+                       '{},{};{};{};0;0;'.format(str(position), # player display position ;
                                                 player.get_name(), # player name ;
                                                 str(player.get_level()), # player level ;
                                                 player.get_gfx(), # gfx ID ;

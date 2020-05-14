@@ -230,24 +230,11 @@ class GameHandler:
                                                                                            str(e)))
     
     def delete_character(self, packet):
-        # TODO Wenn man ein paar mal löscht und erstellt kommt es durcheinander da der Client nicht die Position akktualisert
-
-        # [21:30:20][DEBUG] [127.0.0.1][ACC:X][SEND->] (GAME_SEND_cMK_PACKET_TO_MAP) cMK
-        # [21:30:20][DEBUG] [127.0.0.1][ACC:X][<-RECV] AS6[n][x00]            <--- POSITION 6...
-        # [21:30:20][WARNING] parse_account_packet
-        # [21:30:20][DEBUG] [127.0.0.1][ACC:X][SEND->] (GAME_SEND_PERSO_SELECTION_FAILED) ASE  <---- zu POSITION 6 sagt er dann nein
-        # [21:30:20][DEBUG] [127.0.0.1][ACC:X][<-RECV] Af[n][x00]
-        # [21:30:20][WARNING] parse_account_packet
-        # [21:30:20][DEBUG] [127.0.0.1][ACC:X][SEND->] (MULTI_SEND_Af_PACKET) Af1|1|1|1|1  <--- dann bekomme ich noch in der gleichen sek. eine getQueuePosition anfrage und 
-        # [21:30:20][DEBUG] [127.0.0.1][ACC:X][<-RECV]                                          kommt der server nicht mehr kla
-        # [21:30:20][DEBUG] [127.0.0.1][ACC:X] PacketLoop no data
-        # [21:30:20][INFO] [127.0.0.1][ACC:X] Client kick
-
         try:
             __packetList = packet[2:].split('|')
             # determine the position of the character, save the character
-            __listPosition = int(__packetList[0]) - 1
-            deletion_target = self.gameClient.get_account().get_characters()[__listPosition]
+            displayPosition = int(__packetList[0])
+            deletion_target = self.gameClient.get_account().get_characters().get(displayPosition)
             # check if the player is above level 19 and if the answer is correct
             if (deletion_target.get_level() >= 20 and __packetList[1] == self.gameClient.get_account().get_reponse()) or deletion_target.get_level() < 20:
                 self.world.delete_player(deletion_target.get_id())
