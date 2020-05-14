@@ -115,3 +115,19 @@ class SocketManager:
         __name = 'GAME_SEND_CREATE_OK'
         __packet = 'AAK'
         self.send(__packet, __name)
+
+    def GAME_SEND_cMK_PACKET_TO_MAP(self):
+        __name = 'GAME_SEND_cMK_PACKET_TO_MAP'
+        # cMK" + suffix + "|" + guid + "|" + name + "|" + msg
+        __packet = 'cMK'
+        self.send(__packet, __name)
+
+    def GAME_SEND_PERSO_SELECTION_FAILED(self):
+        __name = 'GAME_SEND_PERSO_SELECTION_FAILED'
+        __packet = 'ASE'
+        self.send(__packet, __name)
+    
+    def GAME_SEND_DELETE_PERSO_FAILED(self):
+        __name = 'GAME_SEND_DELETE_PERSO_FAILED'
+        __packet = 'ADE'
+        self.send(__packet, __name)

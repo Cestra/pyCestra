@@ -97,3 +97,11 @@ class Account:
         self.charNum = value
 
 # ----------------------------------------
+
+    def get_player(self):
+        return self.player
+
+    def set_player(self, player):
+        self.player = self.characters[player]
+
+# ----------------------------------------

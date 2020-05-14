@@ -51,14 +51,14 @@ class World:
         return __playerList
     
     def create_player(self, accId, name, pClass, sex, color1, color2, color3):
-        playerID = 0
+        __playerID = 0
         for player in self.playersData:
-            if player.get_id() > playerID:
-                playerID = player.get_id()
-        playerID = playerID + 1
+            if player.get_id() > __playerID:
+                __playerID = player.get_id()
+        __playerID = __playerID + 1
 
         startMapCellList = self.constant.get_start_map_incarnam(pClass)
-        __player = Player(playerID, name, accId, -1, # id, name, account, group,
+        player = Player(__playerID, name, accId, -1, # id, name, account, group,
                         sex, pClass, color1, color2, color3, # sexe, pClass, color1-3,
                         0, 1, '', 10000, 1, # kamas, spellboost, capital, energy, level,
                         #0, 100, pClass * 10 + sex, # xp, size, gfx,
@@ -75,4 +75,17 @@ class World:
                         '', 0, 1, # emotes, prison, server, <-- TODO placeholder
                         True, '', # logged allTitle
                         '118,0;119,0;123,0;124,0;125,0;126,0', 0, 0,) # parcho, timeDeblo, noall
-        self.playersData.append(__player)
+        self.playersData.append(player)
+    
+    def delete_player(self, __playerID):
+        # TODO remove player from his guild
+        # TODO remove all his objets
+        # determination of the list position
+        __listPosition = 0
+        for player in self.playersData:
+            if player.get_id() == __playerID:
+                break
+            else:
+                __listPosition += 1
+        # delete list entry (in self.playersData)
+        del self.playersData[__listPosition]
