@@ -44,13 +44,13 @@ class World:
         return self.playersData
 
     def get_players_by_accid(self, accId):
-        playerList = {}
-        position = 1
+        __playerList = {}
+        __position = 1
         for player in self.playersData:
             if player.get_account_id() == accId:
-                playerList[position] = player
-                position += 1
-        return playerList
+                __playerList[__position] = player
+                __position += 1
+        return __playerList
     
     def create_player(self, accId, name, pClass, sex, color1, color2, color3):
         __playerID = 0

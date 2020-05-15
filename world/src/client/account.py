@@ -26,6 +26,7 @@ class Account:
         self.subscribe = subscribe
         self.lastConnection = lastConnection
         self.ip = ip
+        self.characters = {}
         self.charNum = 0
 
 # ----------------------------------------

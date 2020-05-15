@@ -269,8 +269,7 @@ class GameHandler:
         # TODO relog in the fight
 
         __playerList = self.world.get_players_by_accid(self.gameClient.get_account().get_id())
-        if len(__playerList) != 0:
-            self.gameClient.get_account().set_characters(__playerList)
+        self.gameClient.get_account().set_characters(__playerList)
         self.socketManager.GAME_SEND_PLAYER_LIST(self.gameClient.get_account().get_subscribe(),
                                                 self.gameClient.get_account().get_number_of_characters(),
                                                 self.gameClient.get_account().get_characters())
