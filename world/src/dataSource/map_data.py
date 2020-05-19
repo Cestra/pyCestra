@@ -20,6 +20,7 @@ import progressbar
 
 import dataSource
 from core.logging_handler import Logging
+from map.map import Map
 from dataSource.DAO import DAO
 
 
@@ -35,12 +36,24 @@ class MapData(DAO):
         '''
         self.dataSource = []
         connection = dataSource.Database().get_connection()
-        cursor = connection.cursor()
+        cursor = connection.cursor(dictionary=True)
         try:
             cursor.execute('SELECT * FROM maps;')
             data = cursor.fetchall()
-            for row in progressbar.progressbar(data, prefix='Map Data: '):
-                self.dataSource.append(row)
+            for result in data:
+                try:
+                    mapData = Map(result['id'],result['date'],
+                                result['width'],result['heigth'],
+                                result['key'],result['places'],
+                                result['mapData'],result['cells'],
+                                result['monsters'],result['mappos'],
+                                result['numgroup'],result['fixSize'],
+                                result['minSize'],result['maxSize'],
+                                result['cases'],result['forbidden'],)
+                except Exception as Error:
+                    self.log.warning('maps_data.py - maps:{} can\'t be loaded'.format(result['id']))
+                    self.log.warning(Error)
+                self.dataSource.append(result)
         except Exception as Error:
             self.log.warning('map_data.py - Can\'t load table accounts')
             self.log.warning(str(Error))
