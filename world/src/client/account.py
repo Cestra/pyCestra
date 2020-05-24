@@ -103,6 +103,11 @@ class Account:
         return self.player
 
     def set_player(self, player):
-        self.player = self.characters[player]
+        positionID = 1
+        for _ in self.characters:
+            if positionID is player:
+                self.player = self.characters[positionID]
+                break
+            positionID += 1
 
 # ----------------------------------------

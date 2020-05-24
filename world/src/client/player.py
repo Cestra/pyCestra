@@ -112,3 +112,8 @@ class Player:
         return self.color3
 
 # ----------------------------------------
+
+    def get_mountxpgive(self):
+        return self.mountxpgive
+# ----------------------------------------
+

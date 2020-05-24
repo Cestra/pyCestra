@@ -60,11 +60,13 @@ class GameHandler:
 
     def parse(self, packet):
         if packet[0] == 'A':
-            self.log.warning('parse_account_packet')
+            # self.log.warning('parse_account_packet')
             self.parse_account_packet(packet)
             return
         elif packet[0] == 'B':
             self.log.warning('parseBasicsPacket')
+            if packet[1] == 'D':
+                self.socketManager.send('BT400000000000', 'BD (DEMO)')
             return
         elif packet[0] == 'C':
             self.log.warning('parseConquestPacket')
@@ -91,7 +93,8 @@ class GameHandler:
             self.log.warning('parseFightPacket')
             return
         elif packet[0] == 'G':
-            self.log.warning('parseGamePacket')
+            # self.log.warning('parseGamePacket')
+            self.parse_game_packet(packet)
             return
         elif packet[0] == 'g':
             self.log.warning('parseGuildPacket')
@@ -228,7 +231,7 @@ class GameHandler:
             self.log.warning('[{}][ACC:{}] GameHandler.add_character Exception: {}'.format(str(self.gameClient.get_addr()[0]),
                                                                                            str('X'),
                                                                                            str(e)))
-    
+
     def delete_character(self, packet):
         try:
             __packetList = packet[2:].split('|')
@@ -276,11 +279,30 @@ class GameHandler:
     
     def set_character(self, packet):
         try:
-            __listPosition = int(packet[2:]) - 1
+            __listPosition = int(packet[2:])
             self.gameClient.get_account().set_player(__listPosition)
-            test = self.gameClient.get_account().get_player()
         except Exception as e:
             self.socketManager.GAME_SEND_PERSO_SELECTION_FAILED()
+            self.gameClient.kick()
+
+        self.log.warning('set_character !!! full of placeholders !!!')
+        self.socketManager.GAME_SEND_Rx_PACKET()
+		# SocketManager.GAME_SEND_ASK(out, this);
+                    # ID NAME LEVEL MORPH/CLASS SEXY GFXID COLOR(1-3) ItemToASK
+        packet_ASK = 'ASK|1|Cestra|1|8|0|80|-1|-1|-1|'
+        self.socketManager.send(packet_ASK, 'packet_ASK (DEMO)')
+        self.socketManager.send("ILS2000", "ILS2000 (DEMO)")
+        self.socketManager.send("ZS0", "GAME_SEND_ALIGNEMENT (DEMO)")
+        self.socketManager.send("cC+i", "GAME_SEND_ADD_CANAL (DEMO)")
+        self.socketManager.send("eL", "GAME_SEND_EMOTE_LIST (DEMO)")
+        self.socketManager.send("AR6bk", "GAME_SEND_RESTRICTIONS (DEMO)")
+        self.socketManager.send("Ow0|1000", "GAME_SEND_Ow_PACKET (DEMO)")
+
+        text1 = 'cs<font color=\'#B9121B\'>'
+        test2 = '</font>'
+        mess = 'Powered by <b>Cestra</b>'
+        text1 += mess + test2
+        self.socketManager.send(text1, 'GAME_SEND_MESSAGE (DEMO)')
 
     def send_ticket(self, packet):
         __accId = packet[2:]
@@ -316,5 +338,107 @@ class GameHandler:
         # except Exception as e:
         #     self.log.warning(e)
         #     self.gameClient.kick()
+
+# --------------------------------------------------------------------
+# PARSE GAME PACKET  parseGamePacket
+
+    def parse_game_packet(self, packet):
+        if packet[1] == 'A':
+            self.log.warning('sendActions')
+            return
+        elif packet[1] == 'C':
+            self.log.warning('sendGameCreate')
+            self.send_game_create()
+            return
+        elif packet[1] == 'D':
+            self.log.warning('deleteCharacter')
+            return
+        elif packet[1] == 'd':
+            self.log.warning('showMonsterTarget')
+            return
+        elif packet[1] == 'f':
+            self.log.warning('setFlag')
+            return
+        elif packet[1] == 'F':
+            self.log.warning('set_Ghosts')
+            return
+        elif packet[1] == 'I':
+            self.log.warning('getExtraInformations')
+            self.get_extra_informations()
+            return
+        elif packet[1] == 'K':
+            self.log.warning('actionAck')
+            return
+        elif packet[1] == 'P':
+            self.log.warning('toggleWings')
+            return
+        elif packet[1] == 'p':
+            self.log.warning('setPlayerPosition')
+            return
+        elif packet[1] == 'Q':
+            self.log.warning('leaveFight')
+            return
+        elif packet[1] == 'R':
+            self.log.warning('readyFight')
+            return
+        elif packet[1] == 't':
+            self.log.warning('get_fight().playerPass')
+            return
+
+    def send_game_create(self):
+
+        self.socketManager.send('GCK|1|Cestra', 'GAME_SEND_GAME_CREATE (DEMO)')
+
+        # GAME_SEND_STATS_PACKET
+        #     GAME_SEND_Ow_PACKET
+        # As	xp | _kamas | _capital | _spellPts | _align ~ _align , _aLvl , getGrade , _honor , _deshonor , 0 | curPdv , pdvMax | getEnergy , 10000 | getInitiative | 0 | 0,0,0,0,0 | 0,0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0| 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 |
+        packet_As = 'As1,1,1|10000|5|6|0~3,0,0,0,0,0|10,100|10000,10000|100|0|0,0,0,0,0|0,0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|'
+        self.socketManager.send(packet_As, 'GAME_SEND_GAME_CREATE (DEMO)')
+
+        mapID = '7411'
+        data = '0711291819'
+        key = '556a5867706b7f7f694d754537565e7d437357343b49337d7a455d3c722a4974415445242e654c277c542f246f7764593831672c3f65227725324274565c692532422f2e3e2f726934556c512e387f4e75447b3e475b2972642c64685a33374b2a555d4c5f4f435c612d64566c2e2e38695248205b4c5c5a4c6242512947213536747d5f522d582d366b26647d2d73576a6b487b5f574a225a3440543a405a517551522d622a403d4a486477675646725f3367677c7d2934657f32663e46634064233d48677f3b524b2c352f402922744167333f7c5d7076674f43'
+        packet_GDM = 'GDM|' + mapID + '|'  + data + '|'  + key
+        self.socketManager.send(packet_GDM, 'packet_GDM (DEMO)')
+
+        self.socketManager.send('fC0', 'packet_GDM (DEMO)')
+
+    def get_extra_informations(self):
+        # EndFightAction are checked here
+        self.log.warning('EndFightAction are checked here')
+        self.get_extra_informations_two()
+        pass
+
+    def get_extra_informations_two(self):
+        try:
+            # if (perso.get_fight() != null)
+                # SocketManager.GAME_SEND_MAP_GMS_PACKETS(this.perso.get_fight().getMap(), this.perso);
+                # SocketManager.GAME_SEND_GDK_PACKET(this);
+                # return
+            # House.load
+            # SocketManager.GAME_SEND_MAP_GMS_PACKETS
+            # SocketManager.GAME_SEND_MAP_MOBS_GMS_PACKETS
+            # SocketManager.GAME_SEND_MAP_NPCS_GMS_PACKETS
+            # SocketManager.GAME_SEND_MAP_PERCO_GMS_PACKETS
+            # SocketManager.GAME_SEND_MAP_OBJECTS_GDS_PACKETS
+            # SocketManager.GAME_SEND_GDK_PACKET
+            # SocketManager.GAME_SEND_MAP_FIGHT_COUNT
+            # SocketManager.SEND_GM_PRISME_TO_MAP
+            # SocketManager.GAME_SEND_MERCHANT_LIST
+            # Fight.FightStateAddFlag
+            # SocketManager.GAME_SEND_Rp_PACKET
+            # SocketManager.GAME_SEND_GDO_OBJECT_TO_MAP
+            # SocketManager.GAME_SEND_GM_MOUNT
+            # sendFloorItems
+            # verifDoor
+            # World.showPrismes
+            # for (final Player player : this.perso.getCurMap().getPersos())
+            # 	player.send(String.valueOf(packet) + data)
+			# 	this.perso.send(String.valueOf(packet) + data)
+            pass
+        except Exception as e:
+            self.log.warning('[{}][ACC:{}] GameHandler.get_extra_informations_two Exception: {}'.format(str(self.gameClient.get_addr()[0]),
+                                                                                              str('X'),
+                                                                                              str(e)))
 
 # --------------------------------------------------------------------

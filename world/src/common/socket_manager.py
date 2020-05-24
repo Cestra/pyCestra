@@ -28,6 +28,8 @@ class SocketManager:
         self.log = Logging()
         self.nameGenerator = NameGenerator() # "world.join()" should quake it
         self.gameClient = gameClient
+        self.account = None
+        self.player = None
     
     def send(self, packet, name):
         __msg = bytes(packet + '\x00', 'utf-8')
@@ -48,6 +50,7 @@ class SocketManager:
         self.send(__packet, __name)
 
     def GAME_SEND_ATTRIBUTE_SUCCESS(self):
+        self.account = self.gameClient.get_account()
         __name = 'GAME_SEND_ATTRIBUTE_SUCCESS'
         __packet = 'ATK0'
         self.send(__packet, __name)
@@ -131,3 +134,10 @@ class SocketManager:
         __name = 'GAME_SEND_DELETE_PERSO_FAILED'
         __packet = 'ADE'
         self.send(__packet, __name)
+
+    def GAME_SEND_Rx_PACKET(self):
+        self.player = self.account.get_player() # Not sure where to put it yet
+        __name = 'GAME_SEND_Rx_PACKET'
+        __packet = 'Rx' + str(self.player.get_mountxpgive())
+        self.send(__packet, __name)
+
