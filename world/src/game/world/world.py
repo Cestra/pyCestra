@@ -37,11 +37,19 @@ class World:
         self.playersData = self.playersData.get_player_data()
         self.log.info('Player were loaded')
 
+        self.mapData = dataSource.MapData()
+        self.mapData.load_in_to_class()
+        self.mapData = self.mapData.get_map_data()
+        self.log.info('Maps were loaded')
+
         self.log.info('The world-server has finished loading')
         self.log.info(35*'-')
 
     def get_players(self):
         return self.playersData
+
+    # def get_map_from_id(self, id):
+    #     return'
 
     def get_players_by_accid(self, accId):
         __playerList = {}
