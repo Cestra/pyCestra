@@ -18,9 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 class Map():
 
-    def __init__(self, id, date, width, heigth, key, places, mapData, cells,
+    def __init__(self, mapId, date, width, heigth, key, places, mapData, cells,
                 monsters, mapPos, numGroup, fixSize, minSize, maxSize, cases, forbidden):
-        self.id = id
+        print(str(mapId), 'Map')
+        self.id = mapId
         self.data = date
         self.width = width
         self.heigth = heigth
@@ -34,7 +35,15 @@ class Map():
         self.minSize = minSize
         self.maxSize = maxSize
         self.forbiddenCellSpawn = cases
-        self.forbidden = forbidden
+
+        # default values - forbidden:
+        self.noTrader = False
+        self.noCollector = False
+        self.noPrism = False
+        self.noTP = False
+        self.noDefie = False
+        self.noAgro = False
+        self.noChannel = False
         # -----------------------------------------
         # if (!places.equalsIgnoreCase("") && !places.equalsIgnoreCase("|")) {
         #     final String[] split = places.split("\\|");
@@ -52,14 +61,18 @@ class Map():
         # -----------------------------------------
         # subArea
         # -----------------------------------------
-        # final String[] split = forbidden.split(";");
-        # this.noMarchand = split[0].equals("1");
-        # this.noCollector = split[1].equals("1");
-        # this.noPrism = split[2].equals("1");
-        # this.noTP = split[3].equals("1");
-        # this.noDefie = split[4].equals("1");
-        # this.noAgro = split[5].equals("1");
-        # this.noCanal = split[6].equals("1");
+        try:
+            split = forbidden.split(';')
+            self.noTrader = split[0] in '1'
+            self.noCollector = split[1] in '1'
+            self.noPrism = split[2] in '1'
+            self.noTP = split[3] in '1'
+            self.noDefie = split[4] in '1'
+            self.noAgro = split[5] in '1'
+            self.noChannel = split[6] in '1'
+            del forbidden, split
+        except Exception as Error:
+            print('Map.__init__ {}'.format(Error))
         # -----------------------------------------
         # if
         #     this.cases = CryptManager.decompileMapData(this, dData)
