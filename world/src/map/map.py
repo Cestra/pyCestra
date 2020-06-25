@@ -18,9 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 class Map():
 
-    def __init__(self, id, date, width, heigth, key, places, mapData, cells,
+    def __init__(self, mapId, date, width, heigth, key, places, mapData, cells,
                 monsters, mapPos, numGroup, fixSize, minSize, maxSize, cases, forbidden):
-        self.id = id
+        print(str(mapId), 'Map')
+        self.id = mapId
         self.data = date
         self.width = width
         self.heigth = heigth
@@ -33,12 +34,60 @@ class Map():
         self.fixSize = fixSize
         self.minSize = minSize
         self.maxSize = maxSize
-        self.cases = cases
-        self.forbidden = forbidden
-
+        self.forbiddenCellSpawn = cases
+        # -----------------------------------------
+        # if (!places.equalsIgnoreCase("") && !places.equalsIgnoreCase("|")) {
+        #     final String[] split = places.split("\\|");
+        #     this.maxTeam0 = split[0].length() / 2;
+        #     this.maxTeam1 = split[1].length() / 2;
+        # }
+        # -----------------------------------------
         try:
             mapPos.split(',')
             self.X = mapPos[0]
             self.Y = mapPos[1]
+            del mapPos
         except Exception as Error:
             print('Map.__init__ {}'.format(Error))
+        # -----------------------------------------
+        # subArea
+        # -----------------------------------------
+        try:
+            split = forbidden.split(';')
+            self.noTrader = split[0] in '1'
+            self.noCollector = split[1] in '1'
+            self.noPrism = split[2] in '1'
+            self.noTP = split[3] in '1'
+            self.noDefie = split[4] in '1'
+            self.noAgro = split[5] in '1'
+            self.noChannel = split[6] in '1'
+            del forbidden, split
+        except Exception as Error:
+            print('Map.__init__ {}'.format(Error))
+        # -----------------------------------------
+        # if
+        #     this.cases = CryptManager.decompileMapData(this, dData)
+        # else:
+        #     final String[] cellsDataArray = cellsData.split("\\|");
+		# 	String[] array;
+		# 	for (int length = (array = cellsDataArray).length, j = 0; j < length; ++j) {
+		# 		final String o = array[j];
+		# 		boolean Walkable = true;
+        #         ...
+        #         ...
+        #         ...
+        # -----------------------------------------
+        # String[] split2;
+		# for (int length2 = (split2 = monsters.split("\\|")).length, k = 0; k < length2; ++k) {
+		# 	final String mob = split2[k];
+        # -----------------------------------------
+        # if (!cases.isEmpty()) {
+        #             for (final Case c : this.cases.values()) {
+        #                 c.setWalkableInFight(false);
+        #             }
+        #             try {
+        #                 String[] split3;
+        #                 ....
+        #                 ....
+        #                 ....
+        # -----------------------------------------

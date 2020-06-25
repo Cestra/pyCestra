@@ -283,6 +283,9 @@ class GameHandler:
             self.gameClient.get_account().set_player(__listPosition)
         except Exception as e:
             self.socketManager.GAME_SEND_PERSO_SELECTION_FAILED()
+            self.log.warning('[{}][ACC:{}] GameHandler.set_character Exception: {}'.format(str(self.gameClient.get_addr()[0]),
+                                                                                              str('X'),
+                                                                                              str(e)))
             self.gameClient.kick()
 
         self.log.warning('set_character !!! full of placeholders !!!')

@@ -29,12 +29,12 @@ class MapData(DAO):
     def __init__(self):
         self.log = Logging()
 
-    def load(self):
+    def load_in_to_class(self):
         '''
         DataFrame:
 
         '''
-        self.dataSource = []
+        self.dataSource = {}
         connection = dataSource.Database().get_connection()
         cursor = connection.cursor(dictionary=True)
         try:
@@ -50,10 +50,10 @@ class MapData(DAO):
                                 result['numgroup'],result['fixSize'],
                                 result['minSize'],result['maxSize'],
                                 result['cases'],result['forbidden'],)
+                    self.dataSource[result['id']] = mapData
                 except Exception as Error:
-                    self.log.warning('maps_data.py - maps:{} can\'t be loaded'.format(result['id']))
+                    self.log.warning('maps_data.py - maps:{} can\'t be loaded'.format(str(result['id'])))
                     self.log.warning(Error)
-                self.dataSource.append(result)
         except Exception as Error:
             self.log.warning('map_data.py - Can\'t load table accounts')
             self.log.warning(str(Error))
