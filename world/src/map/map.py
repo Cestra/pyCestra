@@ -35,15 +35,6 @@ class Map():
         self.minSize = minSize
         self.maxSize = maxSize
         self.forbiddenCellSpawn = cases
-
-        # default values - forbidden:
-        self.noTrader = False
-        self.noCollector = False
-        self.noPrism = False
-        self.noTP = False
-        self.noDefie = False
-        self.noAgro = False
-        self.noChannel = False
         # -----------------------------------------
         # if (!places.equalsIgnoreCase("") && !places.equalsIgnoreCase("|")) {
         #     final String[] split = places.split("\\|");
