@@ -26,25 +26,34 @@ class CryptManager:
 				's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
 				'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7',
 				'8', '9', '-', '_')
-        return hash[c]
+        try:
+            return hash.index(c)
+        except Exception:
+            return -1
 
     def decompile_map_data(self, map, dData):
         val1, val2 = 0, 10
         cells = {} # Integer, Case
         for _ in range(len(dData)//10):
             cellData = dData[val1:val2]
-            cellInfosByteList
-
-            my_str = "hello world"
-            my_str_as_bytes = str.encode(my_str)
-            type(my_str_as_bytes) # ensure it is byte representation
+            cellInfosByteList = []
+            for i in cellData:
+                #print('-----------\nstr = {}\nint = {}\nbyt = {}\n-----------'.format(i, self.get_int_by_hashed_value(i), bytes([self.get_int_by_hashed_value(i)])))
+                cellInfosByteList.append(bytes([self.get_int_by_hashed_value(i)]))
+            test = cellInfosByteList[2]
+            
+            walkable = (test & 56) >> 3
+            #test = bytes(0x38)
+            #print(test)
 
             val1 += 10
             val2 += 10
 
+val1_kurz = 'HhaaeaaaaaHhaaeaaaaaH'
 val1 = 'HhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaatTHhaaeaaatQHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaatQHhaaeaaaaaHhaaeaaaaaHhaaenfiaaH3bNengatUHhaaenfaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaatTHhaaeaaaaaHhbKeaaaaaHhaaenfiaaHNHLerraaaH3HLerrqaaHhaaenfaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhbKeaaaaaHhbKenfiaaHNbLerralhHhHJeaaaaaH3HLerrqaaHhaaenfaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhbKeaaaaaGhbKeaaeYWHNHLerraaaHhHJeaaaaaHhHJeaaaaaG3bLetfaaaHhaaenfaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhbKeaaaaaHNHLeaaaaaHhHJectaaaHhHOeaaaaaGhbJeb1aaaG3bLerzGCXHhaaenfaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaenfiaaHNHLerraaaHhHJeaaaaaHhHJeaaaaaHhHJeaaaaaGhbJerrGCXG3bLeruaaaHhaaenfaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaenfiaaHNbLeteilgHhHJeaaaaaHhHJerAaaaHhHJeaaaaaHhHJerrGaaGhbJeruaCYH3HLerzqqKHhaaenfaaaHhbKeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaenfiaaHNHLerraqxHhHJeaaaaaHhHJerAaaaHhHJerBaaaHhHJerrGtmHhHJeruaaaHhHJerraaaH3bLerruvjHhbKenfaaaHhbKeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHNHNerzau_HhHJeaaaaaHhHJeaaaaaHhHJerAaaaHhHJetnaaaHhHJeruau_HhHJerzaaaHhHJeaaaaaH3HLerrqaaGhbKeaaaYWHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaerrqaaHxHLerrWaaHhHJeaaaaaHhHJeaaaaaHhHJeaaaaaHhHJerrqaaHhHJeruaaaHhHJeaaaqwHhHJeaaaqwH3HLeaaaaaHhbKeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaerrqaaHxHLerrWaaHhHJecraaaHhHJeaaaaaHhHJeaaaaaHhHJerrqaaHhHJerraaaHhHJerBaaaHhHJeaaaaaH3HLerrqaaHhaaenfaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaerrqaaHxHLerrWaaHhHJemYaaaHhHJeaaaaaHhHJeaaaaaHhHJeaaaaaHhHJeaaaaaHhHJeLFaaaHhHJeaaaaaH3bLerruvjHhaaenfaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaerrqaaHxHLerrWaaHhHJeaaaaaHhHJeb1aaaHhHJeaaaaaHhHJeaaaaaHhHJeaaaaaHhHJeaaaaaHhHJeaaaaaHhHNerzGqKHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaerrqaaHxHLerrWaaHhHOeaaaaaHhHJerBaaaHhHMeaaaaaHhHJeaaaaaHhHJeb8aaaHhHJeaaaaaHhHLerrGqKHhaaerravbHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaerrqaaHxHLerrWaaHhHJeaaaaaHhHLeaaaaaHxHMeb2aaaHhHJeaaaaaHhHJeaaaaaHhHLerrGaaHhaaerraaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaerrqaaHxHLerrWaaHhHLeaaaaaHNHLeaaaaaHhHJerAaaaHhHJethaaaHhHLerrGaaHhaaerraaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaerrqaaHxHNerrWaaHNHLeaaaaaHhHJeaaaaaHhHJeaaaaaHhHLerrGaaHhaaerraaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaerrqaaHNHNerrWaaHhHJeaaaaaHhHJemYaaaHhHLerrGaaHhaaerraaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaerrqaaHxHLerrWaaHhHJeaaaaaHhHLerrGaaHhaaerraaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaerrqaaHxHLerrWaaHhHLerrGaaHhaaerraaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaerrqaaHxHNerzWaaHhaaerraaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaerrqaaHhaaerraaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaa'
 val2 = 'test'
-val3 = 4
+val3 = 'H'
 
-# CryptManager().decompile_map_data(val2, val1)
-print(CryptManager().get_int_by_hashed_value(val3))
+CryptManager().decompile_map_data(val2, val1)
+#print(CryptManager().get_int_by_hashed_value(val3))
+
