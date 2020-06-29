@@ -39,22 +39,16 @@ class CryptManager:
             cellInfosByteList = []
             for i in cellData:
                 cellInfosByteList.append(bytes([self.get_int_by_hashed_value(i)]))
-            print(cellInfosByteList)
-            test = cellInfosByteList[2]
-            
             walkable = (cellInfosByteList[2] & 0x38) >> 3
             loS = (cellInfosByteList[0] & 0x1) != 0x0
             layerObject2 = ((cellInfosByteList[0] & 0x2) << 12) + ((cellInfosByteList[7] & 0x1) << 12) + (cellInfosByteList[8] << 6) + cellInfosByteList[9]
             layerObject2Interactive = (cellInfosByteList.get[7] & 0x2) >> 1 != 0
-
             if layerObject2Interactive:
                 object = layerObject2
             else:
                 object = -1
-
             case = Case(map, id, walkable, loS, object)
             cells['cell id'] = "cell class"
-
             val1 += 10
             val2 += 10
 
