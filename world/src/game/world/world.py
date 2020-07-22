@@ -27,6 +27,7 @@ class World:
     def __init__(self):
         self.log = Logging()
         self.constant = Constant()
+        self.maps = {} # ID(int), MAP(object)
 
     def createWorld(self):
         self.log.info(35*'-')
@@ -40,16 +41,22 @@ class World:
         self.mapData = dataSource.MapData()
         self.mapData.load_in_to_class()
         self.mapData = self.mapData.get_map_data()
+        for mapId, mapObject in self.mapData.items():
+            self.add_map(mapId, mapObject)
+        del self.mapData, mapId, mapObject
         self.log.info('Maps were loaded')
 
         self.log.info('The world-server has finished loading')
         self.log.info(35*'-')
 
+    def add_map(self, id, mapObject):
+        self.maps[id] = mapObject
+
+    def get_map(self, id):
+        return self.maps.get(id)
+
     def get_players(self):
         return self.playersData
-
-    # def get_map_from_id(self, id):
-    #     return'
 
     def get_players_by_accid(self, accId):
         __playerList = {}

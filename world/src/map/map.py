@@ -20,7 +20,6 @@ class Map():
 
     def __init__(self, mapId, date, width, heigth, key, places, mapData, cells,
                 monsters, mapPos, numGroup, fixSize, minSize, maxSize, cases, forbidden):
-        print(str(mapId), 'Map')
         self.id = mapId
         self.data = date
         self.width = width
