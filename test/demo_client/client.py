@@ -24,7 +24,7 @@ class DemoClient:
         data = client.recv(2048)
         packet = data.decode()
         packet = packet.replace('\x00', '')
-        packetPrint = packet.replace('\n', '[n]')
+        # packetPrint = packet.replace('\n', '[n]')
         # print('>>> ' + packetPrint)
         return packet
 
