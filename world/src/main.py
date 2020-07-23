@@ -18,7 +18,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
 import sys
-import time
 
 import dataSource
 from core.logging_handler import Logging, bcolors
@@ -73,8 +72,6 @@ class Main:
                             self.config.get_exchange_port(),
                             exchangeTransferList)
 
-        # time.sleep(1)
-
         self.log.debug('Game Server Start')
         GameServer().initialize(self.config.get_world_ip(),
                                 self.config.get_world_port(),
@@ -82,7 +79,7 @@ class Main:
                                 world)
 
 def main():
-  Main().start()
+    Main().start()
 
 if __name__== "__main__":
-  main()
+    main()

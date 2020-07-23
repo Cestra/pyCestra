@@ -97,7 +97,7 @@ class Account():
 # ----------------------------------------
 
     def get_server(self):
-        return server
+        return self.server
 
     def set_server(self, server):
         self.server = server

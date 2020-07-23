@@ -27,29 +27,38 @@ class World:
     def __init__(self):
         self.log = Logging()
         self.constant = Constant()
+        self.maps = {} # ID(int), MAP(object)
 
     def createWorld(self):
         self.log.info(35*'-')
         self.log.info('Creation of the world begins:')
-
+        # --------------------------------------------------------------------
+        # Players data are loading here
         self.playersData = dataSource.PlayersData()
         self.playersData.load_in_to_class()
         self.playersData = self.playersData.get_player_data()
         self.log.info('Player were loaded')
-
-        self.mapData = dataSource.MapData()
-        self.mapData.load_in_to_class()
-        self.mapData = self.mapData.get_map_data()
+        # --------------------------------------------------------------------
+        # Maps data are loaded here
+        __mapData = dataSource.MapData()
+        __mapData.load_in_to_class()
+        __mapData = __mapData.get_map_data()
+        for __mapId, __mapObject in __mapData.items():
+            self.add_map(__mapId, __mapObject)
+        del __mapData, __mapId, __mapObject
         self.log.info('Maps were loaded')
 
         self.log.info('The world-server has finished loading')
         self.log.info(35*'-')
 
+    def add_map(self, id, mapObject):
+        self.maps[id] = mapObject
+
+    def get_map(self, id):
+        return self.maps.get(id)
+
     def get_players(self):
         return self.playersData
-
-    # def get_map_from_id(self, id):
-    #     return'
 
     def get_players_by_accid(self, accId):
         __playerList = {}
@@ -67,7 +76,7 @@ class World:
                 __playerID = player.get_id()
         __playerID = __playerID + 1
 
-        startMapCellList = self.constant.get_start_map_incarnam(pClass)
+        __startMapCellList = self.constant.get_start_map_incarnam(pClass)
         player = Player(__playerID, name, accId, -1, # id, name, account, group,
                         sex, pClass, color1, color2, color3, # sexe, pClass, color1-3,
                         0, 1, '', 10000, 1, # kamas, spellboost, capital, energy, level,
@@ -75,16 +84,17 @@ class World:
                         0, 100, (pClass * 10 + sex), # xp, size, gfx,
                         0, 0, 0, 0,# alignement, honor, deshonor, alvl,
                         [0,0,0,0,0,0], 1, 0, # stats(list), seeFriend, seeAlign,
-                        0, '*#%!pi$:?', startMapCellList[0], # seeSeller, channel, map,
-                        startMapCellList[1], 100, # cell, pdvper,
+                        0, '*#%!pi$:?', __startMapCellList[0], # seeSeller, channel, map,
+                        __startMapCellList[1], 100, # cell, pdvper,
                         '141;', # spells <-- TODO placeholder
                         '', '', # objets, storeObjets,
-                        str(startMapCellList[0]) + ':' + str(startMapCellList[1]), # savepos
+                        str(__startMapCellList[0]) + ':' + str(__startMapCellList[1]), # savepos
                         '', '', 0, # zaaps, jobs, mountxpgive, 
                         0, 0, '0;0', # title, wife, morphMode,
                         '', 0, 1, # emotes, prison, server, <-- TODO placeholder
                         True, '', # logged allTitle
                         '118,0;119,0;123,0;124,0;125,0;126,0', 0, 0,) # parcho, timeDeblo, noall
+        del __startMapCellList
         self.playersData.append(player)
     
     def delete_player(self, __playerID):
