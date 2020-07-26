@@ -33,7 +33,7 @@ class AccountData(DAO):
 
             '''
             connection = dataSource.Database().get_connection()
-            cursor = connection.cursor()
+            cursor = connection.cursor(dictionary=True)
             try:
                 cursor.execute('SELECT * FROM accounts;')
                 data = cursor.fetchall()

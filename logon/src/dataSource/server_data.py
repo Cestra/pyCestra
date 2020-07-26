@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-import pymysql
+import mysql.connector
 
 import dataSource
 from core.logging_handler import Logging
@@ -41,7 +41,7 @@ class ServerData(DAO):
         ['1', 'key', 'population', 'isSubscriberServer']
         '''
         connection = dataSource.Database().get_connection()
-        cursor = connection.cursor()
+        cursor = connection.cursor(dictionary=True)
         try:
             cursor.execute('SELECT * FROM servers;')
             data = cursor.fetchall()
@@ -54,7 +54,7 @@ class ServerData(DAO):
                                 result['isSubscriberServer'])
                 
                 self.Datasource.append(server)
-        except pymysql.Error as Error:
+        except mysql.connector.Error as Error:
             self.log.warning('server_data.py - Can\'t load table servers - ')
             self.log.warning(str(Error))
         finally:

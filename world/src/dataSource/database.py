@@ -17,8 +17,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 # https://dev.mysql.com/downloads/connector/python/
-# and
-# pip install dnspython
+# pip install mysql-connector-python
+
 import mysql.connector
 
 from core.logging_handler import Logging
@@ -32,9 +32,6 @@ class Database():
     def __init__(self):
         self.log = Logging()
         self.log.debug('Database instance has been created')
-
-    def initialize_data(self):
-        pass
 
     #initialize_connection
     def get_connection(self):
