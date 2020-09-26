@@ -161,3 +161,18 @@ class SocketManager:
                                                     str(color3),
                                                     str(itemToASK))
         self.send(__packet, __name)
+
+    def GAME_SEND_ALIGNEMENT(self, alignement):
+        __name = 'GAME_SEND_ALIGNEMENT'
+        __packet = 'ZS' + str(alignement)
+        self.send(__packet, __name)
+
+    def GAME_SEND_ADD_CANAL(self, chn):
+        __name = 'GAME_SEND_ADD_CANAL'
+        __packet = 'cC+' + str(chn)
+        self.send(__packet, __name)
+
+    def GAME_SEND_RESTRICTIONS(self):
+        __name = 'GAME_SEND_RESTRICTIONS'
+        __packet = 'AR6bk'
+        self.send(__packet, __name)

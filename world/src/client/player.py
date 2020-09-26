@@ -53,7 +53,7 @@ class Player:
         self.seeFriend = seeFriend
         self.seeAlign = seeAlign
         self.seeSeller = seeSeller
-        self.channel = channel
+        self.channel = channel # Infor[i] Public[*] priate,group,team[#$p] guild[%] alignment[!] recruitment[?] trading[:] newbies[^] admin[@]???
         self.map = map
         self.cell = cell
         self.pdvper = pdvper
@@ -79,6 +79,7 @@ class Player:
         self.socketManager = None # is set at set_account
 
         self.mount = None
+        self.fight = None
 
 # ----------------------------------------
 
@@ -106,6 +107,24 @@ class Player:
 
 # ----------------------------------------
 
+    def get_groupe(self):
+        return self.groupe
+    
+    def set_groupe(self, g):
+        self.groupe = g
+
+# ----------------------------------------
+
+    def get_sex(self):
+        return self.sex
+
+# ----------------------------------------
+
+    def get_pClass(self):
+        return self.pClass
+
+# ----------------------------------------
+
     def get_level(self):
         return self.level
 
@@ -127,8 +146,25 @@ class Player:
 
 # ----------------------------------------
 
+    def get_gfx(self):
+        return self.gfx
+
+    def set_gfx(self, gfx):
+        self.gfx = gfx
+
+# ----------------------------------------
+
+    def get_channel(self):
+        return self.channel
+
+    def set_channel(self, cha):
+        self.channel = cha
+
+# ----------------------------------------
+
     def get_mountxpgive(self):
         return self.mountxpgive
+
 # ----------------------------------------
 
     def get_online(self):
@@ -145,25 +181,37 @@ class Player:
             # SocketManager.GAME_SEND_Re_PACKET(this, "+", this._mount)
             pass
         self.socketManager.GAME_SEND_Rx_PACKET() # loads correctly
-
         __ItemToASK = '' # TODO
-        self.socketManager.GAME_SEND_ASK(self.id,
-                                        self.name,
-                                        self.level,
-                                        self.pClass,
-                                        self.sex,
-                                        self.gfx,
-                                        self.color1,
-                                        self.color2,
-                                        self.color3,
+        self.socketManager.GAME_SEND_ASK(self.get_id(),
+                                        self.get_name(),
+                                        self.get_level(),
+                                        self.get_pClass(),
+                                        self.get_sex(),
+                                        self.get_gfx(),
+                                        self.get_color1(),
+                                        self.get_color2(),
+                                        self.get_color3(),
                                         __ItemToASK)
-
-        self.socketManager.send("ILS2000", "ILS2000 (DEMO)") # has something to do with the life points (regeneration time)
-        self.socketManager.send("ZS0", "GAME_SEND_ALIGNEMENT (DEMO)")
-        self.socketManager.send("cC+i", "GAME_SEND_ADD_CANAL (DEMO)")
-        self.socketManager.send("eL", "GAME_SEND_EMOTE_LIST (DEMO)")
-        self.socketManager.send("AR6bk", "GAME_SEND_RESTRICTIONS (DEMO)")
-        self.socketManager.send("Ow0|1000", "GAME_SEND_Ow_PACKET (DEMO)")
+        # TODO GAME_SEND_OS_PACKET
+        if self.fight is not None:
+            self.socketManager.send('ILS0', 'ILS0') # heart display in the middle of the screen
+        else:
+            self.socketManager.send('ILS2000', 'ILS2000')
+        if len(self.jobs) > 0:
+            # TODO JOBS here
+            pass
+        self.socketManager.GAME_SEND_ALIGNEMENT(self.alignement) # TODO i don't think it works
+        # the info channel is always activated when entering
+        __chn = 'i'
+        # it is checked whether the player has the authorization to join the @ channel
+        if self.get_groupe() > 0:
+            __chn += '@'
+        self.socketManager.GAME_SEND_ADD_CANAL(str(self.get_channel()) + __chn)
+        del __chn
+        # TODO GAME_SEND_ZONE_ALLIGN_STATUT
+        self.socketManager.send("eL1", "GAME_SEND_EMOTE_LIST (DEMO)") # no plan how it works yet (look at Player.java 370-376)
+        self.socketManager.GAME_SEND_RESTRICTIONS()
+        self.socketManager.send("Ow0|1000", "GAME_SEND_Ow_PACKET (DEMO)") # pods - Ow + getPodUsed + | + getMaxPod
 
         text1 = 'cs<font color=\'#B9121B\'>'
         test2 = '</font>'
