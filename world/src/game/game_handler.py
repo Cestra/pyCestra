@@ -246,7 +246,7 @@ class GameHandler:
         except Exception as e:
             self.socketManager.GAME_SEND_CREATE_FAILED()
             self.log.warning('[{}][ACC:{}] GameHandler.add_character Exception: {}'.format(str(self.gameClient.get_addr()[0]),
-                                                                                            str('X'),
+                                                                                            str(self.acc_display_number()),
                                                                                             str(e)))
 
     def delete_character(self, packet):
@@ -271,7 +271,7 @@ class GameHandler:
         except Exception as e:
             self.socketManager.GAME_SEND_DELETE_PERSO_FAILED()
             self.log.warning('[{}][ACC:{}] GameHandler.delete_character Exception: {}'.format(str(self.gameClient.get_addr()[0]),
-                                                                                            str('X'),
+                                                                                            str(self.acc_display_number()),
                                                                                             str(e)))
 
     def get_queue_position(self):
@@ -298,20 +298,21 @@ class GameHandler:
         try:
             __listPosition = int(packet[2:])
             self.gameClient.get_account().set_player(__listPosition)
+            # both objects refer to each other    account <-> player
+            self.gameClient.get_account().get_player().set_account(self.gameClient.get_account(), self.socketManager)
         except Exception as e:
             self.socketManager.GAME_SEND_PERSO_SELECTION_FAILED()
             self.log.warning('[{}][ACC:{}] GameHandler.set_character Exception: {}'.format(str(self.gameClient.get_addr()[0]),
-                                                                                            str('X'),
+                                                                                            str(self.acc_display_number()),
                                                                                             str(e)))
             self.gameClient.kick()
 
         self.log.warning('set_character !!! full of placeholders !!!')
-        self.socketManager.GAME_SEND_Rx_PACKET()
-		# SocketManager.GAME_SEND_ASK(out, this);
+        self.socketManager.GAME_SEND_Rx_PACKET() # loads correctly
                         # ID NAME LEVEL MORPH/CLASS SEXY GFXID COLOR(1-3) ItemToASK
         packet_ASK = 'ASK|1|Cestra|1|8|0|80|-1|-1|-1|'
         self.socketManager.send(packet_ASK, 'packet_ASK (DEMO)')
-        self.socketManager.send("ILS2000", "ILS2000 (DEMO)")
+        self.socketManager.send("ILS2000", "ILS2000 (DEMO)") # has something to do with the life points (regeneration time)
         self.socketManager.send("ZS0", "GAME_SEND_ALIGNEMENT (DEMO)")
         self.socketManager.send("cC+i", "GAME_SEND_ADD_CANAL (DEMO)")
         self.socketManager.send("eL", "GAME_SEND_EMOTE_LIST (DEMO)")
@@ -462,7 +463,7 @@ class GameHandler:
             pass
         except Exception as e:
             self.log.warning('[{}][ACC:{}] GameHandler.get_extra_informations_two Exception: {}'.format(str(self.gameClient.get_addr()[0]),
-                                                                                                        str('X'),
+                                                                                                        str(self.acc_display_number()),
                                                                                                         str(e)))
 
 # --------------------------------------------------------------------

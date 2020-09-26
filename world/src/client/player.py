@@ -29,7 +29,8 @@ class Player:
                 allTitle, parcho, timeDeblo, noall):
         self.id = id
         self.name = name
-        self.account = account
+        self.accountID = account
+        self.account = None # this is where the account object is saved
         self.groupe = groupe
         self.sexe = sexe
         self.pclass = pClass
@@ -74,6 +75,9 @@ class Player:
         self.parcho = parcho
         self.timeDeblo = timeDeblo
         self.noall = noall
+        # ----
+        self.socketManager = None # is set at set_account
+        # ----
 
 # ----------------------------------------
 
@@ -88,7 +92,16 @@ class Player:
 # ----------------------------------------
 
     def get_account_id(self):
+        return self.accountID
+
+# ----------------------------------------
+
+    def get_account(self):
         return self.account
+    
+    def set_account(self, accobject, socketManager):
+        self.account = accobject
+        self.socketManager = socketManager
 
 # ----------------------------------------
 
@@ -117,3 +130,5 @@ class Player:
         return self.mountxpgive
 # ----------------------------------------
 
+    def join_game(self):
+        pass
