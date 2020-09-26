@@ -30,7 +30,9 @@ class GameHandler:
         self.gameClient = GameClient(socket, addr)
         self.exchangeTransferList = exchangeTransferList
         self.socketManager = SocketManager(self.gameClient)
-        self.accId
+
+        self.accId = None
+        self.account = None
 
         self.socketManager.GAME_SEND_HELLOGAME_PACKET()
         self.loop()
@@ -41,7 +43,7 @@ class GameHandler:
             packet = data.decode()
             packetLog = packet.replace('\n\x00', '[n][x00]')
             self.log.debug('[{}][ACC:{}][<-RECV] {}'.format(str(self.gameClient.get_addr()[0]),
-                                                            str('X'),
+                                                            str(self.acc_display_number()),
                                                             str(packetLog)))
             if not data:
                 self.log.debug('[{}][ACC:{}] PacketLoop no data'.format(str(self.gameClient.get_addr()[0]),
@@ -324,6 +326,7 @@ class GameHandler:
         for acc in self.exchangeTransferList:
             if str(acc.get_id()) == __accId:
                 self.gameClient.set_account(acc)
+                self.account = acc
                 __accIsAvailable = True
                 del self.exchangeTransferList[__delCount]
             __delCount += 1

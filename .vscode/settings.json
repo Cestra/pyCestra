@@ -1,11 +1,13 @@
 {
     "python.pythonPath": "C:\\Program Files (x86)\\Python38-32\\python.exe",
     "maven.view": "flat",
+    //"python.languageServer": "Pylance",
     "files.exclude": {
         "**/.classpath": true,
         "**/.project": true,
         "**/.settings": true,
         "**/.factorypath": true
+
     },
     "python.testing.unittestArgs": [
         "-v",
