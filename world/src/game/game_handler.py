@@ -30,6 +30,7 @@ class GameHandler:
         self.gameClient = GameClient(socket, addr)
         self.exchangeTransferList = exchangeTransferList
         self.socketManager = SocketManager(self.gameClient)
+        self.accId
 
         self.socketManager.GAME_SEND_HELLOGAME_PACKET()
         self.loop()
@@ -54,6 +55,15 @@ class GameHandler:
                         self.parse(p)
             else:
                 self.parse(packet.replace('\n\x00', ''))
+
+    def acc_display_number(self):
+        # TODO
+        if type(self.accId) != int:
+            if self.account == None:
+                self.accId = 'X'
+            else:
+                self.accId = self.gameClient.get_account().get_id()
+        return self.accId
 
 # --------------------------------------------------------------------
 # MAIN PARSE
@@ -191,7 +201,7 @@ class GameHandler:
         __forbiddenWords = [r'[Aa][Dd][Mm][Ii][Nn]', r'[Mm][Oo][Dd][Oo]', r'[Gg][Mm]',
                             r'[Gg][Aa][Mm][Ee]-?[Mm][Aa][Ss][Tt][Ee][Rr]']
         __isValid = True
-        # Check existing character names
+        # check existing character names
         for player in self.world.get_players():
             if player.get_name() == __packetList[0]:
                 self.socketManager.GAME_SEND_NAME_ALREADY_EXIST()
@@ -223,14 +233,14 @@ class GameHandler:
             self.socketManager.GAME_SEND_CREATE_OK()
             # # broadcast of the current player list
             self.socketManager.GAME_SEND_PLAYER_LIST(self.gameClient.get_account().get_subscribe(),
-                                                     self.gameClient.get_account().get_number_of_characters(),
-                                                     self.gameClient.get_account().get_characters())
+                                                    self.gameClient.get_account().get_number_of_characters(),
+                                                    self.gameClient.get_account().get_characters())
             self.socketManager.GAME_SEND_cMK_PACKET_TO_MAP()
         except Exception as e:
             self.socketManager.GAME_SEND_CREATE_FAILED()
             self.log.warning('[{}][ACC:{}] GameHandler.add_character Exception: {}'.format(str(self.gameClient.get_addr()[0]),
-                                                                                           str('X'),
-                                                                                           str(e)))
+                                                                                            str('X'),
+                                                                                            str(e)))
 
     def delete_character(self, packet):
         try:
@@ -247,15 +257,15 @@ class GameHandler:
                     self.gameClient.get_account().set_characters(__playerList)
                 # broadcast of the current player list
                 self.socketManager.GAME_SEND_PLAYER_LIST(self.gameClient.get_account().get_subscribe(),
-                                                         self.gameClient.get_account().get_number_of_characters(),
-                                                         self.gameClient.get_account().get_characters())
+                                                        self.gameClient.get_account().get_number_of_characters(),
+                                                        self.gameClient.get_account().get_characters())
             else:
                 self.socketManager.GAME_SEND_DELETE_PERSO_FAILED()
         except Exception as e:
             self.socketManager.GAME_SEND_DELETE_PERSO_FAILED()
             self.log.warning('[{}][ACC:{}] GameHandler.delete_character Exception: {}'.format(str(self.gameClient.get_addr()[0]),
-                                                                                              str('X'),
-                                                                                              str(e)))
+                                                                                            str('X'),
+                                                                                            str(e)))
 
     def get_queue_position(self):
         # placeholder ¯\_(ツ)_/¯
@@ -284,14 +294,14 @@ class GameHandler:
         except Exception as e:
             self.socketManager.GAME_SEND_PERSO_SELECTION_FAILED()
             self.log.warning('[{}][ACC:{}] GameHandler.set_character Exception: {}'.format(str(self.gameClient.get_addr()[0]),
-                                                                                              str('X'),
-                                                                                              str(e)))
+                                                                                            str('X'),
+                                                                                            str(e)))
             self.gameClient.kick()
 
         self.log.warning('set_character !!! full of placeholders !!!')
         self.socketManager.GAME_SEND_Rx_PACKET()
 		# SocketManager.GAME_SEND_ASK(out, this);
-                    # ID NAME LEVEL MORPH/CLASS SEXY GFXID COLOR(1-3) ItemToASK
+                        # ID NAME LEVEL MORPH/CLASS SEXY GFXID COLOR(1-3) ItemToASK
         packet_ASK = 'ASK|1|Cestra|1|8|0|80|-1|-1|-1|'
         self.socketManager.send(packet_ASK, 'packet_ASK (DEMO)')
         self.socketManager.send("ILS2000", "ILS2000 (DEMO)")
@@ -441,7 +451,7 @@ class GameHandler:
             pass
         except Exception as e:
             self.log.warning('[{}][ACC:{}] GameHandler.get_extra_informations_two Exception: {}'.format(str(self.gameClient.get_addr()[0]),
-                                                                                              str('X'),
-                                                                                              str(e)))
+                                                                                                        str('X'),
+                                                                                                        str(e)))
 
 # --------------------------------------------------------------------
