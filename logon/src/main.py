@@ -92,10 +92,11 @@ def main():
 
     while True:
         time.sleep(15)
-        log.warning('---- game_client_dic ----')
-        for x in game_client_dic:
-            log.warning(str(x))
-        log.warning('-------------------------')
+        if game_client_dic:
+            log.warning('---- game_client_dic ----')
+            for x in game_client_dic:
+                log.warning(str(x))
+            log.warning('-------------------------')
 
     # ======================================================
 

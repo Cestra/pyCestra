@@ -28,13 +28,21 @@ class SocketManager:
         self.nameGenerator = NameGenerator() # "world.join()" should quake it
         self.gameClient = gameClient
         self.account = None
+        self.accId = None
         self.player = None
     
     def send(self, packet, name):
         __msg = bytes(packet + '\x00', 'utf-8')
         self.gameClient.get_session().send(__msg)
+
+        if type(self.accId) != int:
+            if self.account == None:
+                self.accId = 'X'
+            else:
+                self.accId = self.account.get_id()
+
         self.log.debug('[{}][ACC:{}][SEND->] ({}) {}'.format(str(self.gameClient.get_addr()[0]),
-                                                        str('X'),
+                                                        str(self.accId),
                                                         name,
                                                         str(packet)))
 
@@ -73,7 +81,7 @@ class SocketManager:
         playerStr = ''
         for position, player in palyerList.items():
             string = ('|{};{};{};{};{};{};{};{},{},{},'
-                       '{},{};{};{};0;0;'.format(str(position), # player display position ;
+                        '{},{};{};{};0;0;'.format(str(position), # player display position ;
                                                 player.get_name(), # player name ;
                                                 str(player.get_level()), # player level ;
                                                 player.get_gfx(), # gfx ID ;
@@ -140,3 +148,16 @@ class SocketManager:
         __packet = 'Rx' + str(self.player.get_mountxpgive())
         self.send(__packet, __name)
 
+    def GAME_SEND_ASK(self, pId, name, level, morphClass, sex, gfxId, color1, color2, color3, itemToASK):
+        __name = 'GAME_SEND_ASK'
+        __packet = 'ASK|{}|{}|{}|{}|{}|{}|{}'.format(str(pId),
+                                                    str(name),
+                                                    str(level),
+                                                    str(morphClass),
+                                                    str(sex),
+                                                    str(gfxId),
+                                                    str(color1),
+                                                    str(color2),
+                                                    str(color3),
+                                                    str(itemToASK))
+        self.send(__packet, __name)

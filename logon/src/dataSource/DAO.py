@@ -16,7 +16,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-import pymysql.connections
+import mysql.connector
 
 import dataSource
 from core.logging_handler import Logging
@@ -27,11 +27,11 @@ class DAO:
     def __init__(self):
         self.log = Logging()
         self.connection = dataSource.Database().get_connection()
-        self.cursor = self.connection.cursor()
+        self.cursor = self.connection.cursor(dictionary=True)
 
     def get_data(self, query):
         connection = dataSource.Database().get_connection()
-        cursor = connection.cursor()
+        cursor = connection.cursor(dictionary=True)
         try:
             if not query.endswith(';'):
                     query += ";"
@@ -48,12 +48,12 @@ class DAO:
 
     def singel_update_data(self, query):
         connection = dataSource.Database().get_connection()
-        cursor = connection.cursor()
+        cursor = connection.cursor(dictionary=True)
         try:
             if not query.endswith(';'):
                     query += ";"
             self.cursor.execute(query)
-        except pymysql.Error as Error:
+        except mysql.connector.Error as Error:
             self.log.warning('DAO.py - update_data - Can\'t update the Database\n{}\n{}'.format(str(Error),query))
             cursor.close()
             connection.close()
@@ -69,5 +69,5 @@ class DAO:
             if not query.endswith(';'):
                     query += ";"
             self.cursor.execute(query)
-        except pymysql.Error as Error:
+        except mysql.connector.Error as Error:
             self.log.warning('DAO.py - update_data - Can\'t update the Database\n{}\n{}'.format(str(Error),query))

@@ -16,7 +16,10 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-import pymysql.connections
+# https://dev.mysql.com/downloads/connector/python/
+# pip install mysql-connector-python
+
+import mysql.connector
 
 from core.logging_handler import Logging
 from core.server_config import Config
@@ -30,23 +33,20 @@ class Database():
         self.log = Logging()
         self.log.debug('Database instance has been created')
 
-    def initialize_data(self):
-        pass
-
     #initialize_connection
     def get_connection(self):
         config = Config()
         config.initialize()
         try:
-            connection = pymysql.connect(host=config.get_host(),
+            connection = mysql.connector.connect(host=config.get_host(),
                                         port=config.get_port(),
                                         user=config.get_user(),
                                         password=config.get_pass(),
                                         db=config.get_database_name(),
-                                        cursorclass=pymysql.cursors.DictCursor)
+                                        auth_plugin='mysql_native_password')
             return connection
 
-        except pymysql.Error as Error:
+        except mysql.connector.Error as Error:
             self.log.warning('Database - initialize_connection\n' +
                             'Config: '+ str(config.get_host()) + ' - ' +
                             str(config.get_port()) + ' - ' +

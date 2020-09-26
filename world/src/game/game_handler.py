@@ -31,6 +31,9 @@ class GameHandler:
         self.exchangeTransferList = exchangeTransferList
         self.socketManager = SocketManager(self.gameClient)
 
+        self.accId = None
+        self.account = None
+
         self.socketManager.GAME_SEND_HELLOGAME_PACKET()
         self.loop()
 
@@ -40,7 +43,7 @@ class GameHandler:
             packet = data.decode()
             packetLog = packet.replace('\n\x00', '[n][x00]')
             self.log.debug('[{}][ACC:{}][<-RECV] {}'.format(str(self.gameClient.get_addr()[0]),
-                                                            str('X'),
+                                                            str(self.acc_display_number()),
                                                             str(packetLog)))
             if not data:
                 self.log.debug('[{}][ACC:{}] PacketLoop no data'.format(str(self.gameClient.get_addr()[0]),
@@ -54,6 +57,14 @@ class GameHandler:
                         self.parse(p)
             else:
                 self.parse(packet.replace('\n\x00', ''))
+
+    def acc_display_number(self):
+        if type(self.accId) != int:
+            if self.account == None:
+                self.accId = 'X'
+            else:
+                self.accId = self.gameClient.get_account().get_id()
+        return self.accId
 
 # --------------------------------------------------------------------
 # MAIN PARSE
@@ -132,6 +143,9 @@ class GameHandler:
         elif packet[0] == 'W':
             self.log.warning('parseWaypointPacket')
             return
+        else:
+            self.log.warning('UNKNOWN MAIN PACKAGE ({})'.format(str(packet)))
+            return
 
 # --------------------------------------------------------------------
 # PARSE ACCOUNT PACKET
@@ -185,13 +199,16 @@ class GameHandler:
             # self.log.warning('SocketManager.REALM_SEND_REQUIRED_APK')
             self.socketManager.REALM_SEND_REQUIRED_APK()
             return
+        else: 
+            self.log.warning('UNKNOWN ACCOUNT PACKAGE ({})'.format(str(packet)))
+            return
 
     def add_character(self, packet):
         __packetList = packet[2:].split('|')
         __forbiddenWords = [r'[Aa][Dd][Mm][Ii][Nn]', r'[Mm][Oo][Dd][Oo]', r'[Gg][Mm]',
                             r'[Gg][Aa][Mm][Ee]-?[Mm][Aa][Ss][Tt][Ee][Rr]']
         __isValid = True
-        # Check existing character names
+        # check existing character names
         for player in self.world.get_players():
             if player.get_name() == __packetList[0]:
                 self.socketManager.GAME_SEND_NAME_ALREADY_EXIST()
@@ -223,14 +240,14 @@ class GameHandler:
             self.socketManager.GAME_SEND_CREATE_OK()
             # # broadcast of the current player list
             self.socketManager.GAME_SEND_PLAYER_LIST(self.gameClient.get_account().get_subscribe(),
-                                                     self.gameClient.get_account().get_number_of_characters(),
-                                                     self.gameClient.get_account().get_characters())
+                                                    self.gameClient.get_account().get_number_of_characters(),
+                                                    self.gameClient.get_account().get_characters())
             self.socketManager.GAME_SEND_cMK_PACKET_TO_MAP()
         except Exception as e:
             self.socketManager.GAME_SEND_CREATE_FAILED()
             self.log.warning('[{}][ACC:{}] GameHandler.add_character Exception: {}'.format(str(self.gameClient.get_addr()[0]),
-                                                                                           str('X'),
-                                                                                           str(e)))
+                                                                                            str(self.acc_display_number()),
+                                                                                            str(e)))
 
     def delete_character(self, packet):
         try:
@@ -247,15 +264,15 @@ class GameHandler:
                     self.gameClient.get_account().set_characters(__playerList)
                 # broadcast of the current player list
                 self.socketManager.GAME_SEND_PLAYER_LIST(self.gameClient.get_account().get_subscribe(),
-                                                         self.gameClient.get_account().get_number_of_characters(),
-                                                         self.gameClient.get_account().get_characters())
+                                                        self.gameClient.get_account().get_number_of_characters(),
+                                                        self.gameClient.get_account().get_characters())
             else:
                 self.socketManager.GAME_SEND_DELETE_PERSO_FAILED()
         except Exception as e:
             self.socketManager.GAME_SEND_DELETE_PERSO_FAILED()
             self.log.warning('[{}][ACC:{}] GameHandler.delete_character Exception: {}'.format(str(self.gameClient.get_addr()[0]),
-                                                                                              str('X'),
-                                                                                              str(e)))
+                                                                                            str(self.acc_display_number()),
+                                                                                            str(e)))
 
     def get_queue_position(self):
         # placeholder ¯\_(ツ)_/¯
@@ -281,31 +298,15 @@ class GameHandler:
         try:
             __listPosition = int(packet[2:])
             self.gameClient.get_account().set_player(__listPosition)
+            # both objects refer to each other    account <-> player
+            self.gameClient.get_account().get_player().set_account(self.gameClient.get_account(), self.socketManager)
+            self.gameClient.get_account().get_player().join_game()
         except Exception as e:
             self.socketManager.GAME_SEND_PERSO_SELECTION_FAILED()
             self.log.warning('[{}][ACC:{}] GameHandler.set_character Exception: {}'.format(str(self.gameClient.get_addr()[0]),
-                                                                                              str('X'),
-                                                                                              str(e)))
+                                                                                            str(self.acc_display_number()),
+                                                                                            str(e)))
             self.gameClient.kick()
-
-        self.log.warning('set_character !!! full of placeholders !!!')
-        self.socketManager.GAME_SEND_Rx_PACKET()
-		# SocketManager.GAME_SEND_ASK(out, this);
-                    # ID NAME LEVEL MORPH/CLASS SEXY GFXID COLOR(1-3) ItemToASK
-        packet_ASK = 'ASK|1|Cestra|1|8|0|80|-1|-1|-1|'
-        self.socketManager.send(packet_ASK, 'packet_ASK (DEMO)')
-        self.socketManager.send("ILS2000", "ILS2000 (DEMO)")
-        self.socketManager.send("ZS0", "GAME_SEND_ALIGNEMENT (DEMO)")
-        self.socketManager.send("cC+i", "GAME_SEND_ADD_CANAL (DEMO)")
-        self.socketManager.send("eL", "GAME_SEND_EMOTE_LIST (DEMO)")
-        self.socketManager.send("AR6bk", "GAME_SEND_RESTRICTIONS (DEMO)")
-        self.socketManager.send("Ow0|1000", "GAME_SEND_Ow_PACKET (DEMO)")
-
-        text1 = 'cs<font color=\'#B9121B\'>'
-        test2 = '</font>'
-        mess = 'Powered by <b>Cestra</b>'
-        text1 += mess + test2
-        self.socketManager.send(text1, 'GAME_SEND_MESSAGE (DEMO)')
 
     def send_ticket(self, packet):
         __accId = packet[2:]
@@ -314,6 +315,7 @@ class GameHandler:
         for acc in self.exchangeTransferList:
             if str(acc.get_id()) == __accId:
                 self.gameClient.set_account(acc)
+                self.account = acc
                 __accIsAvailable = True
                 del self.exchangeTransferList[__delCount]
             __delCount += 1
@@ -387,6 +389,9 @@ class GameHandler:
         elif packet[1] == 't':
             self.log.warning('get_fight().playerPass')
             return
+        else:
+            self.log.warning('UNKNOWN GAME PACKAGE ({})'.format(str(packet)))
+            return
 
     def send_game_create(self):
 
@@ -441,7 +446,7 @@ class GameHandler:
             pass
         except Exception as e:
             self.log.warning('[{}][ACC:{}] GameHandler.get_extra_informations_two Exception: {}'.format(str(self.gameClient.get_addr()[0]),
-                                                                                              str('X'),
-                                                                                              str(e)))
+                                                                                                        str(self.acc_display_number()),
+                                                                                                        str(e)))
 
 # --------------------------------------------------------------------
