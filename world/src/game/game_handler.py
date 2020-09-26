@@ -59,7 +59,6 @@ class GameHandler:
                 self.parse(packet.replace('\n\x00', ''))
 
     def acc_display_number(self):
-        # TODO
         if type(self.accId) != int:
             if self.account == None:
                 self.accId = 'X'
@@ -144,6 +143,9 @@ class GameHandler:
         elif packet[0] == 'W':
             self.log.warning('parseWaypointPacket')
             return
+        else:
+            self.log.warning('UNKNOWN MAIN PACKAGE ({})'.format(str(packet)))
+            return
 
 # --------------------------------------------------------------------
 # PARSE ACCOUNT PACKET
@@ -196,6 +198,9 @@ class GameHandler:
         elif packet[1] == 'P':
             # self.log.warning('SocketManager.REALM_SEND_REQUIRED_APK')
             self.socketManager.REALM_SEND_REQUIRED_APK()
+            return
+        else: 
+            self.log.warning('UNKNOWN ACCOUNT PACKAGE ({})'.format(str(packet)))
             return
 
     def add_character(self, packet):
@@ -399,6 +404,9 @@ class GameHandler:
             return
         elif packet[1] == 't':
             self.log.warning('get_fight().playerPass')
+            return
+        else:
+            self.log.warning('UNKNOWN GAME PACKAGE ({})'.format(str(packet)))
             return
 
     def send_game_create(self):
