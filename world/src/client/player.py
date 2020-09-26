@@ -20,7 +20,7 @@ from core.logging_handler import Logging
 
 class Player:
 
-    def __init__(self, id, name, account, groupe, sexe, pClass, color1,
+    def __init__(self, id, name, account, groupe, sex, pClass, color1,
                 color2, color3, kamas, spellboost, capital, energy, level,
                 xp, size, gfx, alignement, honor, deshonor, alvl, stats,
                 seeFriend, seeAlign, seeSeller, channel, map, cell, pdvper,
@@ -32,8 +32,8 @@ class Player:
         self.accountID = account
         self.account = None # this is where the account object is saved
         self.groupe = groupe
-        self.sexe = sexe
-        self.pclass = pClass
+        self.sex = sex
+        self.pClass = pClass
         self.color1 = color1
         self.color2 = color2
         self.color3 = color3
@@ -75,9 +75,10 @@ class Player:
         self.parcho = parcho
         self.timeDeblo = timeDeblo
         self.noall = noall
-        # ----
+
         self.socketManager = None # is set at set_account
-        # ----
+
+        self.mount = None
 
 # ----------------------------------------
 
@@ -130,5 +131,42 @@ class Player:
         return self.mountxpgive
 # ----------------------------------------
 
+    def get_online(self):
+        return self.online
+
+    def set_online(self, boolean):
+        self.online = boolean
+
+# ----------------------------------------
+
     def join_game(self):
-        pass
+        self.set_online(True)
+        if self.mount != None:
+            # SocketManager.GAME_SEND_Re_PACKET(this, "+", this._mount)
+            pass
+        self.socketManager.GAME_SEND_Rx_PACKET() # loads correctly
+
+        __ItemToASK = '' # TODO
+        self.socketManager.GAME_SEND_ASK(self.id,
+                                        self.name,
+                                        self.level,
+                                        self.pClass,
+                                        self.sex,
+                                        self.gfx,
+                                        self.color1,
+                                        self.color2,
+                                        self.color3,
+                                        __ItemToASK)
+
+        self.socketManager.send("ILS2000", "ILS2000 (DEMO)") # has something to do with the life points (regeneration time)
+        self.socketManager.send("ZS0", "GAME_SEND_ALIGNEMENT (DEMO)")
+        self.socketManager.send("cC+i", "GAME_SEND_ADD_CANAL (DEMO)")
+        self.socketManager.send("eL", "GAME_SEND_EMOTE_LIST (DEMO)")
+        self.socketManager.send("AR6bk", "GAME_SEND_RESTRICTIONS (DEMO)")
+        self.socketManager.send("Ow0|1000", "GAME_SEND_Ow_PACKET (DEMO)")
+
+        text1 = 'cs<font color=\'#B9121B\'>'
+        test2 = '</font>'
+        mess = 'Powered by <b>Cestra</b>'
+        text1 += mess + test2
+        self.socketManager.send(text1, 'GAME_SEND_MESSAGE (DEMO)')

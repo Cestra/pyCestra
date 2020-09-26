@@ -147,3 +147,17 @@ class SocketManager:
         __name = 'GAME_SEND_Rx_PACKET'
         __packet = 'Rx' + str(self.player.get_mountxpgive())
         self.send(__packet, __name)
+
+    def GAME_SEND_ASK(self, pId, name, level, morphClass, sex, gfxId, color1, color2, color3, itemToASK):
+        __name = 'GAME_SEND_ASK'
+        __packet = 'ASK|{}|{}|{}|{}|{}|{}|{}'.format(str(pId),
+                                                    str(name),
+                                                    str(level),
+                                                    str(morphClass),
+                                                    str(sex),
+                                                    str(gfxId),
+                                                    str(color1),
+                                                    str(color2),
+                                                    str(color3),
+                                                    str(itemToASK))
+        self.send(__packet, __name)
