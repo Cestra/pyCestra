@@ -6,4 +6,4 @@ License: AGPL 3.0
 Read file [LICENSE](LICENSE).
 
 ## Links
-* [![Discord](https://img.shields.io/discord/258735231870173184?label=discord)](https://discordapp.com/invite/VZ5X7eF)
+* [![Discord](https://img.shields.io/discord/258735231870173184?label=discord)](https://discord.com/invite/n5K6WqF)
