@@ -71,7 +71,6 @@ class GameHandler:
 
     def parse(self, packet):
         if packet[0] == 'A':
-            # self.log.warning('parse_account_packet')
             self.parse_account_packet(packet)
             return
         elif packet[0] == 'B':
@@ -104,7 +103,6 @@ class GameHandler:
             self.log.warning('parseFightPacket')
             return
         elif packet[0] == 'G':
-            # self.log.warning('parseGamePacket')
             self.parse_game_packet(packet)
             return
         elif packet[0] == 'g':
@@ -151,51 +149,51 @@ class GameHandler:
 # PARSE ACCOUNT PACKET
 
     def parse_account_packet(self, packet):
-        if packet[1] == 'A':
+        if packet[1] == 'A': #'AA'
             # self.log.warning('addCharacter')
             self.add_character(packet)
             return
-        elif packet[1] == 'B':
+        elif packet[1] == 'B': #'AB'
             self.log.warning('boost')
             return
-        elif packet[1] == 'D':
+        elif packet[1] == 'D': #'AD'
             self.log.warning('deleteCharacter')
             self.delete_character(packet)
             return
-        elif packet[1] == 'f':
+        elif packet[1] == 'f': #'Af'
             # self.log.warning('getQueuePosition')
             self.get_queue_position()
             return
-        elif packet[1] == 'g':
+        elif packet[1] == 'g': #'Ag'
             self.log.warning('getGifts')
             return
-        elif packet[1] == 'G':
+        elif packet[1] == 'G': #'AG'
             self.log.warning('attributeGiftToCharacter')
             return
-        elif packet[1] == 'i':
+        elif packet[1] == 'i': #'Ai'
             # self.log.warning('sendIdentity')
             self.send_identity(packet)
             return
-        elif packet[1] == 'L':
+        elif packet[1] == 'L': #'AL'
             # self.log.warning('getCharacters')
             self.get_characters()
             return
-        elif packet[1] == 'M':
+        elif packet[1] == 'M': #'AM'
             self.log.warning('parseMigration')
             return
-        elif packet[1] == 'S':
+        elif packet[1] == 'S': #'AS'
             # self.log.warning('setCharacter')
             self.set_character(packet)
             return
-        elif packet[1] == 'T':
+        elif packet[1] == 'T': #'AT'
             # self.log.warning('sendTicket')
             self.send_ticket(packet)
             return
-        elif packet[1] == 'V':
+        elif packet[1] == 'V': #'AV'
             # self.log.warning('requestRegionalVersion')
             self.socketManager.GAME_SEND_AV0()
             return
-        elif packet[1] == 'P':
+        elif packet[1] == 'P': #'AP'
             # self.log.warning('SocketManager.REALM_SEND_REQUIRED_APK')
             self.socketManager.REALM_SEND_REQUIRED_APK()
             return
@@ -348,68 +346,50 @@ class GameHandler:
 # PARSE GAME PACKET  parseGamePacket
 
     def parse_game_packet(self, packet):
-        if packet[1] == 'A':
+        if packet[1] == 'A': #'GA'
             self.log.warning('sendActions')
             return
-        elif packet[1] == 'C':
+        elif packet[1] == 'C': #'GC'
             self.log.warning('sendGameCreate')
-            self.send_game_create()
+            self.gameClient.get_account().get_player().send_game_create()
             return
-        elif packet[1] == 'D':
+        elif packet[1] == 'D': #'GD'
             self.log.warning('deleteCharacter')
             return
-        elif packet[1] == 'd':
+        elif packet[1] == 'd': #'Gd'
             self.log.warning('showMonsterTarget')
             return
-        elif packet[1] == 'f':
+        elif packet[1] == 'f': #'Gf'
             self.log.warning('setFlag')
             return
-        elif packet[1] == 'F':
+        elif packet[1] == 'F': #'GF'
             self.log.warning('set_Ghosts')
             return
-        elif packet[1] == 'I':
+        elif packet[1] == 'I': #'GI'
             self.log.warning('getExtraInformations')
             self.get_extra_informations()
             return
-        elif packet[1] == 'K':
+        elif packet[1] == 'K': #'GK'
             self.log.warning('actionAck')
             return
-        elif packet[1] == 'P':
+        elif packet[1] == 'P': #'GP'
             self.log.warning('toggleWings')
             return
-        elif packet[1] == 'p':
+        elif packet[1] == 'p': #'Gp'
             self.log.warning('setPlayerPosition')
             return
-        elif packet[1] == 'Q':
+        elif packet[1] == 'Q': #'GQ'
             self.log.warning('leaveFight')
             return
-        elif packet[1] == 'R':
+        elif packet[1] == 'R': #'GR'
             self.log.warning('readyFight')
             return
-        elif packet[1] == 't':
+        elif packet[1] == 't': #'Gt'
             self.log.warning('get_fight().playerPass')
             return
         else:
             self.log.warning('UNKNOWN GAME PACKAGE ({})'.format(str(packet)))
             return
-
-    def send_game_create(self):
-
-        self.socketManager.send('GCK|1|Cestra', 'GAME_SEND_GAME_CREATE (DEMO)')
-
-        # GAME_SEND_STATS_PACKET
-        #     GAME_SEND_Ow_PACKET
-        # As	xp | _kamas | _capital | _spellPts | _align ~ _align , _aLvl , getGrade , _honor , _deshonor , 0 | curPdv , pdvMax | getEnergy , 10000 | getInitiative | 0 | 0,0,0,0,0 | 0,0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0| 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 |
-        packet_As = 'As1,1,1|10000|5|6|0~3,0,0,0,0,0|10,100|10000,10000|100|0|0,0,0,0,0|0,0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|'
-        self.socketManager.send(packet_As, 'GAME_SEND_GAME_CREATE (DEMO)')
-
-        mapID = '7411'
-        data = '0711291819'
-        key = '556a5867706b7f7f694d754537565e7d437357343b49337d7a455d3c722a4974415445242e654c277c542f246f7764593831672c3f65227725324274565c692532422f2e3e2f726934556c512e387f4e75447b3e475b2972642c64685a33374b2a555d4c5f4f435c612d64566c2e2e38695248205b4c5c5a4c6242512947213536747d5f522d582d366b26647d2d73576a6b487b5f574a225a3440543a405a517551522d622a403d4a486477675646725f3367677c7d2934657f32663e46634064233d48677f3b524b2c352f402922744167333f7c5d7076674f43'
-        packet_GDM = 'GDM|' + mapID + '|'  + data + '|'  + key
-        self.socketManager.send(packet_GDM, 'packet_GDM (DEMO)')
-
-        self.socketManager.send('fC0', 'packet_GDM (DEMO)')
 
     def get_extra_informations(self):
         # EndFightAction are checked here
@@ -429,6 +409,7 @@ class GameHandler:
             # SocketManager.GAME_SEND_MAP_NPCS_GMS_PACKETS
             # SocketManager.GAME_SEND_MAP_PERCO_GMS_PACKETS
             # SocketManager.GAME_SEND_MAP_OBJECTS_GDS_PACKETS
+            self.socketManager.send('GDF|', 'GAME_SEND_MAP_OBJECTS_GDS_PACKETS (DEMO)')
             # SocketManager.GAME_SEND_GDK_PACKET
             # SocketManager.GAME_SEND_MAP_FIGHT_COUNT
             # SocketManager.SEND_GM_PRISME_TO_MAP

@@ -192,7 +192,8 @@ class Player:
                                         self.get_color2(),
                                         self.get_color3(),
                                         __ItemToASK)
-        # TODO GAME_SEND_OS_PACKET
+                                        
+        # TODO GAME_SEND_OS_PACKET - something with World.getItemSetNumber()
         if self.fight is not None:
             self.socketManager.send('ILS0', 'ILS0') # heart display in the middle of the screen
         else:
@@ -208,13 +209,86 @@ class Player:
             __chn += '@'
         self.socketManager.GAME_SEND_ADD_CANAL(str(self.get_channel()) + __chn)
         del __chn
-        # TODO GAME_SEND_ZONE_ALLIGN_STATUT
+        # TODO GAME_SEND_ZONE_ALLIGN_STATUT - al| + World.getSousZoneStateString()
         self.socketManager.send("eL1", "GAME_SEND_EMOTE_LIST (DEMO)") # no plan how it works yet (look at Player.java 370-376)
         self.socketManager.GAME_SEND_RESTRICTIONS()
-        self.socketManager.send("Ow0|1000", "GAME_SEND_Ow_PACKET (DEMO)") # pods - Ow + getPodUsed + | + getMaxPod
 
-        text1 = 'cs<font color=\'#B9121B\'>'
-        test2 = '</font>'
-        mess = 'Powered by <b>Cestra</b>'
-        text1 += mess + test2
-        self.socketManager.send(text1, 'GAME_SEND_MESSAGE (DEMO)')
+        mess = 'cs<font color=\'#B9121B\'>Powered by <b>Cestra</b></font>'
+        self.socketManager.send(mess, 'GAME_SEND_MESSAGE (DEMO)')
+
+    def send_game_create(self):
+        self.socketManager.GAME_SEND_GAME_CREATE(str(self.get_name))
+
+        # GAME_SEND_STATS_PACKET -> GAME_SEND_Ow_PACKET
+        self.socketManager.GAME_SEND_STATS_PACKET(self.get_As_packet())
+
+        # As	xp | _kamas | _capital | _spellPts | _align ~ _align , _aLvl , getGrade , _honor , _deshonor , 0 | curPdv , pdvMax | getEnergy , 10000 | getInitiative | 0 | 0,0,0,0,0 | 0,0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0| 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 |
+        #packet_As = 'As1,1,1|10000|5|6|0~3,0,0,0,0,0|10,100|10000,10000|100|0|0,0,0,0,0|0,0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|'
+        #self.socketManager.send(packet_As, 'GAME_SEND_GAME_CREATE (DEMO)')
+
+        mapID = '10294'
+        data = '0802221747'
+        key = '6a292e2c446752644236725b68355d733e3a446060303e7d476e7c63354e5e42505052657756526b32585753473b64782f6f2261545d47732a5e63253242772532427e4b636c663a6e33395031705c4461386348652d527f6059365d5154703a4c39416d342962707e653b214c2e7657573c4f5542223f5d285b66423a446c5d723c2f594a6d7820787826505b253242663d463150253235304b4e41312d7f784e7d23712c655a5230335f55382046202869795f6e71415463753c4f3840492c4e'
+
+        packet_GDM = 'GDM|' + mapID + '|'  + data + '|'  + key
+        self.socketManager.send(packet_GDM, 'packet_GDM (DEMO)')
+
+        self.socketManager.send('fC0', 'packet_GDM (DEMO)')
+
+    def get_As_packet(self):
+        # refreshStats
+        # refreshLife
+        # As	xp | _kamas | _capital | _spellPts | _align ~ _align , _aLvl , getGrade , _honor , _deshonor , 0 | curPdv , pdvMax | getEnergy , 10000 | getInitiative | 0 | 0,0,0,0,0 | 0,0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0| 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 | 0,0,0,0 |
+        packet_As = 'As1,1,1|10000|5|6|0~3,0,0,0,0,0|10,100|10000,10000|100|0|0,0,0,0,0|0,0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|0,0,0,0|'
+        packet = 'As' # As
+        packet += XP + '|' # xp |
+        # kamas |
+        # capital |
+        # spellPts |
+        # align ~ align , aLvl , getGrade , _honor , _deshonor , 0 |
+        # curPdv , pdvMax |
+        # getEnergy , 10000 |
+        # getInitiative |
+        # 0 |
+        # 0,0,0,0,0 |
+        # 0,0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0|
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        # 0,0,0,0 |
+        return packet_As
