@@ -16,6 +16,8 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
+from common.crypt_manager import CryptManager
+
 class Map():
 
     def __init__(self, mapId, date, width, heigth, key, places, mapData, cells,
@@ -64,6 +66,13 @@ class Map():
         except Exception as Error:
             print('Map.__init__ {}'.format(Error))
         # -----------------------------------------
+        try:
+            cryptManager = CryptManager()
+            self.cases = cryptManager.decompile_map_data(self, self.mapData)
+            del cryptManager, self.mapData
+        except Exception as Error:
+            print('Map.__init__ {}'.format(Error))
+
         # if
         #     this.cases = CryptManager.decompileMapData(this, dData)
         # else:
