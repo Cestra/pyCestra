@@ -60,5 +60,5 @@ val1 = 'HhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHhaaeaaaaaHh
 val2 = 'test'
 val3 = 'H'
 
-CryptManager().decompile_map_data(val2, val1)
+#CryptManager().decompile_map_data(val2, val1)
 #print(CryptManager().get_int_by_hashed_value(val3))
