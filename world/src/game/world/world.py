@@ -84,7 +84,7 @@ class World:
                         0, 100, (pClass * 10 + sex), # xp, size, gfx,
                         0, 0, 0, 0,# alignement, honor, deshonor, alvl,
                         [0,0,0,0,0,0], 1, 0, # stats(list), seeFriend, seeAlign,
-                        0, '*#%!pi$:?', __startMapCellList[0], # seeSeller, channel, map,
+                        0, '*#$p^', __startMapCellList[0], # seeSeller, channel, map,
                         __startMapCellList[1], 100, # cell, pdvper,
                         '141;', # spells <-- TODO placeholder
                         '', '', # objets, storeObjets,

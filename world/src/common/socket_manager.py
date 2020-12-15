@@ -161,3 +161,34 @@ class SocketManager:
                                                     str(color3),
                                                     str(itemToASK))
         self.send(__packet, __name)
+
+    def GAME_SEND_ALIGNEMENT(self, alignement):
+        __name = 'GAME_SEND_ALIGNEMENT'
+        __packet = 'ZS' + str(alignement)
+        self.send(__packet, __name)
+
+    def GAME_SEND_ADD_CANAL(self, chn):
+        __name = 'GAME_SEND_ADD_CANAL'
+        __packet = 'cC+' + str(chn)
+        self.send(__packet, __name)
+
+    def GAME_SEND_RESTRICTIONS(self):
+        __name = 'GAME_SEND_RESTRICTIONS'
+        __packet = 'AR6bk'
+        self.send(__packet, __name)
+
+    def GAME_SEND_GAME_CREATE(self, name):
+        __name = 'GAME_SEND_GAME_CREATE'
+        __packet = 'GCK|1|' + name
+        self.send(__packet, __name)
+
+    def GAME_SEND_STATS_PACKET(self, AsPacketString):
+        __name = 'GAME_SEND_STATS_PACKET'
+        self.GAME_SEND_Ow_PACKET()
+        self.send(AsPacketString, __name)
+
+    def GAME_SEND_Ow_PACKET(self):
+        # pods - Ow + getPodUsed + | + getMaxPod
+        __name = 'GAME_SEND_Ow_PACKET (DEMO)'
+        __packet = 'Ow{}|{}'.format('0', '1000')
+        self.send(__packet, __name)
