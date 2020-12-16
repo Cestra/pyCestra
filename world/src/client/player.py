@@ -217,7 +217,7 @@ class Player:
         self.socketManager.send(mess, 'GAME_SEND_MESSAGE (DEMO)')
 
     def send_game_create(self):
-        self.socketManager.GAME_SEND_GAME_CREATE(str(self.get_name))
+        self.socketManager.GAME_SEND_GAME_CREATE(str(self.get_name()))
 
         # GAME_SEND_STATS_PACKET -> GAME_SEND_Ow_PACKET
         self.socketManager.GAME_SEND_STATS_PACKET(self.get_As_packet())
