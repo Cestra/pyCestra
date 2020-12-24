@@ -341,4 +341,4 @@ class GameHandler:
         try:
             packetParse[recPacked[:2]](recPacked)
         except KeyError:
-            self.log.warning('UNKNOWN PACKAGE ({})'.format(recPacked))
+            self.log.warning('UNKNOWN PACKAGE {}({})'.format(recPacked[:2],recPacked))
