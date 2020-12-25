@@ -22,6 +22,7 @@ import sys
 import dataSource
 from core.logging_handler import Logging, bcolors
 from core.server_config import Config
+from core.console import Console
 from dataSource.database import Database
 from exchange.exchange_client import ExchangeClient
 from game.game_server import GameServer
@@ -33,6 +34,8 @@ class Main:
     def __init__(self):
         self.log = Logging()
         self.config = Config()
+        self.console = Console()
+        self.console.clear()
 
     def start(self):
         #  ======================================================

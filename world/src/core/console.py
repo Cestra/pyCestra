@@ -22,7 +22,7 @@ import subprocess as sp
 class Console:
 
     def __init__(self):
-        name = 'Cestra - Logon Server - '
+        name = 'Cestra - World Server - '
         version = '0.1'
         system('title ' + name + version)
 
