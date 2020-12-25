@@ -3,7 +3,7 @@ name: Python application
 on: [push]
 
 jobs:
-  pyCesta Test:
+  pyCestaTest:
     runs-on: windows-latest
     steps:
 
