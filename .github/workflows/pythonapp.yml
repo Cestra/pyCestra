@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install PyMySQL
+        pip install mysql-connector-python
     - name: pyCestra Logon Server
       run: |
         python logon/src/main.py
