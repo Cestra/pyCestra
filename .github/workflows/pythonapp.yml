@@ -20,8 +20,13 @@ jobs:
         pip install mysql-connector-python
 
     - name: Display Python version
-      run: python -c "import sys; print(sys.version)"
+      run: |
+        python -c "import sys; print(sys.version)"
 
     - name: pyCestra Logon Server
       run: |
         python logon/src/main.py
+
+    - name: python test
+      run: |
+        python world\src\test.py
