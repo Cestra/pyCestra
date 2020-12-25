@@ -29,4 +29,4 @@ jobs:
 
     - name: python test
       run: |
-        python world\src\test.py
+        python world/src/test.py
