@@ -1,8 +1,25 @@
+'''
+pyCestra - Open Source MMO Framework
+Copyright (C) 2020 pyCestra Team
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
 import re
 from enum import Enum
 
 from core.logging_handler import Logging
-from dataSource.account_data import AccountData
 from login.packet.account_queue import AccountQueue
 
 
@@ -12,17 +29,15 @@ class ChooseNickName:
     https://www.dofus.com/en/mmorpg/community/nicknames#\n
     https://www.python-kurs.eu/re.php
     '''
-
     def __init__(self):
         self.log = Logging()
 
-
-    def inspect(nickname):
+    def inspect(self, nickname):
         #                  Admin                    Modo                 GM           Game Master
-        forbidden_words = [r'[Aa][Dd][Mm][Ii][Nn]', r'[Mm][Oo][Dd][Oo]', r'[Gg][Mm]', r'[Gg][Aa][Mm][Ee]-?[Mm][Aa][Ss][Tt][Ee][Rr]',]
+        forbiddenWords = [r'[Aa][Dd][Mm][Ii][Nn]', r'[Mm][Oo][Dd][Oo]', r'[Gg][Mm]', r'[Gg][Aa][Mm][Ee]-?[Mm][Aa][Ss][Tt][Ee][Rr]',]
 
         def forbidden_words_check(val):
-            for x in forbidden_words:
+            for x in forbiddenWords:
                 if re.search(x, nickname):
                     return False
             return True
@@ -62,7 +77,7 @@ class ChooseNickName:
         if flag ==-1:
             return False
 
-    def verify(client, nickname):
+    def verify(self, client, nickname, accountDataDic, hostList):
 
         # test if the nickname of the account is empty
         account = client.get_account()
@@ -76,24 +91,37 @@ class ChooseNickName:
             return
 
         # the examination of the nickname string
-        if not ChooseNickName.inspect(nickname):
+        if not self.inspect(nickname):
+            self.log.debug('[' + str(client.get_address()[0]) + ']'
+                '[' + str(client.get_status().name) + '] This nickname is not available')
             # 'AlEs'= this nickname is not available.
             client.write("AlEs")
             return
 
         # is the nickname already taken?
-        dbnicks = AccountData().load_nickname()
-        for i in dbnicks:
-            if i['pseudo'] == nickname:
-                print('ist schon da')
+        # AlEs = this nickname is not available.
+        for i in accountDataDic:
+            if i['nickname'] == nickname:
+                self.log.debug('[' + str(client.get_address()[0]) + ']'
+                                '[' + str(client.get_status().name) + ']' +
+                                'This nickname is already in use')
                 client.write("AlEs")
                 return
 
         account.set_nickname(nickname)
         account.set_state(0)
+
         # set client status to SERVER
         client.set_status(Status(4))
-        AccountQueue().verify(client)
+
+        # update of the accountDataDic entry
+        for i in accountDataDic:
+            if i['id'] == account.get_id():
+                i['nickname'] = account.get_nickname()
+                break
+
+        AccountQueue().verify(client, accountDataDic, hostList)
+
 
 class Status(Enum):
     WAIT_VERSION = 0
@@ -101,5 +129,3 @@ class Status(Enum):
     WAIT_ACCOUNT = 2
     WAIT_NICKNAME = 3
     SERVER = 4
-
-# print(ChooseNickName().verify(0, '--8XxNicknamexX8--'))

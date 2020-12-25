@@ -1,45 +1,57 @@
-class ExchangeClient:
+'''
+pyCestra - Open Source MMO Framework
+Copyright (C) 2020 pyCestra Team
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
+import sys
+
+from core.logging_handler import Logging
+
+
+class ExchangeClient():
 
     def __init__(self):
-        pass
-    
-    def parse(self):
-        try:
-            def switch(self,i):
-                method_name='number_'+str(i)
-                method=getattr(self,method_name,lambda :'Invalid')
-                return method()
+        self.log = Logging()
 
-            def number_0(self):
-                return 'zero'
+    def send(self, i):
+        msg = bytes(i, 'utf-8')
+        self.log.debug('[{}:{}][EX-SEND->] {}'.format(str(self.addr[0]),
+                                                str(self.addr[1]),
+                                                i))               
+        self.IoSession.send(msg)
 
-            def number_1(self):
-                return 'one'
+    def kick(self):
+        self.log.info('[{}:{}] Exchange Client has disconnected'.format(str(self.addr[0]),
+                                                                str(self.addr[1])))
+        sys.exit(0)
 
-            def number_2(self):
-                return 'two'
-        except:
-            # print("Packet undefined\"" + packet + "\"")
-            # TODO Kick Player
-            pass
+    def set_addr(self, addr):
+        self.addr = addr
 
-'''
-# TODO It would have to go but I do not get the switch running
- 
-s = ExchangeClient()
-s.parse().switch(1)
-print(s)
-'''
+    def get_addr(self):
+        return self.addr
 
-'''
-F           free Places ?
-S
-    SH      set Ip, set Port, set State ?   (send("SHK"))
-    SK                                      (send("SKR")) and kick
-    SS      get Server, set State ?
-M
-    MP      Map Magic
-    MT                                      (server.send("MF" + account + "|" + getServer.getId + "|" + players))
-    MD                                      (server.send("MD" + split))
-    MO                                      (server.send("MO" + split + "|" + getServer().getId()))
-'''
+    def get_id(self):
+        return self.id
+
+    def set_id(self, i):
+        self.id = i
+
+    def get_io_session(self):
+        return self.IoSession
+
+    def set_io_session(self, s):
+        self.IoSession = s

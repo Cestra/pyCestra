@@ -1,59 +1,68 @@
+'''
+pyCestra - Open Source MMO Framework
+Copyright (C) 2020 pyCestra Team
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
 import sys
 from enum import Enum
 
 from core.logging_handler import Logging
-from .packet.packet_handler import PacketHandler
 
-
-class HelloConnection:
-
-    def __init__(self, c, key, addr):
-        self.log = Logging()
-        self.log.debug('LoginClient created - '+
-                        str(addr[0])+ ':'+ str(addr[1])+ ' - '+key)
-
-        # Create the client instance
-        client = LoginClient()
-        client.set_key(key)
-        client.set_address(addr)
-        client.set_status(Status(0))
-        client.set_io_session(c)
-
-        # We send the first package (HC + KEY + empty byte)
-        token = bytes('HC'+key+'\x00', 'utf-8')
-        # self.log.debug("[SEND]: "+ str(token))
-        c.send(token)
-
-        # We are waiting for the client version
-        data = c.recv(2048)
-        msg = data.decode()
-        if not msg == '1.29.1\n\x00':
-            self.log.debug('Disconnected '+ str(addr[0])+ ':'+ str(addr[1]) +
-                            'The client has the wrong version')
-            f = bytes('AlEf'+'\x00', 'utf-8')
-            c.send(f)
-            c.close()
-        self.log.debug('[' + str(addr[1]) + '][' +
-                        str(client.get_status().name) + '] Version accepted')
-
-        PacketHandler().loop(client)
 
 class LoginClient:
 
-    def __init__(self):
+    def __init__(self, game_client_dic, accountDataDic):
+        self.game_client_dic = game_client_dic
+        self.accountDataDic = accountDataDic
         self.log = Logging()
 
     def write(self, o):
         msg = bytes(o+'\x00', 'utf-8')
+        self.log.debug('[' + str(self.address[0]) + ':' +
+                    str(self.address[1]) + '][' +
+                    str(self.status.name) + '][SEND->] ' + o)
         self.IoSession.send(msg)
 
-    def parser(self):
-        pass
-
     def kick(self):
-        self.log.info('[' + str(self.address[1]) + ']'
-                    '[' + str(self.status.name) + '] Client kick')
-        sys.exit()
+        # -----------------------------------------
+        # update 'logged' to 0
+        try:
+            for i in self.accountDataDic:
+                if i['id'] == self.account.get_id():
+                    i['logged'] = 0
+        except AttributeError:
+            self.log.debug('[{}:{}][{}] The Login-Client was kicked so early that no account was set up yet'.format(str(self.address[0]),
+                                                                                                            str(self.address[1]),
+                                                                                                            str(self.status.name)))
+        # -----------------------------------------
+        # delete entries in 'game_client_dic'
+        dict_str = self.address[0] + ':' + str(self.address[1])
+        self.IoSession.close()
+        try:
+            self.game_client_dic.pop(dict_str)
+        except KeyError:
+            self.log.warning('[' + str(self.address[0]) + ':' +
+                            str(self.address[1]) + '][' +
+                            str(self.status.name) +
+                            '] The request in "game_client_dic" has been incorrectly removed')
+        # -----------------------------------------
+        self.log.info('[' + str(self.address[0]) + ':' +
+                    str(self.address[1]) + '][' +        
+                    str(self.status.name) + '] Client kick')
+        sys.exit(0)
 
     def get_address(self):
         return self.address
@@ -88,8 +97,8 @@ class LoginClient:
     def get_account(self):
         return self.account
 
-    def set_account(self, accountTupel):
-        self.account = accountTupel
+    def set_account(self, account):
+        self.account = account
 
 class Status(Enum):
     WAIT_VERSION = 0

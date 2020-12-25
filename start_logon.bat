@@ -1,3 +1,3 @@
 @echo off
-python logon/src/pycestra.py
+python logon/src/main.py
 pause

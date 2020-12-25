@@ -5,10 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Cestra Logon - main.py",
+            "name": "Cestra World",
             "type": "python",
             "request": "launch",
-            "program": "C:\\Users\\korep\\OneDrive\\Dokumente\\pyCestra\\logon\\src\\main.py",
+            "program": "${workspaceFolder}/world/src/main.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Cestra Logon",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/logon/src/main.py",
             "console": "integratedTerminal"
         },
         {

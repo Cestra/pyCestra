@@ -1,40 +1,65 @@
+'''
+pyCestra - Open Source MMO Framework
+Copyright (C) 2020 pyCestra Team
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+'''
+
+import mysql.connector
+
 import dataSource
 from core.logging_handler import Logging
 from dataSource.DAO import DAO
+from object.server import Server
 
 
 class ServerData(DAO):
 
     def __init__(self):
         self.log = Logging()
+        self.Datasource = []
 
     def load(self):
         '''
         DataFrame:
-        [['Demo', 'demo', 0, 0, 1494344975925], ['Jiva', 'jiv', 0, 0, 1494344975925]]
+        id, name, key, population, isSubscriberServer
+        ['1','Demo', 'demo', 0, 0,]
+
+        relevant data:
+        id, key, population, isSubscriberServer
+        ['1', 'key', 'population', 'isSubscriberServer']
         '''
-        self.Datasource = []
         connection = dataSource.Database().get_connection()
-        cursor = connection.cursor()
+        cursor = connection.cursor(dictionary=True)
         try:
             cursor.execute('SELECT * FROM servers;')
             data = cursor.fetchall()
-            for row in data:
-                Rows = [row]
-                self.Datasource.append(Rows)
-        except pymysql.Error as Error:
-            self.log.warning('server_data.py - Can\'t load table servers - ' + Error)
-            cursor.close()
-            connection.close()
+            for result in data:
+                # only relevant data is saved
+                server = Server(result['id'],
+                                result['key'],
+                                0,
+                                result['population'],
+                                result['isSubscriberServer'])
+                
+                self.Datasource.append(server)
+        except mysql.connector.Error as Error:
+            self.log.warning('server_data.py - Can\'t load table servers - ')
+            self.log.warning(str(Error))
         finally:
             cursor.close()
             connection.close()
-            # self.log.debug('cursor.close, connection.close')
 
-    # Use databank server ID to find the right server
-    def get_from_id(self, idwis):
-        if not idwis == 0:
-            player = idwis - 1
-            return self.Datasource[player]
-        else:
-            self.log.warning('player_data.py - Can\'t load server id 0')
+    def get_server_data(self):
+        return self.Datasource
