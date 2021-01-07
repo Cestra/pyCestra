@@ -1,6 +1,6 @@
 '''
 pyCestra - Open Source MMO Framework
-Copyright (C) 2020 pyCestra Team
+Copyright (C) 2021 pyCestra Team
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
@@ -15,9 +15,9 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
+import datetime
 
 from common.name_generator import NameGenerator
-
 from core.logging_handler import Logging
 
 
@@ -191,4 +191,25 @@ class SocketManager:
         # pods - Ow + getPodUsed + | + getMaxPod
         __name = 'GAME_SEND_Ow_PACKET (DEMO)'
         __packet = 'Ow{}|{}'.format('0', '1000')
+        self.send(__packet, __name)
+    
+    def GAME_SEND_SERVER_HOUR(self):
+        tf = '%Y-%m-%d %H:%M'
+        day00 = '3340-01-01 00:00' 
+        now = datetime.datetime.now()
+        now = now.strftime(tf)
+        now = datetime.datetime.strptime(now, tf)
+        day00 = datetime.datetime.strptime(day00, tf)
+        now_dofus = '{}-{}-{} {}:{}'.format('0'+str(now.year - 1370), 
+                                            str(now.month),
+                                            str(now.day),
+                                            str(now.hour),
+                                            str(now.minute))
+
+        now_dofus = datetime.datetime.strptime(now_dofus, tf)
+        mili_time = now_dofus - day00
+        mili_time = str((mili_time.total_seconds() * 1000) + 172800000)
+
+        __name = 'GAME_SEND_SERVER_HOUR'
+        __packet = 'BT' + mili_time
         self.send(__packet, __name)

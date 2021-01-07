@@ -1,6 +1,6 @@
 '''
 pyCestra - Open Source MMO Framework
-Copyright (C) 2020 pyCestra Team
+Copyright (C) 2021 pyCestra Team
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
@@ -229,6 +229,12 @@ class GameHandler:
         self.socketManager.REALM_SEND_REQUIRED_APK()
 
 # --------------------------------------------------------------------
+# PARSE GAME PACKET  parseBasicsPacket
+
+    def get_date(self, packet):
+        self.socketManager.GAME_SEND_SERVER_HOUR()
+
+# --------------------------------------------------------------------
 # PARSE GAME PACKET  parseGamePacket
 
     def send_actions(self, packet):
@@ -323,6 +329,7 @@ class GameHandler:
                     'AT' : self.send_ticket,
                     'AV' : self.request_regional_version,
                     'AP' : self.realm_send_required_apk,
+                    'BD' : self.get_date,
                     'GA' : self.send_actions,
                     'GC' : self.send_game_create,
                     'GD' : self.delete_character_GD,
