@@ -16,19 +16,21 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-class Case:
+from os import system, name
+import subprocess as sp
 
-    def __init__(self, map, id, walkable, loS, objId):
-        # default values
-        self.walkable = True
-        self.walkableInFight = False
-        self.loS = True
+class Console:
 
-        self.id = id
-        self.walkable = walkable
-        self.walkableInFight = walkable
-        self.loS = loS
-        self.map = map.getId()
-        if objId == -1:
-            return
-        # this.object = new InteractiveObject(objId, map, this);
+    def __init__(self):
+        name = 'Cestra - World Server - '
+        version = '0.1'
+        system('title ' + name + version)
+
+    def clear(self):
+        # for windows
+        if name == 'nt':
+            sp.call('cls',shell=True)
+
+        # for mac and linux (here, os.name is 'posix')
+        elif name == 'posix':
+            sp.call('clear',shell=True)

@@ -1,6 +1,6 @@
 '''
 pyCestra - Open Source MMO Framework
-Copyright (C) 2020 pyCestra Team
+Copyright (C) 2021 pyCestra Team
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
@@ -22,6 +22,7 @@ import sys
 import dataSource
 from core.logging_handler import Logging, bcolors
 from core.server_config import Config
+from core.console import Console
 from dataSource.database import Database
 from exchange.exchange_client import ExchangeClient
 from game.game_server import GameServer
@@ -33,6 +34,8 @@ class Main:
     def __init__(self):
         self.log = Logging()
         self.config = Config()
+        self.console = Console()
+        self.console.clear()
 
     def start(self):
         #  ======================================================

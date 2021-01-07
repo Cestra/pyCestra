@@ -1,6 +1,6 @@
 '''
 pyCestra - Open Source MMO Framework
-Copyright (C) 2020 pyCestra Team
+Copyright (C) 2021 pyCestra Team
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
@@ -217,7 +217,7 @@ class Player:
         self.socketManager.send(mess, 'GAME_SEND_MESSAGE (DEMO)')
 
     def send_game_create(self):
-        self.socketManager.GAME_SEND_GAME_CREATE(str(self.get_name))
+        self.socketManager.GAME_SEND_GAME_CREATE(str(self.get_name()))
 
         # GAME_SEND_STATS_PACKET -> GAME_SEND_Ow_PACKET
         self.socketManager.GAME_SEND_STATS_PACKET(self.get_As_packet())

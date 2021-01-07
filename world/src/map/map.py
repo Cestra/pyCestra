@@ -1,6 +1,6 @@
 '''
 pyCestra - Open Source MMO Framework
-Copyright (C) 2020 pyCestra Team
+Copyright (C) 2021 pyCestra Team
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
@@ -17,11 +17,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 from common.crypt_manager import CryptManager
+from core.logging_handler import Logging
 
 class Map():
 
     def __init__(self, mapId, date, width, heigth, key, places, mapData, cells,
                 monsters, mapPos, numGroup, fixSize, minSize, maxSize, cases, forbidden):
+
+        self.log = Logging()
+
         self.id = mapId
         self.data = date
         self.width = width
@@ -49,7 +53,7 @@ class Map():
             self.Y = mapPos[1]
             del mapPos
         except Exception as Error:
-            print('Map.__init__ {}'.format(Error))
+            self.log.warning('[MAP {}] Map.__init__ - (mapPos) - {}'.format(self.id, Error))
         # -----------------------------------------
         # subArea
         # -----------------------------------------
@@ -64,14 +68,14 @@ class Map():
             self.noChannel = split[6] in '1'
             del forbidden, split
         except Exception as Error:
-            print('Map.__init__ {}'.format(Error))
+            self.log.warning('[MAP {}] Map.__init__ - (forbidden) - {}'.format(self.id, Error))
         # -----------------------------------------
         try:
             cryptManager = CryptManager()
             self.cases = cryptManager.decompile_map_data(self, self.mapData)
             del cryptManager, self.mapData
         except Exception as Error:
-            print('Map.__init__ {}'.format(Error))
+            self.log.warning('[MAP {}] Map.__init__ - (decompile_map_data) - {}'.format(self.id, Error))
 
         # if
         #     this.cases = CryptManager.decompileMapData(this, dData)

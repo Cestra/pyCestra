@@ -1,6 +1,6 @@
 '''
 pyCestra - Open Source MMO Framework
-Copyright (C) 2020 pyCestra Team
+Copyright (C) 2021 pyCestra Team
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
@@ -23,8 +23,8 @@ class Console:
 
     def __init__(self):
         name = 'Cestra - Logon Server - '
-        Version = '0.1'
-        system('title '+name+Version)
+        version = '0.1'
+        system('title ' + name + version)
 
     def clear(self):
         # for windows

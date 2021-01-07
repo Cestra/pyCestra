@@ -1,6 +1,6 @@
 '''
 pyCestra - Open Source MMO Framework
-Copyright (C) 2020 pyCestra Team
+Copyright (C) 2021 pyCestra Team
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published
@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 import sys
+import re
 
 from core.logging_handler import Logging
 
@@ -32,12 +33,8 @@ class HelloConnection():
         # We are waiting for the client version
         data = client.get_io_session().recv(2048)
         msg = data.decode()
-        if not (msg == '1.30.9\n\x00' or
-                msg == '1.29.1\n\x00' or
-                msg == '1.30.0\n\x00' or
-                msg == '1.31.2\n\x00' or
-                msg == '1.33.4\n\x00' or
-                msg == '1.34.0\n\x00'):
+        vc = re.search(r"1.[2-3][0-9].", msg)
+        if not vc:
             self.log.debug('[' + str(client.get_address()[0]) +
                             ':' + str(client.get_address()[1]) +
                             '][' + str(client.get_status().name) +
