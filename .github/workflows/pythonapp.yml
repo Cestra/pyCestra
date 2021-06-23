@@ -12,7 +12,6 @@ jobs:
       DB_HOST: 127.0.0.1
 
     steps:
-    - name: MySql setup
     - run: |
           sudo /etc/init.d/mysql start
           mysql -e 'CREATE DATABASE cestra_logon;' -uroot -proot
