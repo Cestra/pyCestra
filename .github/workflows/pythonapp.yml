@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Shutdown Ubuntu MySQL (SUDO)
       run: sudo service mysql stop
-
+    
     - name: Set up MySQL
     - uses: mirromutth/mysql-action@v1.1
       with:
@@ -24,7 +24,11 @@ jobs:
           mysql root password: 'root' # Required if "mysql user" is empty, default is empty. The root superuser password
           mysql user: 'root' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
           mysql password: 'root' # Required if "mysql user" exists. The password for the "mysql user"
-
+      
+    - name: Mysql Start
+      run: |
+        sudo service mysql start 
+      
     - uses: actions/checkout@v2
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
