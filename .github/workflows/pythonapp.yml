@@ -15,6 +15,7 @@ jobs:
     - run: |
           sudo /etc/init.d/mysql start
           mysql -e 'CREATE DATABASE cestra_logon;' -uroot -proot
+          mysql -e 'CREATE DATABASE cestra_world;' -uroot -proot
           mysql -e 'SHOW DATABASES;' -uroot -proot
 
     - uses: actions/checkout@v2
@@ -29,10 +30,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install mysql-connector-python
 
-    - name: Display Python version
-      run: |
-        python -c "import sys; print(sys.version)"
-
-    - name: test
+    - name: Server start
       run: |
         python logon/src/main.py
