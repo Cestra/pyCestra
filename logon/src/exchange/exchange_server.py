@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
 import socket
+import sys
 import threading
 
 from core.logging_handler import Logging
@@ -44,6 +45,7 @@ class ExchangeServer():
             s.bind((ex_ip, ex_port))
         except socket.error:
             self.log.warning('Exchange Socket - Binding faild')
+            sys.exit()
         s.listen()
         self.log.info('Exchange Socket is listening on Port: ' + str(ex_port))
         while True:

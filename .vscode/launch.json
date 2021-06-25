@@ -19,6 +19,14 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "Cestra args test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/logon/src/main.py",
+            "console": "integratedTerminal",
+            "args": ["-m","1","10"]
+        },
+        {
             "name": "Python: current file",
             "type": "python",
             "request": "launch",
