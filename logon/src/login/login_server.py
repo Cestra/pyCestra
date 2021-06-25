@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import socket
 import threading
+import sys
 
 from core.logging_handler import Logging
 from login.login_handler import LoginHandler
@@ -34,33 +35,41 @@ class LoginServer:
         self.hostList = hostList
         self.ipBans = ipBans
 
+        self.runtime = True
+
         self.start()
 
     def start(self):
         threadName = 'Login-Server - ' + str(self.logonPort)
         try:
-            t = threading.Thread(target=self.server,
-                                name=threadName,
-                                args=(self.logoniIP, self.logonPort,
-                                    self.gameClientDic, self.accountDataDic,
-                                    self.hostList, self.ipBans))
-            t.start()
+            self.t = threading.Thread(target=self.server,
+                                    name=threadName)
+            self.t.start()
         except threading.ThreadError as e:
             self.log.warning('Login Server could not be created: ' + str(e))
+    
+    def stop(self):
+        self.runtime = False
+        print("!!!!!!!    self.runtime = False !!!!")
 
-    def server(self, logoniIP, logonPort, gameClientDic, accountDataDic, hostList, ipBans):
+    def server(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
             s.bind((self.logoniIP, self.logonPort))
+            s.listen()
+            self.log.info('Logon Socket is listening on Port: ' + str(self.logonPort))
         except socket.error:
-            print('Login Socket - Binding faild')
-        s.listen()
-        self.log.info('Logon Socket is listening on Port: ' + str(self.logonPort))
-        while True:
-            c, self.addr = s.accept()
-            self.log.info('[{}:{}] Client Connected '.format(str(self.addr[0]),str(self.addr[1])))
-            self.session_created(c, self.addr)
-        s.close()
+            self.log.warning('Login Socket - Binding faild')
+            sys.exit()
+        while self.runtime:
+            try:
+                c, self.addr = s.accept()
+                self.log.info('[{}:{}] Client Connected '.format(str(self.addr[0]),str(self.addr[1])))
+                self.session_created(c, self.addr)
+            except socket.timeout:
+                self.log.info("Login Socket - TIMEOUT")
+                continue
+
 
     def session_created(self, soecket, addr):
         threadName = 'Client-Session '+str(addr[0])+':'+ str(addr[1])

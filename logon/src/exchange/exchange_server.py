@@ -52,7 +52,6 @@ class ExchangeServer():
             c, self.addr = s.accept()
             self.log.info('Exchange Client connected '+ str(self.addr[0])+ ':'+ str(self.addr[1]))
             ExchangeServer().session_created(c, self.addr, hostList)
-        s.close()
 
     def session_created(self, soecket, addr, hostList):
         threadName = 'Exchange-Client '+str(addr[0])+':'+ str(addr[1])
