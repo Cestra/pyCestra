@@ -74,8 +74,12 @@ def main():
     ipbans = dataSource.IpBans().load()
     log.info('IP Bans were loaded')
 
-    dataSource.DatabaseUpdateService().start(accountDataDic,
-                                            config.get_update_time())
+    if not serverModus == 1:
+        dataSource.DatabaseUpdateService().start(accountDataDic,
+                                                config.get_update_time())
+    else:
+        log.info('Database-Update-Service is not active')
+        
 
     # ======================================================
     # socket tests

@@ -35,7 +35,7 @@ class LoginServer:
         self.hostList = hostList
         self.ipBans = ipBans
 
-        self.runtime = True
+        self.defaultrRun = True
 
         self.start()
 
@@ -43,33 +43,41 @@ class LoginServer:
         threadName = 'Login-Server - ' + str(self.logonPort)
         try:
             self.t = threading.Thread(target=self.server,
-                                    name=threadName)
+                                    name=threadName,
+                                    args=(self.defaultrRun,))
             self.t.start()
         except threading.ThreadError as e:
             self.log.warning('Login Server could not be created: ' + str(e))
-    
-    def stop(self):
-        self.runtime = False
-        print("!!!!!!!    self.runtime = False !!!!")
 
-    def server(self):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    def server(self, arg):
+        do_run = arg
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            s.bind((self.logoniIP, self.logonPort))
-            s.listen()
+            self.s.bind((self.logoniIP, self.logonPort))
+            self.s.listen()
             self.log.info('Logon Socket is listening on Port: ' + str(self.logonPort))
         except socket.error:
             self.log.warning('Login Socket - Binding faild')
             sys.exit()
-        while self.runtime:
+        while do_run:
+            self.log.warning("while loop")
             try:
-                c, self.addr = s.accept()
+                c, self.addr = self.s.accept()
                 self.log.info('[{}:{}] Client Connected '.format(str(self.addr[0]),str(self.addr[1])))
                 self.session_created(c, self.addr)
             except socket.timeout:
-                self.log.info("Login Socket - TIMEOUT")
+                self.log.info("[{}:{}] Login Socket - TIMEOUT".format(str(self.addr[0]),str(self.addr[1])))
                 continue
-
+            except OSError:
+                self.log.info("[{}:{}] Login Socket was killed".format(str(self.addr[0]),str(self.addr[1])))
+        self.s.close()
+        self.log.warning("ende des while !!!!!!!!!!!!!!!!")
+    
+    def stop(self):
+        self.log.warning("stop - start")
+        self.t.do_run = False
+        self.log.warning("1")
+        sys.exit()
 
     def session_created(self, soecket, addr):
         threadName = 'Client-Session '+str(addr[0])+':'+ str(addr[1])
