@@ -55,3 +55,8 @@ class Logging:
         if self.logger.getEffectiveLevel() <= 30:
             print(strftime(bcolors.red+"[%H:%M:%S]")+'[WARNING]',message+bcolors.cend)
             logging.warning(strftime("[%d.%m][%H:%M:%S]")+message)
+    
+    def onlyShow(self, message):
+        # print(strftime(bcolors.orange+"[%H:%M:%S]"),message+bcolors.cend)
+        message = (bcolors.orange+message) + bcolors.cend
+        print(f'{message}\r', end="")

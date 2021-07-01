@@ -38,7 +38,9 @@ class MapData(DAO):
         try:
             cursor.execute('SELECT * FROM maps;')
             data = cursor.fetchall()
+            c = 0
             for result in data:
+                c += 1
                 try:
                     mapData = Map(result['id'],result['date'],
                                 result['width'],result['heigth'],
@@ -48,6 +50,7 @@ class MapData(DAO):
                                 result['numgroup'],result['fixSize'],
                                 result['minSize'],result['maxSize'],
                                 result['cases'],result['forbidden'],)
+                    self.log.onlyShow('----- Maps are initialized: {} out of {} -----'.format(str(c), str(len(data))))
                     self.dataSource[result['id']] = mapData
                 except Exception as Error:
                     self.log.warning('maps_data.py - maps:{} can\'t be loaded'.format(str(result['id'])))

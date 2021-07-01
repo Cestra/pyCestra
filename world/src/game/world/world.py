@@ -37,7 +37,7 @@ class World:
         self.playersData = dataSource.PlayersData()
         self.playersData.load_in_to_class()
         self.playersData = self.playersData.get_player_data()
-        self.log.info('Player were loaded')
+        self.log.info(8*'-'+' Player were loaded '+7*'-')
         # --------------------------------------------------------------------
         # Maps data are loaded here
         __mapData = dataSource.MapData()
@@ -46,7 +46,7 @@ class World:
         for __mapId, __mapObject in __mapData.items():
             self.add_map(__mapId, __mapObject)
         del __mapData, __mapId, __mapObject
-        self.log.info('Maps were loaded')
+        self.log.info(8*'-'+' Maps were loaded '+9*'-')
 
         self.log.info('The world-server has finished loading')
         self.log.info(35*'-')
