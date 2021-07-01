@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/usr/bin/python3",
+    "python.pythonPath": "C:\\python\\python.exe",
     "maven.view": "flat",
     "files.exclude": {
         "**/.classpath": true,
