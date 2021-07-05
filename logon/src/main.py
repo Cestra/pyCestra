@@ -31,9 +31,14 @@ def main():
     #  ======================================================
     #  start message
 
+    args = sys.argv[1:]
     log = Logging()
     console = Console()
     console.clear()
+
+    if len(args) == 3 and args[0] == '-m':
+        serverModus = int(args[1])
+        serverTime = int(args[2])
 
     def wel():
         welmsg = [58*'─', '|  0.01  |' + 12*' ' + 
@@ -69,8 +74,12 @@ def main():
     ipbans = dataSource.IpBans().load()
     log.info('IP Bans were loaded')
 
-    dataSource.DatabaseUpdateService().start(accountDataDic,
-                                            config.get_update_time())
+    if not serverModus == 1:
+        dataSource.DatabaseUpdateService().start(accountDataDic,
+                                                config.get_update_time())
+    else:
+        log.info('Database-Update-Service is not active')
+        
 
     # ======================================================
     # socket tests
@@ -79,7 +88,7 @@ def main():
 
     game_client_dic = {}
 
-    LoginServer(config.get_login_ip(),
+    lo = LoginServer(config.get_login_ip(),
                 config.get_login_port(),
                 game_client_dic,
                 accountDataDic,
@@ -89,6 +98,13 @@ def main():
     ExchangeServer().start(config.get_exchange_ip(),
                         config.get_exchange_port(),
                         hostList)
+
+    if serverModus == 1:
+        log.warning("This server will automatically shutdown in {} seconds".format(serverTime))
+        time.sleep(serverTime)
+        log.warning("SHUTDOWN!")
+        lo.stop()
+        sys.exit()
 
     while True:
         time.sleep(15)

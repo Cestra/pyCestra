@@ -62,7 +62,7 @@ class Config:
                 'network_realmList_ip': '127.0.0.1',
                 'network_realmList_port': '451'
             }
-            with open('./logon.conf', 'w') as configfile:    # save
+            with open('./logon.conf', 'w', encoding='utf-8') as configfile:    # save
                 self.config.write(configfile)
             return True
         except:
